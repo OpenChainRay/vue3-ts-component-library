@@ -1,0 +1,6 @@
+- 回答语言与用户提问语言一致。
+- 在本仓库优先使用 `.cursor/skills/vue3-ts-component-library-core/SKILL.md` 规范执行开发任务。
+- 技术栈默认：Vue3 + TypeScript + Vite + Vitest。
+- 代码修改默认保持功能不变，优先做兼容式重构。
+- 输出代码时只给出最小化改动，注释简短，复杂方法上方加一行职责注释。
+- 默认执行并汇报 `npm run typecheck`、`npm run test`、`npm run build` 的结果。

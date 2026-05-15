@@ -1,0 +1,17 @@
+增加自定义缓存组件
+`
+      <a-keep-alive v-model="clearCaches">
+          <router-view v-if="!refreshing" ref="tabContent" :key="$route.path" />
+        </a-keep-alive>
+    
+            const vnode = this.$refs.tabContent.$vnode
+            page.cachedKey = vnode.key + vnode.componentOptions.Ctor.cid
+
+
+            //清除缓存页面的核心代码
+            const cached = cache[key]
+            if (cached) {
+                cached.componentInstance.$destroy()
+            }
+            cache[key] = null
+`

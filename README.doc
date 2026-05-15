@@ -1,0 +1,49 @@
+# 说明
+
+- 安装 npm i ant-materia
+
+## 组件列表
+
+## AtStatistic
+
+千分位组件
+
+### API
+
+|   参数   |   说明   |   类型   |  默认值   |
+| :-------- |:--------|:-------- |:-------- |
+|    value   |     input绑定的值    |       number,string    |      0  |
+|    decimals   |     保留的小数位数    |      number    |        2 |
+|    align   |     位置    |      string    |          'left'|
+|    min   |     最小值    |      Number    |          |
+|    max   |     最大值    |      Number    |          |
+
+### 事件
+
+|   事件名称   |   说明   |   回调参数   |  
+| :-------- |:--------|:-------- |
+|    change   |     input失去焦点时值触发    |  Function(value): value是Number类型 |
+
+## AtTable  
+
+### API
+
+|   参数   |   说明   |   类型   |  默认值   |
+| :-------- |:--------|:-------- |:-------- |
+|    data   |     table的数据    |  `function(params) 参数为{ pageNo:,pageSize:}返回值为 {  data: list,  pageNo: pageNum,pageSize: pageSize, totalCount: total,totalPage: pages}`|        |
+|    pageNum   |     页码    |      Number    |        1|
+|    pageSize   |     位置    |      Number    |          10|
+|    showSizeChanger   |     显示 pageSize选择   |      Boolean    |          true|
+|    showPagination   |      显示 pageNum选择    |      Boolean    |          true|
+|    pageURI   |     接口请求地址    |       String | Boolean    |          false|
+|    search   |     接口请求地址    |      String | Boolean | Object |          false|
+|    tableKey   |     表格唯一key    |      String | Boolean | Object |          false|
+|    dragTableTh   |     表格列拖动钩子函数    |      Function  |          |
+|    searchBtnSubmit   |     搜索按钮钩子函数    |      Function  |          |
+|    dragSort   |     是否开启行拖拽排序    |      Boolean  |      false    |
+|    searchBtnReset   |     搜索重置按钮钩子函数    |      Function  |          |
+其他同 https://1x.antdv.com/components/table-cn/#API
+
+
+流程图组件使用说明
+    <at-bpmn :processInstanceInfo="processInstanceInfo" :history="history" :formId="1" processName='at_srm_purchaseitem_v1'></at-bpmn>

@@ -1,0 +1,358 @@
+{
+  "window.zoomLevel": 0,
+  "window.title": "${activeEditorShort}${separator}${rootPath}",
+  "editor.tabSize": 2,
+  "editor.lineHeight": 0,
+  "editor.rulers": [120],
+  "editor.wordWrap": "off",
+  "editor.wordWrapColumn": 120,
+  "editor.renderWhitespace": "all",
+  "editor.formatOnType": true,
+  "editor.formatOnSave": false,
+  "javascript.format.enable": false,
+  "editor.tabCompletion": "on",
+  "editor.cursorBlinking": "smooth",
+  "editor.codeLens": true,
+  "editor.snippetSuggestions": "top",
+  // 启用后，将在保存文件时剪裁尾随空格。
+  "files.trimTrailingWhitespace": true,
+  // 文件图标
+  "workbench.iconTheme": "material-icon-theme",
+  "explorer.compactFolders": false,
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/dist": true
+  },
+  /*
+    EMMET配置
+  */
+  // 启用后，按下 TAB 键，将展开 Emmet 缩写。
+  "emmet.triggerExpansionOnTab": true,
+  // 在其他指定语言中开启EMMET
+  "emmet.includeLanguages": {
+    "wxml": "html",
+    "javascript": "javascriptreact"
+  },
+  // 自动识别文件类型
+  "emmet.syntaxProfiles": {
+    "javascript": "jsx",
+    "vue": "html",
+    "wpy": "html",
+    "vue-html": "html"
+  },
+  "git.confirmSync": false,
+  "csscomb.preset": {
+    "always-semicolon": true,
+    "color-case": "lower",
+    "block-indent": "  ",
+    "color-shorthand": true,
+    "element-case": "lower",
+    "eof-newline": false,
+    "leading-zero": false,
+    "quotes": "single",
+    "sort-order-fallback": "abc",
+    "space-before-colon": "",
+    "space-after-colon": " ",
+    "space-before-combinator": " ",
+    "space-after-combinator": " ",
+    "space-between-declarations": "\n",
+    "space-before-opening-brace": " ",
+    "space-after-opening-brace": "\n",
+    "space-after-selector-delimiter": " ",
+    "space-before-selector-delimiter": "",
+    "space-before-closing-brace": "\n",
+    "strip-spaces": true,
+    "tab-size": true
+  },
+  "beautify.config": {
+    // "key": "option+command+b",
+    // 格式风格，详见官方说明（为避免和eslint默认检查冲突，建议此属性设置为 none,preserve-inline）
+    "brace_style": "none,preserve-inline",
+    // 缩进长度（为避免和eslint默认检查冲突，建议此属性设置为 2）
+    "indent_size": 2,
+    "indent_char": " ",
+    "e4x": true,
+    "command": "HookyQR.beautify",
+    "when": "editorFocus",
+
+    "css": {
+      "indent_size": 2
+    },
+    "jslint_happy": true,
+    "unformatted": [""]
+  },
+  "gitlens.advanced.messages": {
+    "suppressCommitHasNoPreviousCommitWarning": false,
+    "suppressCommitNotFoundWarning": false,
+    "suppressFileNotUnderSourceControlWarning": false,
+    "suppressGitVersionWarning": false,
+    "suppressLineUncommittedWarning": false,
+    "suppressNoRepositoryWarning": false,
+    "suppressResultsExplorerNotice": false,
+    "suppressShowKeyBindingsNotice": true,
+    "suppressUpdateNotice": false,
+    "suppressWelcomeNotice": true
+  },
+  // Live Server插件配置
+  "liveServer.settings.port": 5500,
+  "liveServer.settings.root": "./",
+  "highlight-matching-tag.highlightSelfClosing": true,
+  "liveServer.settings.donotShowInfoMsg": true,
+  "gitlens.keymap": "alternate",
+  "material-icon-theme.showUpdateMessage": false,
+  /*
+      代码格式化相关配置
+    */
+  // ESlint配置
+  "files.associations": {
+    "*.ts": "typescript",
+    "*.js": "javascript",
+    "*.vue": "vue",
+    "*.wpy": "vue",
+    "*.cjson": "jsonc",
+    "*.wxss": "css",
+    "*.wxs": "javascript",
+    "*.wxml": "wxml"
+  },
+  // vetur设置
+  // 选择 vue 文件中 template 的格式化工具
+  "vetur.format.defaultFormatter.html": "prettyhtml",
+  // "vetur.format.defaultFormatter.html": "js-beautify-html",
+  "vetur.format.defaultFormatter.js": "vscode-typescript",
+  "vetur.format.defaultFormatter.ts": "vscode-typescript",
+  // vetur 的自定义设置
+  "vetur.format.defaultFormatterOptions": {
+    "prettier": {
+      "singleQuote": true,
+      "semi": false
+    }
+  },
+  // 不提示找不到tsconfig.json/jsconfig.json
+  "vetur.ignoreProjectWarning": true,
+  // prettier 设置语句末尾不加分号
+  "prettier.semi": false,
+  // prettier 设置强制单引号
+  "prettier.singleQuote": true,
+
+  // 设置 eslint 保存时自动修复
+  // "eslint.autoFixOnSave": true,
+  "javascript.validate.enable": false,
+  "standard.autoFixOnSave": true,
+  "standard.enable": true,
+  // eslint 检测文件类型
+  // "eslint.validate": [
+  //   "javascript",
+  //   "typescript",
+  //   "javascriptreact",
+  //   "vue-html",
+  //   {
+  //     "language": "html",
+  //     "autoFix": true
+  //   },
+  //   {
+  //     "language": "vue",
+  //     "autoFix": true
+  //   }
+  // ],
+  "standard.validate": [
+    "typescript",
+    "javascriptreact",
+    "vue-html",
+    {
+      "language": "html",
+      "autoFix": true
+    },
+    {
+      "language": "vue",
+      "autoFix": true
+    },
+    {
+      "language": "javascript",
+      "autoFix": true
+    },
+    {
+      "language": "typescript",
+      "autoFix": true
+    }
+  ],
+  // "eslint.options": {
+  //   "plugins": ["html"],
+  //   "extensions": [".js", ".jsx",".ts", ".vue", ".wpy", ".html"]
+  // },
+  "standard.options": {
+    "plugins": [
+      "html"
+    ],
+    "extensions": [
+      ".js",
+      ".ts",
+      ".jsx",
+      ".vue",
+      ".wpy",
+      ".html"
+    ]
+  },
+  "prettier.printWidth": 120,
+  // "prettier.disableLanguages": ["vue", "javascript","typescript"],
+  // "editor.defaultFormatter":"esbenp.prettier-vscode",
+  // "[javascript]":{
+  //  "editor.defaultFormatter":"esbenp.prettier-vscode"
+  // },
+  // "[typescript]":{
+  //   "editor.defaultFormatter":"esbenp.prettier-vscode"
+  //  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  // "[vue]": {
+  //   "editor.defaultFormatter": "Vue.volar"
+  // },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[less]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "prettier.jsxBracketSameLine": true,
+  // 箭头函数形参是否添加括号
+  // avoid 尽可能省略，always 总是添加
+  "prettier.arrowParens": "always",
+
+  "gitlens.historyExplorer.enabled": true,
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "java.jdt.ls.vmargs": "-noverify -Xmx1G -XX:+UseG1GC -XX:+UseStringDeduplication -javaagent:\"/Users/afarwind/.vscode/extensions/gabrielbb.vscode-lombok-0.9.8/server/lombok.jar\"",
+  "editor.formatOnPaste": false,
+  "editor.renderControlCharacters": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "minapp-vscode.disableAutoConfig": true,
+  "workbench.statusBar.visible": true,
+  "editor.largeFileOptimizations": false,
+  "bracketPairColorizer.depreciation-notice": false,
+  "editor.unicodeHighlight.invisibleCharacters": false,
+  "editor.fontSize": 14,
+  "editor.guides.indentation": false,
+  // CodeMetrics
+  // highest complexity level will be set when it exceeds 17
+  "codemetrics.basics.ComplexityLevelExtreme" : 17,
+  // Hides code lenses with complexity lesser than the given value
+  "codemetrics.basics.CodeLensHiddenUnder" : 5,
+  // Description for the highest complexity level
+  "codemetrics.basics.ComplexityLevelExtremeDescription" : "OMG split this up!",
+  // someone uses 'any', it must be punished
+  "codemetrics.nodeconfiguration.AnyKeyword": 100,
+  "i18n-ally.localesPaths": [],
+  "GitCommitPlugin.ShowEmoji": true,
+  "GitCommitPlugin.Templates": [
+    {
+      "templateName": "Angular",
+      "templateContent": "<icon><space><type>(<scope>):<space><subject><enter><body><enter><footer>"
+    }
+  ],
+  "GitCommitPlugin.MaxSubjectWords": 50,
+  "GitCommitPlugin.MaxSubjectCharacters": 50,
+  "GitCommitPlugin.CustomCommitType": [
+    {
+      "key": "init",
+      "label": "init",
+      "detail": "🎉 Init | 初始化",
+      "icon": "🎉"
+    },
+    {
+      "key": "feat",
+      "label": "feat",
+      "detail": "✨ Features | 新增/修改功能",
+      "icon": "✨"
+    },
+    {
+      "key": "fix",
+      "label": "fix",
+      "detail": "🐛 Bug Fixes | Bug 修复",
+      "icon": "🐛"
+    },
+    {
+      "key": "docs",
+      "label": "docs",
+      "detail": "📚 Documentation | 新增/修改文档(如README, CHANGELOG, CONTRIBUTE等)",
+      "icon": "📚"
+    },
+    {
+      "key": "style",
+      "label": "style",
+      "detail": "🎨 Styles | 新增/修改样式",
+      "icon": "🎨"
+    },
+    {
+      "key": "refactor",
+      "label": "refactor",
+      "detail": "♻️ Code Refactoring | 代码重构 (既不是新增功能，也不是修补 bug 的程式码变动)",
+      "icon": "♻️"
+    },
+    {
+      "key": "perf",
+      "label": "perf",
+      "detail": "⚡ Performance Improvements | 性能优化",
+      "icon": "⚡"
+    },
+    {
+      "key": "test",
+      "label": "test",
+      "detail": "🚨 Tests | 新增/修改测试用例(包括单元测试、集成测试等)",
+      "icon": "🚨"
+    },
+    {
+      "key": "revert",
+      "label": "revert",
+      "detail": "⏪ Revert | 回退",
+      "icon": "⏪"
+    },
+    {
+      "key": "build",
+      "label": "build",
+      "detail": "📦 Build System | 新增或更新CI 打包构建",
+      "icon": "📦"
+    },
+    {
+      "key": "chore",
+      "label": "chore",
+      "detail": "🔧 Chore | 构建/工程依赖/工具",
+      "icon": "🔧"
+    },
+    {
+      "key": "ci",
+      "label": "ci",
+      "detail": "👷 Continuous Integration | CI 配置(主要目的是修改项目继续集成流程(如 Travis,Jenkins,GitLab CI,Circle等)的提交)",
+      "icon": "👷"
+    }
+  ]
+}

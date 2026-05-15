@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./examples/*"],
+      "@src/*": ["./src/*"],
+      "@root/*": ["./*"]
+    }
+  },
+  "vueCompilerOptions": {
+    "target": 3,
+    "extensions": [
+      ".vue"
+    ]
+  },
+  "exclude": ["node_modules", "dist", ".husky", ".vscode", "docs", "miniprogram_npm", "uni_modules"]
+}

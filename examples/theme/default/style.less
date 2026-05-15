@@ -1,0 +1,85 @@
+.week-mode{
+  overflow: hidden;
+  filter: invert(80%);
+}
+.beauty-scroll{
+  scrollbar-color: @primary-color @primary-2;
+  scrollbar-width: thin;
+  -ms-overflow-style:none;
+  position: relative;
+  &::-webkit-scrollbar{
+    width: 3px;
+    height: 1px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background: @primary-color;
+  }
+  &::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0);
+    border-radius: 3px;
+    background: @primary-3;
+  }
+}
+.split-right{
+  &:not(:last-child) {
+    border-right: 1px solid rgba(98, 98, 98, 0.2);
+  }
+}
+.disabled{
+  cursor: not-allowed;
+  color: @disabled-color;
+  pointer-events: none;
+}
+.ant-select-selection--single{
+  background: none;
+}
+.ant-select-focused .ant-select-selection{
+  box-shadow:0 0 2px grey
+}
+.ant-select-dropdown-menu-item-active:not(.ant-select-dropdown-menu-item-disabled){
+  background:#F3F4F5
+}
+.ant-select-dropdown-menu-item .ant-select-dropdown-menu-item-active{
+  background: rgba(0,0,0,0.04);
+}
+.ant-select-focused .ant-select-selection, .ant-select-selection:focus, .ant-select-selection:active{
+  background: #F3F4F5;
+  box-shadow: 2px 2px 6px 0px rgba(87,93,108,0.1);
+  border-radius:0px;
+  height:32px;
+
+}
+.ant-select-dropdown-menu-item .ant-select-dropdown-menu-item-active{
+  background: rgba(0,0,0,0.04);
+
+}
+.ant-select-dropdown-menu-item-selected{
+    background: rgba(0,0,0,0.04);
+
+}
+.ant-select-dropdown-menu-item:hover:not(.ant-select-dropdown-menu-item-disabled){
+background: rgba(0,0,0,0.04);
+}
+/* 备用方案 - 更具体的选择器 */
+::v-deep .ant-select-dropdown-menu::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+::v-deep .ant-select-dropdown-menu::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+  border-radius: 4px !important;
+}
+
+::v-deep .ant-select-dropdown-menu::-webkit-scrollbar-thumb {
+  background: #E3E3E6 !important;
+  border-radius: 4px !important;
+}
+
+::v-deep .ant-select-dropdown-menu::-webkit-scrollbar-thumb:hover {
+  background: #BFC5CD !important;
+}
+::v-deep .tiny-range-editor--mini.tiny-input__inner{
+  height:32px !important;
+}
