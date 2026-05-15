@@ -12,10 +12,22 @@
     />
     <div :class="['tabs-view-content', layout, pageWidth]" :style="`margin-top: ${multiPage ? -24 : 0}px`">
       <page-toggle-transition :disabled="animate.disabled" :animate="animate.name" :direction="animate.direction">
-        <keep-alive v-if="multiPage && cachePage">
-          <router-view v-if="!refreshing" ref="tabContent" :key="routeViewKey" />
-        </keep-alive>
-        <router-view ref="tabContent" v-else-if="!refreshing" :key="routeViewKey" />
+        <router-view v-slot="{ Component }">
+          <keep-alive v-if="multiPage && cachePage">
+            <component
+              v-if="!refreshing && Component"
+              :is="Component"
+              ref="tabContent"
+              :key="routeViewKey"
+            />
+          </keep-alive>
+          <component
+            v-else-if="!refreshing && Component"
+            :is="Component"
+            ref="tabContent"
+            :key="routeViewKey"
+          />
+        </router-view>
       </page-toggle-transition>
   </div>
   </base-layout>
@@ -52,8 +64,9 @@ export default {
         { key: '4', icon: 'sync', text: this.$t('refresh') }
       ]
     },
+    /** 用 path 不用 fullPath：避免 query/hash 二次归一化导致 key 连续变化、子页重复 mounted */
     routeViewKey () {
-      return this.$route.fullPath || this.$route.path
+      return this.$route.path
     },
     tabsOffset () {
       return this.multiPage ? 24 : 0
@@ -94,7 +107,12 @@ export default {
       } else if (page) {
         if (page.fullPath != newRoute.fullPath) {
           page.fullPath = newRoute.fullPath
-          this.refresh(page.path, page)
+          // 默认不因 fullPath 变化强制重载组件，避免 mounted 二次触发。
+          // 如确需 query 变化时重载，可在路由上配置 meta.page.refreshOnFullPathChange = true。
+          const needRefresh = Boolean(newRoute?.meta?.page?.refreshOnFullPathChange)
+          if (needRefresh) {
+            this.refresh(page.path, page)
+          }
         } else {
           page.fullPath = newRoute.fullPath
         }
@@ -285,8 +303,10 @@ export default {
      */
     setCachedKey (route) {
       const page = this.pageList.find(item => item.path === route.path)
+      if (!page) return
       page.unclose = route.meta && route.meta.page && (route.meta.page.closable === false)
       if (!page._init_) {
+        /** ref 指向 router-view 渲染的页面根组件（插槽 :is），用于稳定 cachedKey */
         const tabContentRef = this.$refs.tabContent
         const vnode = tabContentRef && (tabContentRef.$vnode || tabContentRef.$?.vnode)
         const uid = tabContentRef && (tabContentRef._uid || tabContentRef.$?.uid || 0)

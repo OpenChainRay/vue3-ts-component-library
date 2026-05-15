@@ -577,7 +577,7 @@ export default {
         this.$refs.menuTable.refresh(false, {
           ...tableParams
           // moduleId: this.getModuleKey(e.node)
-   })
+   }, { force: false })
       }
     },
     // 检测节点是否为第二层
@@ -630,12 +630,16 @@ export default {
       if (this.menuTreeData.length == 0) await this.getMenuTreeData()
       let result
       try {
+        const currentTreeKey = Array.isArray(this.menuTreeCheckedKeys) && this.menuTreeCheckedKeys.length > 0
+          ? this.menuTreeCheckedKeys[0]
+          : -1
+        const parentId = typeof params.parentId !== 'undefined' ? params.parentId : currentTreeKey
         result = await getMenuByPage({
           orderColumns: [],
           pageNum: params.pageNo,
           pageSize: params.pageSize,
           param: {
-            parentId: params.parentId,
+            parentId,
             menuName: params.menuName,
             moduleId: params.moduleId
           }

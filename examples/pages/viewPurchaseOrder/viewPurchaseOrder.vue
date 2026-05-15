@@ -301,6 +301,9 @@ export default {
     // this.organizationsList = JSON.parse(localStorage.getItem(process.env.APP_ORGANIZATIONS_KEY))
     // this.$parentStore.dispatch('account/updateMessageNum')
   },
+  mounted() {
+    console.log('mounted')
+  },
   methods: {
     updateLoading() {
       this.tableLoading = true

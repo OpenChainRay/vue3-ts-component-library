@@ -75,6 +75,7 @@ export default {
     return {
       loading: false,
       tableData: [],
+      /** 保持引用稳定，避免 antd Table 因 pagination 对象替换反复触发 @change 导致连环请求 */
       innerPagination: {
         current: this.pageNum,
         pageSize: this.pageSize,
@@ -83,7 +84,13 @@ export default {
         showTotal: (t) => `共 ${t} 条`
       },
       filterState: {},
-      sorterState: {}
+      sorterState: {},
+      /** 上次已成功发起的列表查询签名，用于去重 */
+      lastLoadSignature: "",
+      /** 进行中的请求签名（用于拦截并发重复请求） */
+      pendingLoadSignature: "",
+      /** 进行中的请求 Promise（同签名复用） */
+      pendingLoadPromise: null
     }
   },
   computed: {
@@ -107,24 +114,28 @@ export default {
     /**
      * 与旧 AtTable.refresh 对齐：bool true 时回到第一页。
      */
-    refresh(resetFirstPage = false, filterObj) {
+    refresh(resetFirstPage = false, filterObj, options = {}) {
+      const { force = true } = options
+      if (force) {
+        this.lastLoadSignature = ""
+      }
       if (resetFirstPage) {
-        this.innerPagination = {
-          ...this.innerPagination,
-          current: 1,
-          pageSize: this.pageSize
-        }
+        this.innerPagination.current = 1
+        this.innerPagination.pageSize = this.pageSize
       }
       if (filterObj) {
         this.filterState = { ...filterObj }
-        this.innerPagination = { ...this.innerPagination, current: 1, pageSize: this.pageSize }
+        this.innerPagination.current = 1
+        this.innerPagination.pageSize = this.pageSize
       }
-      this.loadData(this.innerPagination, this.filterState, this.sorterState)
+      this.loadData(this.innerPagination, this.filterState, this.sorterState, {
+        bypassDedupe: force
+      })
     },
     buildParameter(pagination, filters, sorter) {
       const sortField = sorter?.field ?? sorter?.columnKey
       const sortOrder = sorter?.order
-      return Object.assign(
+      const parameter = Object.assign(
         {
           pageNo: pagination?.current ?? this.innerPagination.current,
           pageSize: pagination?.pageSize ?? this.innerPagination.pageSize
@@ -133,15 +144,61 @@ export default {
         sortOrder ? { sortOrder } : {},
         filters || {}
       )
+      return this.normalizeParameter(parameter)
     },
-    async loadData(pagination, filters, sorter) {
+    /** 归一化请求参数，去掉 Table 初始化时注入的空过滤项。 */
+    normalizeParameter(parameter) {
+      const normalized = {}
+      Object.keys(parameter || {}).forEach((key) => {
+        const value = parameter[key]
+        if (value === null || typeof value === "undefined") return
+        if (Array.isArray(value)) {
+          const compact = value.filter((item) => item !== null && typeof item !== "undefined")
+          if (compact.length === 0) return
+          normalized[key] = compact
+          return
+        }
+        normalized[key] = value
+      })
+      return normalized
+    },
+    /** 生成列表请求去重键（与业务 data 函数入参一致） */
+    loadSignature(parameter) {
+      const keys = Object.keys(parameter).sort()
+      const stable = {}
+      keys.forEach((k) => {
+        stable[k] = parameter[k]
+      })
+      return JSON.stringify(stable)
+    },
+    /**
+     * 同步分页展示（原地改属性，不替换 innerPagination 引用）。
+     */
+    assignPaginationFromResult(parameter, r) {
+      this.innerPagination.current = r.pageNo ?? parameter.pageNo
+      this.innerPagination.total = r.totalCount ?? 0
+      this.innerPagination.pageSize = r.pageSize ?? parameter.pageSize
+      this.innerPagination.showSizeChanger = this.showSizeChanger
+    },
+    async loadData(pagination, filters, sorter, options = {}) {
+      const { bypassDedupe = false } = options
       const parameter = this.buildParameter(pagination, filters, sorter)
+      const sig = this.loadSignature(parameter)
+      if (!bypassDedupe && sig === this.lastLoadSignature) {
+        return
+      }
+      if (!bypassDedupe && sig === this.pendingLoadSignature && this.pendingLoadPromise) {
+        await this.pendingLoadPromise
+        return
+      }
       const result = this.data(parameter)
       if (!result || typeof result.then !== "function") {
         this.loading = false
         return
       }
       this.loading = true
+      this.pendingLoadSignature = sig
+      this.pendingLoadPromise = result
       try {
         const r = await result
         if (!r) return
@@ -152,33 +209,34 @@ export default {
           this.innerPagination.current > 1
         ) {
           this.innerPagination.current -= 1
-          await this.loadData(this.innerPagination, filters, sorter)
+          await this.loadData(this.innerPagination, filters, sorter, { bypassDedupe: true })
           return
         }
         this.tableData = list
-        this.innerPagination = {
-          ...this.innerPagination,
-          current: r.pageNo ?? parameter.pageNo,
-          total: r.totalCount ?? 0,
-          pageSize: r.pageSize ?? parameter.pageSize,
-          showSizeChanger: this.showSizeChanger,
-          showTotal: (t) => `共 ${t} 条`
-        }
+        this.assignPaginationFromResult(parameter, r)
+        this.lastLoadSignature = sig
       } catch {
         /* 请求失败由页面自行提示 */
       } finally {
         this.loading = false
+        if (this.pendingLoadSignature === sig) {
+          this.pendingLoadSignature = ""
+          this.pendingLoadPromise = null
+        }
       }
     },
     handleTableChange(pag, filters, sorter) {
       this.filterState = { ...filters }
       this.sorterState = sorter || {}
       if (pag) {
-        this.innerPagination = {
-          ...this.innerPagination,
-          current: pag.current,
-          pageSize: pag.pageSize
-        }
+        this.innerPagination.current = pag.current
+        this.innerPagination.pageSize = pag.pageSize
+      }
+      const normalized = this.buildParameter(this.innerPagination, filters, sorter)
+      const hasSorter = Boolean(normalized.sortField && normalized.sortOrder)
+      const hasFilter = Object.keys(normalized).some((k) => !["pageNo", "pageSize", "sortField", "sortOrder"].includes(k))
+      if (this.loading && !hasSorter && !hasFilter) {
+        return
       }
       this.loadData(this.innerPagination, filters, sorter)
     }
