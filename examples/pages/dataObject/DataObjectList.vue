@@ -1,7 +1,7 @@
 <template>
 <div >
   <a-card :bordered="false">
-    <at-table
+    <server-side-table
       ref="table"
       rowKey="id"
       :columns="dataObjectListTableColumns"
@@ -12,7 +12,7 @@
       :search=true
       :drag=true
     >
-      <div slot="toolBarRender">
+      <template #toolBarRender>
         <div>
           <a-button type="primary"  @click="showInsert">
             新增
@@ -21,23 +21,39 @@
             初始化数据对象
           </a-button>
         </div>
-      </div>
-      <span slot="isValid" slot-scope="text, record">
-        <a-switch checked-children="是" un-checked-children="否" @change="onStatusChange($event,record)" :default-checked="record.status==1" v-if="record.roleNum>0" disabled/>
-        <a-switch checked-children="是" un-checked-children="否" @change="onStatusChange($event,record)" :default-checked="record.status==1" v-else/>
-      </span>
-      <span slot="operation" slot-scope="text, record">
-        <a @click="showModify(record)">修改</a>
-        <!-- <a-divider type="vertical" />
-        <a-popconfirm title="Sure to delete?" @confirm="() => onDelete(record)">
-          <a href="javascript:;">删除</a>
-        </a-popconfirm> -->
-      </span>
-      <span slot="dataType" slot-scope="text, record">
-          <a v-if="record.dataType==0" style="color:rgba(0, 0, 0, 0.65)">组织架构</a>
-          <a v-else-if="record.dataType==1" style="color:rgba(0, 0, 0, 0.65)">关联表</a>
-      </span>
-    </at-table>
+      </template>
+      <!-- ant-design-vue 4 插槽入参为单对象 { text, record, ... }，勿用 slot-scope="text, record" -->
+      <template #isValid="{ record }">
+        <span v-if="record">
+          <a-switch
+            checked-children="是"
+            un-checked-children="否"
+            @change="onStatusChange($event, record)"
+            :default-checked="record.status == 1"
+            v-if="(record.roleNum || 0) > 0"
+            disabled
+          />
+          <a-switch
+            v-else
+            checked-children="是"
+            un-checked-children="否"
+            @change="onStatusChange($event, record)"
+            :default-checked="record.status == 1"
+          />
+        </span>
+      </template>
+      <template #operation="{ record }">
+        <span v-if="record">
+          <a @click="showModify(record)">修改</a>
+        </span>
+      </template>
+      <template #dataType="{ record }">
+        <span v-if="record">
+          <a v-if="record.dataType == 0" style="color:rgba(0, 0, 0, 0.65)">组织架构</a>
+          <a v-else-if="record.dataType == 1" style="color:rgba(0, 0, 0, 0.65)">关联表</a>
+        </span>
+      </template>
+    </server-side-table>
   </a-card>
 </div>
 </template>
@@ -82,7 +98,8 @@ export default {
         }
       })
     },
-    initTableData: async (parameter) => {
+    /** 表格分页：加载数据对象列表 */
+    async initTableData (parameter) {
       // 处理日期重置后仍在查询参数中的问题
       const newParams = {
         pageNum: parameter.pageNo,
@@ -99,13 +116,24 @@ export default {
         newParams.endTime = parameter.endTime
         newParams.startTime = parameter.startTime
       }
-      const result = await getDataPage(newParams).catch((error) => { throw new Error(error) })
+      let result
+      try {
+        result = await getDataPage(newParams)
+      } catch (error) {
+        this.$message.error((error && error.message) || '数据对象列表加载失败')
+        return {
+          data: [],
+          pageNo: parameter.pageNo || 1,
+          pageSize: parameter.pageSize || 10,
+          totalCount: 0,
+          totalPage: 0
+        }
+      }
 
       if (result.data.code && result.data.code === 200) {
         const {
           list = [], pageNum, pageSize, pages, total
         } = result.data.data
-        // console.log(result.data.data)
         return {
           data: list,
           pageNo: pageNum,
@@ -113,8 +141,14 @@ export default {
           totalCount: total,
           totalPage: pages
         }
-      } else {
-        oftenMessage(result.data.data, result.data.msg)
+      }
+      oftenMessage(result.data.data, result.data.msg)
+      return {
+        data: [],
+        pageNo: parameter.pageNo || 1,
+        pageSize: parameter.pageSize || 10,
+        totalCount: 0,
+        totalPage: 0
       }
     },
     // 监控是否有效变化

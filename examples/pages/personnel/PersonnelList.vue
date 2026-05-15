@@ -13,7 +13,7 @@
 
         </STable>
 
-      <at-table ref="table" rowKey="generateHash"
+      <server-side-table ref="table" rowKey="generateHash"
       :columns="personnelListTableColumns"
       tableKey="personnel"
       :showPagination="true"
@@ -47,7 +47,7 @@
           <a @click="toPersonRelation(record)" v-if="record.status==0" disabled> 关联用户</a>
           <a @click="toPersonRelation(record)" v-else>关联用户</a>
         </span>
-      </at-table>
+      </server-side-table>
       <!-- 修改弹窗-->
       <a-modal title="修改员工信息" :visible="modifyVisible" @ok="modifyFormOk" @cancel="modifyFormCancel" width=950px>
         <a-form ref="modifyForm">

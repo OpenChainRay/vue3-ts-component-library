@@ -36,6 +36,7 @@
 import Menu from 'ant-design-vue/es/menu'
 import Icon from 'ant-design-vue/es/icon'
 import fastEqual from 'fast-deep-equal'
+import { h } from 'vue'
 import { getI18nKey } from '@/utils/routerUtil'
 
 const { Item, SubMenu } = Menu
@@ -180,6 +181,29 @@ export default {
     }
   },
   methods: {
+    /**
+     * 统一处理菜单点击路由分发。
+     */
+    navigateByMenuKey (key) {
+      if (!key) {
+        return
+      }
+      const menu = this.routesMap[key]
+      if (!menu) {
+        return
+      }
+      const meta = menu.meta || {}
+      if (meta.link) {
+        window.open(meta.link, '_blank')
+        return
+      }
+      const path = resolvePath(menu.fullPath, meta.params || {})
+      const nextQuery = meta.query || {}
+      if (this.$route.path === path && fastEqual((this.$route.query || {}), nextQuery)) {
+        return
+      }
+      this.$router.push({ path, query: nextQuery }).catch(() => {})
+    },
     // 获取a-menu当前选中项（从父到子）的path
     getSelectedKeys () {
       // $route.matched为一个路由匹配到(打开)的所有（包含父级路由信息）路由记录
@@ -218,36 +242,37 @@ export default {
       })
     },
     // 渲染mune项左侧图标
-    renderIcon: function (h, icon, key) {
-      if (this.$scopedSlots.icon && icon && icon !== 'none') {
-        const vnodes = compactChildren(this.$scopedSlots.icon({ icon, key }))
-        vnodes.forEach(vnode => {
-          if (!vnode || !vnode.data) {
-            return
-          }
-          vnode.data.class = vnode.data.class ? vnode.data.class : []
-          vnode.data.class.push('anticon')
-   })
-        return vnodes
+    renderIcon: function (icon, key) {
+      const iconName = typeof icon === 'string' ? icon.trim() : ''
+      const iconSlot = this.$slots && this.$slots.icon
+      if (iconSlot && iconName && iconName !== 'none') {
+        const slotNodes = typeof iconSlot === 'function' ? iconSlot({ icon: iconName, key }) : iconSlot
+        return compactChildren(slotNodes)
       }
-      return !icon || icon == 'none' ? null : h(Icon, { props: { type: icon } })
+      return !iconName || iconName === 'none' ? null : h(Icon, { type: iconName, class: 'anticon' })
     },
     // 渲染无子路由集合为a-menu-item组件
-    renderMenuItem: function (h, menu) {
+    renderMenuItem: function (menu) {
       if (!menu) {
         return null
       }
-      let tag = 'router-link'
-      const path = resolvePath(menu.fullPath, menu.meta.params)
-      // 配置router-link标签属性
-      let config = { props: { to: { path, query: menu.meta.query } }, attrs: { style: 'overflow:hidden;white-space:normal;text-overflow:clip;' } }
+      const meta = menu.meta || {}
+      let tag = 'span'
+      let config = {
+        style: 'overflow:hidden;white-space:normal;text-overflow:clip;'
+      }
       // menu入口如果配置了远程路径，则打开远程页面
-      if (menu.meta && menu.meta.link) {
+      if (meta.link) {
         tag = 'a'
-        config = { attrs: { style: 'overflow:hidden;white-space:normal;text-overflow:clip;', href: menu.meta.link, target: '_blank' } }
+        config = {
+          style: 'overflow:hidden;white-space:normal;text-overflow:clip;',
+          href: meta.link,
+          target: '_blank',
+          rel: 'noopener noreferrer'
+        }
       }
       const menuItemChildren = compactChildren([
-        this.renderIcon(h, menu.meta ? menu.meta.icon : 'none', menu.fullPath),
+        this.renderIcon(meta.icon, menu.fullPath),
         this.$t(getI18nKey(menu.fullPath))
       ])
       return h(
@@ -260,30 +285,29 @@ export default {
       )
     },
     // 渲染包含子路由的集合成，分别处理父级和子级路由,父级渲染成a-sub-item组件,子集渲染成a-menu-item组件
-    renderSubMenu: function (h, menu) {
+    renderSubMenu: function (menu) {
       if (!menu) {
         return null
       }
       const this_ = this
-      const subItem = [h('span', { slot: 'title', attrs: { style: 'overflow:hidden;white-space:normal;text-overflow:clip;' } },
-        compactChildren([
-          this.renderIcon(h, menu.meta ? menu.meta.icon : 'none', menu.fullPath),
-          this.$t(getI18nKey(menu.fullPath))
-        ])
-      )]
+      const titleNodes = compactChildren([
+        this.renderIcon((menu.meta || {}).icon, menu.fullPath),
+        this.$t(getI18nKey(menu.fullPath))
+      ])
       const itemArr = []
       menu.children.forEach(function (item) {
-        const childNode = this_.renderItem(h, item)
+        const childNode = this_.renderItem(item)
         if (childNode) {
           itemArr.push(childNode)
         }
       })
-      return h(SubMenu, { key: menu.fullPath },
-        subItem.concat(itemArr)
-      )
+      return h(SubMenu, { key: menu.fullPath }, {
+        title: () => h('span', { style: 'overflow:hidden;white-space:normal;text-overflow:clip;' }, titleNodes),
+        default: () => itemArr
+      })
     },
     // 解析路由对象，分别处理包含子集和不包含子集的路由集合
-    renderItem: function (h, menu) {
+    renderItem: function (menu) {
       if (!menu) {
         return null
       }
@@ -303,16 +327,16 @@ export default {
           }
         }
         // 如果没有子路由调用renderMenuItem，如果有则调用renderSubMenu
-        return (menu.children && renderChildren) ? this.renderSubMenu(h, menu) : this.renderMenuItem(h, menu)
+        return (menu.children && renderChildren) ? this.renderSubMenu(menu) : this.renderMenuItem(menu)
       }
       return null
     },
     // 渲染a-menu-item
-    renderMenu: function (h, menuTree) {
+    renderMenu: function (menuTree) {
       const this_ = this
       const menuArr = []
       menuTree.forEach(function (menu, i) {
-        const menuNode = this_.renderItem(h, menu, '0', i)
+        const menuNode = this_.renderItem(menu, '0', i)
         if (menuNode) {
           menuArr.push(menuNode)
         }
@@ -320,33 +344,35 @@ export default {
       return menuArr
     }
   },
-  render (h) {
+  render () {
     return h(
       // 标签名、组件对象
       Menu,
       // 与模板中 attribute 对应的数据对象
       {
-        props: {
-          // a-menu组件相关参数，具体见https://antdv.com/components/menu-cn/#API
-          // 主题颜色
-          theme: this.menuTheme,
-          // 菜单类型，现在支持垂直、水平、和内嵌模式三种
-          mode: this.$props.mode,
-          // 当前选中的菜单项 key 数组
-          selectedKeys: this.selectedKeys,
-          // 当前展开的 SubMenu 菜单项 key 数组
-          openKeys: this.openKeys ? this.openKeys : this.sOpenKeys
+        // a-menu组件相关参数，具体见https://antdv.com/components/menu-cn/#API
+        theme: this.menuTheme,
+        // 菜单类型，现在支持垂直、水平、和内嵌模式三种
+        mode: this.$props.mode,
+        // 当前选中的菜单项 key 数组
+        selectedKeys: this.selectedKeys,
+        // 当前展开的 SubMenu 菜单项 key 数组
+        openKeys: this.openKeys ? this.openKeys : this.sOpenKeys,
+        onOpenChange: (val) => {
+          this.sOpenKeys = val
         },
-        on: {
-          'update:openKeys': (val) => {
-            this.sOpenKeys = val
-          },
-          click: (obj) => {
-            obj.selectedKeys = [obj.key]
-            this.$emit('select', obj)
-          }
+        'onUpdate:openKeys': (val) => {
+          this.sOpenKeys = val
+        },
+        onClick: (obj) => {
+          obj.selectedKeys = [obj.key]
+          this.navigateByMenuKey(obj.key)
+          this.$emit('select', obj)
         }
-      }, this.renderMenu(h, this.options)
+      },
+      {
+        default: () => this.renderMenu(this.options)
+      }
     )
   }
 }

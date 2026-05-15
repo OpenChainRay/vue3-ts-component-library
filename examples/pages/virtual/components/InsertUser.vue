@@ -87,8 +87,7 @@
 
 <script>
 import { getEmployeeList, addUser } from '@/services/user/user'
-import { AtTable } from 'at-materia'
-const { eventBus } = AtTable
+import { eventBus } from 'at-materia'
 export default {
   name: 'ContractCompleted',
   components: {

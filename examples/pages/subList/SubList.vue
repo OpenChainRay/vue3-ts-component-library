@@ -1,6 +1,6 @@
 <template>
   <a-card :bordered="false">
-    <at-table
+    <server-side-table
       ref="table"
       rowKey="id"
       :columns="SubListTableColumns"
@@ -28,7 +28,7 @@
           <a href="javascript:;" :disabled='record.menuCount>0' >删除</a>
           </a-popconfirm>
       </span>
-    </at-table>
+    </server-side-table>
     <a-modal
     title="修改子系统条目"
     :visible="editVisible"

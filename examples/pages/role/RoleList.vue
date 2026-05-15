@@ -1,7 +1,7 @@
 <template>
 <div >
   <a-card :bordered="false">
-    <at-table
+    <server-side-table
       ref="table"
       rowKey="id"
       :columns="roleListTableColumns"
@@ -39,7 +39,7 @@
           <a href="javascript:;" disabled>删除角色</a>
         </a-popconfirm>
       </span>
-    </at-table>
+    </server-side-table>
     <a-modal
       title="新增角色"
       :visible="roleVisible"
@@ -247,15 +247,15 @@ export default {
         // })
         this.$message.error(result.data.msg)
       }
+    },
+    showInfo (record) {
+      this.$router.push({
+        name: '完成合同详情',
+        query: {
+          id: record.id
+        }
+      })
     }
-  },
-  showInfo (record) {
-    this.$router.push({
-      name: '完成合同详情',
-      query: {
-        id: record.id
-      }
-    })
   }
 }
 </script>

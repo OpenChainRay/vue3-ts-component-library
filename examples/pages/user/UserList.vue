@@ -2,7 +2,7 @@
 <div >
   <a-card :bordered="false">
     <!-- {{ userListTableColumns }}{{ userListTableColumns.length }} -->
-    <at-table
+    <server-side-table
       ref="table"
       rowKey="id"
       :columns="userListTableColumns"
@@ -41,7 +41,7 @@
         <a-divider type="vertical" />
         <a @click="toRoleList2(record)">查看角色</a>
       </span>
-    </at-table>
+    </server-side-table>
     <a-modal
       title="修改用户信息"
       :visible="modifyVisible"

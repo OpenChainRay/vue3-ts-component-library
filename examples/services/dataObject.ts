@@ -4,7 +4,7 @@
  */
 
 import { request, METHOD } from '@/utils/request'
-const BASE_URL = process.env.APP_API_BASE_URL
+const BASE_URL = process.env.APP_UMS_URL
 // const UMS_URL = process.env.APP_UMS_URL
 
 // 数据对象管理-列表

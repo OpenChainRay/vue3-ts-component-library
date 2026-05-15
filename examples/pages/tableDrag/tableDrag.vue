@@ -29,9 +29,13 @@ export default {
     rowDrop () {
       // const tbody = this.$refs.Scheduling.querySelectorAll('.ant-table-tbody') // 元素选择器名称根据实际内容替换
       const thead = document.querySelectorAll('.ant-table-thead')[0]
-      console.log(thead, thead.childNodes[0])
+      const sortableHost = thead && thead.firstElementChild
+      if (!(sortableHost instanceof HTMLElement)) {
+        return
+      }
+      console.log(thead, sortableHost)
       const _this = this
-      Sortable.create(thead.childNodes[0], {
+      Sortable.create(sortableHost, {
         sort: true,
         // fallbackClass: true,
         animation: 150, // 动画

@@ -1,7 +1,7 @@
 <template>
 <div >
   <a-card :bordered="false">
-    <at-table
+    <server-side-table
       ref="table"
       rowKey="id"
       :columns="roleFunctionListTableColumns"
@@ -21,7 +21,7 @@
       <span slot="authorize" slot-scope="text, record">
         <a-switch  @change="onChange"  default-checked  @click="modifyOk(record)"  />
       </span>
-    </at-table>
+    </server-side-table>
     <a-modal
       title="配置功能权限"
       :visible="insertVisible"

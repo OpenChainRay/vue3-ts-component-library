@@ -60,7 +60,7 @@ export default {
   created () {
     this.page = this.$route.meta.page
   },
-  beforeDestroy () {
+  beforeUnmount () {
     this.updatePageHeight(0)
   },
   computed: {

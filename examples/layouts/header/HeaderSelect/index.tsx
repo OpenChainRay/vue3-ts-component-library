@@ -1,5 +1,6 @@
 // @ts-nocheck
 import './HeaderSelect.less'
+import { h, resolveComponent } from 'vue'
 export default {
   name: 'HeaderSelect',
   data () {
@@ -12,37 +13,18 @@ export default {
      * 兼容 Vue2/3 事件监听透传。
      */
     getCompatListeners () {
-      if (this.$listeners) {
-        return this.$listeners
-      }
       const attrs = this.$attrs || {}
       return Object.keys(attrs).reduce((eventMap, key) => {
-        if (/^on[A-Z]/.test(key) && typeof attrs[key] === 'function') {
+        const val = attrs[key]
+        if (/^on[A-Z]/.test(key) && (typeof val === 'function' || Array.isArray(val))) {
           const eventName = key.slice(2, 3).toLowerCase() + key.slice(3)
-          eventMap[eventName] = attrs[key]
+          eventMap[eventName] = val
         }
         return eventMap
       }, {})
     }
   },
   render () {
-    // return (
-    //   <a-dropdown>
-    //     <a class="ant-dropdown-link" onClick="e => e.preventDefault()">
-    //       常州爱安特<a-icon type="down" />
-    //     </a>
-    //     <a-menu slot="overlay">
-    //       <a-menu-item>
-    //         <a-icon type="user" />
-    //         <span>个人中心</span>
-    //       </a-menu-item>
-    //       <a-menu-item>
-    //         <a-icon type="setting" />
-    //         <span>设置</span>
-    //       </a-menu-item>
-    //     </a-menu>
-    //   </a-dropdown>
-    // )
     const attrs = { ...(this.$attrs || {}) }
     const options = Array.isArray(attrs.options) ? attrs.options : []
     delete attrs.options
@@ -52,18 +34,26 @@ export default {
     }
 
     const compatListeners = this.getCompatListeners()
-    return (
-      <a-select class="at_select" {...{ props: attrs, on: compatListeners }}>
-        {options.map((item, index) => (
-          <a-select-option
-            key={item.value ?? index}
-            value={item.value}
-            {...{ props: { orgCode: item.orgCode, label: item.label } }}
-          >
-            {item.label}
-          </a-select-option>
-        ))}
-      </a-select>
+    const selectProps = { ...attrs }
+    Object.keys(compatListeners).forEach((eventName) => {
+      const key = `on${eventName.slice(0, 1).toUpperCase()}${eventName.slice(1)}`
+      selectProps[key] = compatListeners[eventName]
+    })
+    const ASelect = resolveComponent('a-select')
+    const ASelectOption = resolveComponent('a-select-option')
+    return h(ASelect, { class: 'at_select', ...selectProps }, () =>
+      options.map((item, index) =>
+        h(
+          ASelectOption,
+          {
+            key: item.value ?? index,
+            value: item.value,
+            orgCode: item.orgCode,
+            label: item.label
+          },
+          () => item.label
+        )
+      )
     )
   }
 }

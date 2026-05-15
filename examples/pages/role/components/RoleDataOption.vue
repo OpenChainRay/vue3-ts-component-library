@@ -1,7 +1,7 @@
 <template>
 <div >
   <a-card :bordered="false">
-    <at-table
+    <server-side-table
       ref="table"
       rowKey="id"
       :columns="roleDataListTableColumns"
@@ -36,7 +36,7 @@
           <a v-else-if="record.dataScope==5" style="color:rgba(0, 0, 0, 0.65)">自定义部门</a>
           <a v-else-if="record.dataScope==6" style="color:rgba(0, 0, 0, 0.65)">所有部门</a>
       </span>
-    </at-table>
+    </server-side-table>
     <a-modal
       title="修改权限"
       :visible="accessVisible"

@@ -49,7 +49,7 @@ export default {
     window.addEventListener('click', this.closeMenu)
     window.addEventListener('contextmenu', this.setPosition)
   },
-  beforeDestroy () {
+  beforeUnmount () {
     window.removeEventListener('click', this.closeMenu)
     window.removeEventListener('contextmenu', this.setPosition)
   },
@@ -58,6 +58,7 @@ export default {
       this.$emit('update:visible', false)
     },
     setPosition (e) {
+      if (!e || typeof e.clientX !== 'number') return
       this.left = e.clientX
       this.top = e.clientY
       this.target = e.target

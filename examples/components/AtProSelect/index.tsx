@@ -57,14 +57,12 @@ export default {
      * 兼容 Vue2/3 监听器透传。
      */
     getCompatListeners () {
-      if (this.$listeners) {
-        return this.$listeners
-      }
       const attrs = this.$attrs || {}
       return Object.keys(attrs).reduce((eventMap, key) => {
-        if (/^on[A-Z]/.test(key) && typeof attrs[key] === 'function') {
+        const val = attrs[key]
+        if (/^on[A-Z]/.test(key) && (typeof val === 'function' || Array.isArray(val))) {
           const eventName = key.slice(2, 3).toLowerCase() + key.slice(3)
-          eventMap[eventName] = attrs[key]
+          eventMap[eventName] = val
         }
         return eventMap
       }, {})

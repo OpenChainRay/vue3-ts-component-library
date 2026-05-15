@@ -9,7 +9,7 @@
         <div class="login__top__desc">欢迎使用爱安特UMS系统</div>
       </div>
       <div class="login__main">
-        <a-form @submit="loginSubmit" ref="form">
+        <a-form @submit.prevent="loginSubmit" ref="form">
           <a-tabs size="large" :tabBarStyle="{textAlign: 'center'}" style="padding: 0 2px;">
             <a-tab-pane tab="账户密码登录" key="1">
               <a-alert type="error" :closable="true" v-show="error" :message="error" showIcon style="margin-bottom: 24px;" />
@@ -100,6 +100,10 @@ export default {
   data () {
     return {
       form: null,
+      formModel: {
+        name: '',
+        password: ''
+      },
       error: '',
       logging: false,
       userCenterVisible: false
@@ -120,22 +124,35 @@ export default {
     ...mapActions('account', ['getUserInfo']),
     // 登录
     loginSubmit (event) {
-      event.preventDefault()
-      // 校验标表单项
-      this.$refs.form.validate().then(() => {
-        if (true) {
-          this.logging = true
-          const name = this.formModel.name
-          const password = this.formModel.password
-          useLogin(name, password).then(this.afterLogin).catch((error) => { throw new Error(error) })
-        }
+      if (event && typeof event.preventDefault === 'function') {
+        event.preventDefault()
+      }
+      const name = (this.formModel && this.formModel.name ? this.formModel.name : '').trim()
+      const password = (this.formModel && this.formModel.password ? this.formModel.password : '').trim()
+      if (!name || !password) {
+        this.error = '请输入账户名和密码'
+        return
+      }
+      if (this.logging) {
+        return
+      }
+      this.error = ''
+      this.logging = true
+      useLogin(name, password).then(this.afterLogin).catch((error) => {
+        this.logging = false
+        this.error = (error && error.message) || '登录失败，请稍后重试'
       })
     },
     async afterLogin (res) {
       this.logging = false
       const loginRes = res.data
       if (loginRes.code == 200) {
-        const { token } = loginRes.data
+        const loginPayload = loginRes.data && loginRes.data.data ? loginRes.data.data : loginRes.data
+        const token = loginPayload ? loginPayload.token : ''
+        if (!token) {
+          this.error = '登录成功但未获取到 token'
+          return
+        }
         setAuthorization({
           token: token
           // expireAt: new Date(loginRes.data.expireAt)

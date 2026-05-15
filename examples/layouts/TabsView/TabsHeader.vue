@@ -16,18 +16,25 @@
             :type="fixedTabs ? 'lock' : 'unlock'"
         />
       </a-tooltip> -->
-      <a-tab-pane v-for="page in pageList" :key="page.fullPath">
-        <div slot="tab" class="tab" @contextmenu="e => onContextmenu(page.path, e)">
-          <a-icon @click="onRefresh(page)" :class="['icon-sync', {'hide': page.fullPath !== active && !page.loading}]" :type="page.loading ? 'loading' : 'sync'" />
+      <a-tab-pane v-for="page in pageList" :key="page.fullPath" :closable="false">
+        <template #tab>
+          <div class="tab" @contextmenu="e => onContextmenu(page.path, e)">
+          <component
+            :is="page.loading ? 'LoadingOutlined' : 'SyncOutlined'"
+            @click="onRefresh(page)"
+            :class="['icon-sync', {'hide': page.fullPath !== active && !page.loading}]"
+          />
           <div class="title" @click="onTabClick(page.fullPath)" >{{pageName(page)}}</div>
-          <a-icon v-if="!page.unclose" @click="onClose(page.fullPath)" class="icon-close" type="close"/>
-        </div>
+          <CloseOutlined v-if="!page.unclose" @click="onClose(page.fullPath)" class="icon-close"/>
+          </div>
+        </template>
       </a-tab-pane>
     </a-tabs>
   </div>
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex'
+import { CloseOutlined, LoadingOutlined, SyncOutlined } from '@ant-design/icons-vue'
 import { getI18nKey } from '@/utils/routerUtil'
 export default {
   name: 'TabsHeader',
@@ -51,6 +58,11 @@ export default {
     pageList: Array,
     active: String,
     fixed: Boolean
+  },
+  components: {
+    CloseOutlined,
+    LoadingOutlined,
+    SyncOutlined
   },
   data () {
     return {
@@ -97,7 +109,8 @@ export default {
     pageName (page) {
       const pagePath = page.fullPath.split('?')[0]
       const custom = this.customTitles.find(item => item.path === pagePath)
-      return (custom && custom.title) || page.title || this.$t(getI18nKey(page.keyPath))
+      const defaultTitle = this.$t(getI18nKey(page.keyPath || page.path || page.fullPath || '/'))
+      return (custom && custom.title) || page.title || defaultTitle || page.path || page.fullPath || 'Untitled'
     }
   }
 }

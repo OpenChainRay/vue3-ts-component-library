@@ -1,9 +1,34 @@
 // @ts-nocheck
-import { checkAuthorization } from '@/utils/request'
+import { checkAuthorization, removeAuthorization } from '@/utils/request'
 import NProgress from 'nprogress'
 import { loginIgnore } from '@/router/index'
 import { hasAuthority, hasToRoute } from '@/utils/authority-utils'
 NProgress.configure({ showSpinner: false })
+
+/**
+ * 校验本地用户缓存是否有效，避免仅凭历史 token 误判为已登录。
+ */
+const hasValidUserCache = () => {
+  try {
+    const userKey = process.env.APP_USER_KEY
+    if (!userKey) {
+      return false
+    }
+    const userText = localStorage.getItem(userKey)
+    if (!userText) {
+      return false
+    }
+    const user = JSON.parse(userText)
+    return !!(user && (user.id || user.name || user.fullName))
+  } catch (e) {
+    return false
+  }
+}
+
+/**
+ * 登录态判定：token 与用户缓存同时存在才视为已登录。
+ */
+const hasAuthSession = () => checkAuthorization() && hasValidUserCache()
 
 /**
  * 进度条开始
@@ -28,9 +53,10 @@ const progressStart = (to, from, next) => {
  */
 const loginGuard = (to, from, next, options) => {
   const { message } = options
-  if (!loginIgnore.includes(to) && !checkAuthorization()) {
+  if (!loginIgnore.includes(to) && !hasAuthSession()) {
+    removeAuthorization()
     message.warning('登录已失效，请重新登录')
-    next({ path: '/login' })
+    next({ path: '/login', query: { redirect: to.fullPath } })
   } else {
     next()
   }

@@ -27,6 +27,16 @@ const METHOD = {
 }
 
 /**
+ * 规范化 Authorization 值，确保统一 Bearer 前缀。
+ */
+function normalizeAuthorizationToken (token) {
+  if (!token) {
+    return ''
+  }
+  return String(token).startsWith('Bearer ') ? String(token) : `Bearer ${token}`
+}
+
+/**
  * axios请求
  * @param url 请求地址
  * @param method {METHOD} http method
@@ -41,15 +51,19 @@ async function request (paramConfig) {
   delete otherConfig.url
   delete otherConfig.params
   delete otherConfig.data
-  // console.log(axios.defaults.xsrfHeaderName, 'xsrfHeaderName')
-  const Authorization = Cookie.get(axios.defaults.xsrfHeaderName) || ''
+  const token = normalizeAuthorizationToken(Cookie.get(axios.defaults.xsrfHeaderName))
+  const headers = { ...(otherConfig.headers || {}) }
+  if (token && !headers.Authorization) {
+    headers.Authorization = token
+  }
+  delete otherConfig.headers
   const axiosFun = await axios({
     method,
     url,
     params: method == 'get' ? localData : {},
     data: method != 'get' ? localData : {},
     ...otherConfig,
-    headers: { Authorization: Authorization }
+    headers
   })
   return axiosFun
 }
@@ -62,7 +76,7 @@ async function request (paramConfig) {
 function setAuthorization (auth, authType = AUTH_TYPE.BEARER) {
   switch (authType) {
     case AUTH_TYPE.BEARER:
-      Cookie.set(xsrfHeaderName, 'Bearer ' + auth.token, { expires: auth.expireAt || 365 })
+      Cookie.set(xsrfHeaderName, normalizeAuthorizationToken(auth.token), { expires: auth.expireAt || 365 })
       break
     case AUTH_TYPE.BASIC:
     case AUTH_TYPE.AUTH1:

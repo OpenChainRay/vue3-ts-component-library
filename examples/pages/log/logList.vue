@@ -4,7 +4,7 @@
 
   <a-card :bordered="false">
 
-    <at-table
+    <server-side-table
       ref="table"
       rowKey="id"
       :columns="logListTableColumns"
@@ -17,7 +17,7 @@
       :drag=true
     >
 
-    </at-table>
+    </server-side-table>
 
   </a-card>
 </div>

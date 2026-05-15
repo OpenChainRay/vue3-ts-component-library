@@ -93,11 +93,10 @@
 </template>
 
 <script>
-import { AtTable } from 'at-materia'
+import { eventBus } from 'at-materia'
 import {
   dataObjectAdd
 } from '@/services/dataObject'
-const { eventBus } = AtTable
 const dataTypeOptions = [
   { label: '组织架构', value: 0 },
   { label: '关联表', value: 1 }

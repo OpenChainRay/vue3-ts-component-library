@@ -139,7 +139,7 @@ export default {
     this.correctPageMinHeight(this.minHeight - 24)
     this.setActivated(this.$route)
   },
-  beforeDestroy () {
+  beforeUnmount () {
     this.correctPageMinHeight(-this.minHeight + 24)
   }
 }

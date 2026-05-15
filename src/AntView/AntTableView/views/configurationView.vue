@@ -390,8 +390,7 @@ export default {
       })
     }
   },
-  beforeDestroy () {
-    // 组件销毁时清理拖拽实例
+  beforeUnmount () {
     if (this.sortableInstance) {
       this.sortableInstance.destroy()
     }

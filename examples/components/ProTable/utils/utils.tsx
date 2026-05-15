@@ -1,4 +1,4 @@
-import antDesignTableProps from "../../../../src/AtTable/utils/antDesignTableProps"
+import antDesignTableProps from "../../../../src/utils/antDesignTableProps"
 
 const tableAllProps = antDesignTableProps
 

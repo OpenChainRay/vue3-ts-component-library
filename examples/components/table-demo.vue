@@ -7,10 +7,8 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import { reactive } from 'vue'
 import VueDraggableResizable from 'vue-draggable-resizable'
-
-Vue.component('vue-draggable-resizable', VueDraggableResizable)
 const columns = [
   {
     title: 'Date',
@@ -65,7 +63,7 @@ const draggingMap = {}
 columns.forEach(col => {
   draggingMap[col.key] = col.width
 })
-const draggingState = Vue.observable(draggingMap)
+const draggingState = reactive(draggingMap)
 const ResizeableTitle = (h, props, children) => {
   let thDom = null
   const { key, ...restProps } = props
@@ -104,6 +102,9 @@ const ResizeableTitle = (h, props, children) => {
 }
 export default {
   name: 'App',
+  components: {
+    'vue-draggable-resizable': VueDraggableResizable
+  },
   data () {
     this.components = {
       header: {

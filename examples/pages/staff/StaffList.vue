@@ -1,7 +1,7 @@
 <template>
 <div >
   <a-card :bordered="false">
-    <at-table
+    <server-side-table
       ref="table"
       rowKey="id"
       :columns="staffListTableColumns"
@@ -27,7 +27,7 @@
       <span slot="positionName"   slot-scope="text, record">
           <a  @click="showPostNameModify(record)">{{record.positionName}}</a>
       </span>
-    </at-table>
+    </server-side-table>
     <!-- 部门名称修改窗-->
     <a-modal
       title="修改岗位名称"

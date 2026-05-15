@@ -1,12 +1,8 @@
 <template>
   <div class="hello">
     <div style="margin: 0 10px 30px;">审批处理一览:</div>
-    <a-table :columns="bpmnColumns" :data-source="HistoryDataSource" :pagination="false" :scroll="{ y: 320 }">
-      <span slot="serial" slot-scope="text, record, index">
-        {{ index + 1 }}
-      </span>
-    </a-table>
-    <div ref="bpmn" id="bpmn"></div>
+    <a-table :columns="bpmnColumns" :data-source="HistoryDataSource" :pagination="false" :scroll="{ y: 320 }" />
+    <div ref="bpmn" class="bpmn-canvas"></div>
     <!-- <button type="success" size="small" @click="handleZoom(0.1)">放大</button>
     <button type="warning" size="small" @click="handleZoom(-0.1)">缩小</button> -->
     <!-- 菜单 -->
@@ -44,11 +40,11 @@ export default {
   props: {
     history: {
       required: true,
-      type: [Function]
+      type: Function
     },
     processInstanceInfo: {
       required: true,
-      type: [Function]
+      type: Function
     }
   },
   data () {
@@ -57,6 +53,7 @@ export default {
       bpmnColumns,
       bpmnViewer: null,
       canvas: null,
+      alive: true,
       scale: 1,
       menuShow: false,
       menuX: 0,
@@ -138,21 +135,63 @@ export default {
     // this.createEventBus()
     // 监听点击事件取消菜单
     window.addEventListener('click', this.windowClickFun)
-    this.$once('hook:beforeDestroy', () => {
-      window.removeEventListener('click', this.windowClickFun)
-    })
     this.initFun()
+  },
+  activated () {
+    this.alive = true
+    this.$nextTick(() => {
+      this.initFun()
+      this.refreshDiagramView()
+    })
+  },
+  deactivated () {
+    this.alive = false
+  },
+  beforeUnmount () {
+    this.alive = false
+    window.removeEventListener('click', this.windowClickFun)
+    if (this.bpmnViewer && typeof this.bpmnViewer.destroy === 'function') {
+      this.bpmnViewer.destroy()
+    }
+    this.bpmnViewer = null
+    this.canvas = null
   },
   /* eslint-disable */
   methods: {
+    /**
+     * 统一初始化流程图与历史数据。
+     */
     initFun() {
       // 渲染xml
       this.createNewDiagram()
       // 审批历史记录
       this.initHistory()
     },
+    /**
+     * 检查流程图必要参数是否完整。
+     */
+    hasBpmnParams () {
+      return !!(this.$attrs.formId && this.$attrs.processName)
+    },
+    /**
+     * 兼容缓存恢复后的画布尺寸重算。
+     */
+    refreshDiagramView () {
+      if (!this.canvas) {
+        return
+      }
+      try {
+        this.canvas.zoom('fit-viewport', 'auto')
+      } catch (e) {}
+    },
+    /**
+     * 校验请求函数合法性。
+     */
+    isRequestFn (fn) {
+      return typeof fn === 'function'
+    },
     async initHistory() {
-      if (!this.$attrs.formId && !this.$attrs.processName) {
+      if (!this.hasBpmnParams() || !this.isRequestFn(this.history)) {
         return
       }
       const params = {
@@ -160,17 +199,27 @@ export default {
         // formId: 100,
         processName: this.$attrs.processName //和后端约定的字符串 processName字段
       }
-      const historyResult = await this.history(params).catch((error) => { throw new Error(error) })
+      const historyResult = await this.history(params).catch((error) => {
+        console.error('init bpmn history failed:', error)
+        return null
+      })
+      if (!historyResult || !historyResult.data) {
+        this.HistoryDataSource = []
+        return
+      }
+      if (!this.alive) {
+        return
+      }
       // console.log(historyResult, 'historyResult----')
       if (historyResult.data.code === 200) {
-        this.HistoryDataSource = historyResult.data.data
+        this.HistoryDataSource = Array.isArray(historyResult.data.data) ? historyResult.data.data : []
       } else {
         this.HistoryDataSource = []
       }
     },
     // 初始化渲染xml
     async createNewDiagram() {
-      if (!this.$attrs.formId && !this.$attrs.processName) {
+      if (!this.hasBpmnParams() || !this.isRequestFn(this.processInstanceInfo)) {
         return
       }
       const params = {
@@ -178,12 +227,23 @@ export default {
         // formId: 100,
         processName: this.$attrs.processName //和后端约定的字符串 processName字段
       }
-      const resultData = await this.processInstanceInfo(params).catch((error) => { throw new Error(error) })
-      // 去除中文空格  不然不显示
-      resultData.data.data.xml = resultData.data.data.xml.replace(/ /g, ' ')
-      const xmlStr = resultData.data.data.xml
-
+      const resultData = await this.processInstanceInfo(params).catch((error) => {
+        console.error('init bpmn xml failed:', error)
+        return null
+      })
+      if (!resultData || !resultData.data) {
+        return
+      }
+      if (!this.alive || !this.bpmnViewer) {
+        return
+      }
       if (resultData.data.code === 200) {
+        const payload = resultData?.data?.data || {}
+        const rawXml = typeof payload.xml === 'string' ? payload.xml : ''
+        const xmlStr = rawXml.replace(/\u00A0/g, ' ').trim()
+        if (!xmlStr) {
+          return
+        }
         try {
           const result = await this.bpmnViewer.importXML(xmlStr)
           // console.log(result, 'result')
@@ -192,23 +252,27 @@ export default {
             this.canvas.zoom('fit-viewport', 'auto')
             // nodeCodes为需要设置高亮颜色的部分的id的集合（xml文件中<flowNodeRef>****</flowNodeRef>标签里的部分），这个数据也是从接口获取，这里从xml中随便取出几个测试用
             // 多人审核  数据处理 去除#后面字符
-            this.stringFilterFun(resultData.data.data.activeTaskIdList)
-            this.stringFilterFun(resultData.data.data.finishTaskIdList)
-            console.log(resultData.data.data)
-            this.activeTaskIdList = resultData.data.data.activeTaskIdList
-            this.finishTaskIdList = resultData.data.data.finishTaskIdList
+            const activeTaskIdList = Array.isArray(payload.activeTaskIdList) ? payload.activeTaskIdList : []
+            const finishTaskIdList = Array.isArray(payload.finishTaskIdList) ? payload.finishTaskIdList : []
+            this.stringFilterFun(activeTaskIdList)
+            this.stringFilterFun(finishTaskIdList)
+            console.log(payload)
+            this.activeTaskIdList = activeTaskIdList
+            this.finishTaskIdList = finishTaskIdList
             // this.highLineIdList = resultData.data.data.highLineIdList
-            this.highLineIdList = [...resultData.data.data.highLineIdList]
+            this.highLineIdList = Array.isArray(payload.highLineIdList) ? [...payload.highLineIdList] : []
             console.log(this.activeTaskIdList, this.finishTaskIdList, this.highLineIdList, 'activeTaskIdList, finishTaskIdList, highLineIdList')
             // 调用设置高亮颜色class方法,这里可以根据接口获取的id集合情况，对不同的部分设置不同的class名，然后在css中设置样式
             this.setNodeColor(this.activeTaskIdList, 'activeTaskIdList', this.canvas)
             this.setNodeColor(this.finishTaskIdList, 'finishTaskIdList', this.canvas)
             this.setNodeColor(this.highLineIdList, 'highLineIdList', this.canvas)
+            this.refreshDiagramView()
           } else {
             console.log('something went wrong:', result)
           }
         } catch (err) {
-          throw new Error(err)
+          console.error('bpmn xml parse failed:', err)
+          this.$message && this.$message.error && this.$message.error('流程图解析失败')
         }
       }
     },
@@ -247,6 +311,9 @@ export default {
     },
     // 根据id添加class
     setNodeColor(nodeCodes, colorClass, canvas) {
+      if (!Array.isArray(nodeCodes) || !canvas) {
+        return
+      }
       // console.log(nodeCodes,colorClass)
       for (let i = 0; i < nodeCodes.length; i++) {
         canvas.addMarker(nodeCodes[i], colorClass)
@@ -256,8 +323,9 @@ export default {
       const classList = document.querySelectorAll(`.${colorClass}`)
       classList.forEach((parentElement, index) => {
         // console.log( parentElement.childNodes[0].childNodes)
-        const element = parentElement.childNodes[0].childNodes
-        if (element[0].nodeName === 'path') {
+        const firstChild = parentElement && parentElement.childNodes && parentElement.childNodes[0]
+        const element = firstChild && firstChild.childNodes
+        if (element && element[0] && element[0].nodeName === 'path') {
           // console.log(element)
           element[0].style.stroke = '#2E81EA'
         }
@@ -293,7 +361,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-#bpmn {
+.bpmn-canvas {
   height: 420px;
 }
 

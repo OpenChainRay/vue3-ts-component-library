@@ -16,12 +16,12 @@
 
 
 
-        <at-table ref="table" rowKey="id" tableKey="customerInfoTable" :data="initTableData"
+        <server-side-table ref="table" rowKey="id" tableKey="customerInfoTable" :data="initTableData"
             :columns="customerInfoTableColumns" :alert="false" :search="false" :showPagination="true" drag bordered
             :scroll="{ x: '100%' }">
 
 
-        </at-table>
+        </server-side-table>
     </a-form>
 </template>
 
@@ -53,29 +53,49 @@ export default {
                 ellipsis: true
             }],
             form: null,
-            number: 121929129
+            number: 121929129,
+            formModel: {
+                standardUntaxedQuote: null
+            }
         }
     },
     methods: {
+        /** 点击容器调试 */
         handleClick(e) {
             console.log(e.target);        // 输出被点击的按钮元素（<button>Click me</button>）
             console.log(e.currentTarget); // 输出绑定事件的元素（<div>...</div>）
         },
+        /** 点击按钮调试 */
         btnClick(e){
             console.log(e.target);        // 输出被点击的按钮元素（<button>Click me</button>）
 
         },
+        /** 价格变更回调 */
         handleStandardUntaxedQuoteBlur(v) {
             console.log('handleStandardUntaxedQuoteBlur', v)
         },
-        initTableData: async (params) => {
+        /** 表格数据加载 */
+        async initTableData (params) {
             const param = {
                 orderColumns: [{ columnName: params.sortField, isAsc: params.sortOrder === 'ascend' }],
                 pageNum: params.pageNo,
                 pageSize: params.pageSize,
                 param: {}
             }
-            const { data } = await getCustomerList(param).catch((error) => { throw new Error(error) })
+            let data
+            try {
+                const response = await getCustomerList(param)
+                data = response.data
+            } catch (error) {
+                this.$message.error((error && error.message) || '客户列表加载失败')
+                return {
+                    data: [],
+                    pageNo: params.pageNo || 1,
+                    pageSize: params.pageSize || 10,
+                    totalCount: 0,
+                    totalPage: 0
+                }
+            }
             if (data.code && data.code == 200) {
                 this.customerInfoTableColumns.forEach(item => {
                     if (item.dataIndex === params.sortField) {
@@ -94,7 +114,14 @@ export default {
                     totalPage: pages
                 }
             } else {
-                message({ msg: { content: data.msg, duration: 3 }, type: 'error' })
+                this.$message.error(data.msg || '客户列表加载失败')
+                return {
+                    data: [],
+                    pageNo: params.pageNo || 1,
+                    pageSize: params.pageSize || 10,
+                    totalCount: 0,
+                    totalPage: 0
+                }
             }
         },
         onStatusChange: async function (checked, record) {

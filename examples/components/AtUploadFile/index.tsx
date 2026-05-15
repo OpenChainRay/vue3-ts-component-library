@@ -35,11 +35,28 @@ export default {
       type: String
     }
   },
+  methods: {
+    /**
+     * 兼容 Vue2/3 事件监听透传。
+     */
+    getCompatListeners () {
+      const attrs = this.$attrs || {}
+      return Object.keys(attrs).reduce((eventMap, key) => {
+        const val = attrs[key]
+        if (/^on[A-Z]/.test(key) && (typeof val === 'function' || Array.isArray(val))) {
+          const eventName = key.slice(2, 3).toLowerCase() + key.slice(3)
+          eventMap[eventName] = val
+        }
+        return eventMap
+      }, {})
+    }
+  },
 
   render () {
+    const compatListeners = this.getCompatListeners()
     return (
       <a-modal
-        {...{ props: this.$attrs, on: this.$listeners }}
+        {...{ props: this.$attrs, on: compatListeners }}
       >
         {
           this.downloadTemplate && (

@@ -33,7 +33,7 @@
         </div>
       </a-col>
       <a-col :span="20">
-        <at-table
+        <server-side-table
           ref="menuTable"
           rowKey="id"
           :columns="menuListTableColumns"
@@ -66,7 +66,7 @@
               <a href="javascript:;" :disabled="record.count>0" >删除</a>
               </a-popconfirm>
           </span>
-        </at-table>
+        </server-side-table>
       </a-col>
     </a-row>
     <!-- <menu-edit :visible="modalVisible"
@@ -345,13 +345,19 @@ export default {
     }
   },
   async created () {
-    const result = await getMenuList().catch((error) => { throw new Error(error) })
-    if (result.data.code && result.data.code === 200) {
-      this.menuList = result.data.data
-    } else {
-      this.$message.error(result.data.msg)
+    try {
+      const result = await getMenuList()
+      if (result?.data?.code === 200) {
+        this.menuList = result.data.data || []
+      } else {
+        this.menuList = []
+        this.$message.error(result?.data?.msg || '菜单列表加载失败')
+      }
+    } catch (error) {
+      this.menuList = []
+      this.$message.error((error && error.message) || '菜单列表加载失败')
     }
-    await this.initModuleList().catch((error) => { throw new Error(error) })
+    await this.initModuleList()
   },
   methods: {
     initTreeSelectData ({ selectKeys = [], expandedKeys = [], parentMenu = {} }) {
@@ -382,16 +388,22 @@ export default {
       }
     },
     async initModuleList () {
-      const moduleResult = await getModuleList().catch((error) => { throw new Error(error) })
-      if (moduleResult.data.code && moduleResult.data.code === 200) {
-        this.moduleList = moduleResult.data.data
-      } else {
-        this.$message.error(moduleResult.data.msg)
+      try {
+        const moduleResult = await getModuleList()
+        if (moduleResult?.data?.code === 200) {
+          this.moduleList = moduleResult.data.data || []
+        } else {
+          this.moduleList = []
+          this.$message.error(moduleResult?.data?.msg || '模块列表加载失败')
+        }
+      } catch (error) {
+        this.moduleList = []
+        this.$message.error((error && error.message) || '模块列表加载失败')
       }
     },
     async showInsert () {
       this.menuAddBtnLoading = true
-      await this.initModuleList().catch((error) => { throw new Error(error) })
+      await this.initModuleList()
       this.menuAddBtnLoading = false
       this.insertVisible = true
     },
@@ -448,8 +460,32 @@ export default {
     },
     // 初始化菜单树数据
     getMenuTreeData: async function () {
-      const result = await getMenuTree().catch((error) => { throw new Error(error) })
-      const menuTreeList = this.formatTreeData(result.data.data)
+      let result
+      try {
+        result = await getMenuTree()
+      } catch (error) {
+        this.menuTreeData = [{
+          key: -1,
+          id: -1,
+          title: '所有菜单',
+          ancestor: '-1',
+          children: []
+        }]
+        this.$message.error((error && error.message) || '菜单树加载失败')
+        return false
+      }
+      if (result?.data?.code !== 200) {
+        this.menuTreeData = [{
+          key: -1,
+          id: -1,
+          title: '所有菜单',
+          ancestor: '-1',
+          children: []
+        }]
+        this.$message.error(result?.data?.msg || '菜单树加载失败')
+        return false
+      }
+      const menuTreeList = this.formatTreeData(result?.data?.data || [])
       const rootTreeDate = {
         key: -1,
         id: -1,
@@ -484,6 +520,7 @@ export default {
       //     parentId: this.onCheckedKey[0]
       //   })
       // }
+      return true
     },
     // 格式化树组件的数据
     formatTreeData (treeData) {
@@ -505,8 +542,10 @@ export default {
       this.rootId = ''
       this.$nextTick(async () => {
         this.isFresh = true
-        await this.getMenuTreeData(true).catch((error) => { throw new Error(error) })
-        this.$message.success('菜单树刷新成功')
+        const success = await this.getMenuTreeData(true)
+        if (success) {
+          this.$message.success('菜单树刷新成功')
+        }
   })
     }, 1000),
     // 菜单树节点被选事件
@@ -588,17 +627,39 @@ export default {
       })
     },
     initTableData: async function (params) {
-      if (this.menuTreeData.length == 0) await this.getMenuTreeData().catch((error) => { throw new Error(error) })
-      const result = await getMenuByPage({
-        orderColumns: [],
-        pageNum: params.pageNo,
-        pageSize: params.pageSize,
-        param: {
-          parentId: params.parentId,
-          menuName: params.menuName,
-          moduleId: params.moduleId
+      if (this.menuTreeData.length == 0) await this.getMenuTreeData()
+      let result
+      try {
+        result = await getMenuByPage({
+          orderColumns: [],
+          pageNum: params.pageNo,
+          pageSize: params.pageSize,
+          param: {
+            parentId: params.parentId,
+            menuName: params.menuName,
+            moduleId: params.moduleId
+          }
+        })
+      } catch (error) {
+        this.$message.error((error && error.message) || '菜单列表分页加载失败')
+        return {
+          data: [],
+          pageNo: params.pageNo || 1,
+          pageSize: params.pageSize || 10,
+          totalCount: 0,
+          totalPage: 0
         }
-      }).catch((error) => { throw new Error(error) })
+      }
+      if (result?.data?.code !== 200 || !result?.data?.data) {
+        this.$message.error(result?.data?.msg || '菜单列表分页加载失败')
+        return {
+          data: [],
+          pageNo: params.pageNo || 1,
+          pageSize: params.pageSize || 10,
+          totalCount: 0,
+          totalPage: 0
+        }
+      }
       const {
         list = [], pageNum, pageSize, pages, total
       } = result.data.data

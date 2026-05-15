@@ -1,5 +1,5 @@
 const bpmnColumns = [
-  { title: "序号", scopedSlots: { customRender: "serial" }, width: 80, align: "center" },
+  { title: "序号", width: 80, align: "center", customRender: ({ index }) => index + 1 },
   { title: "流程名称", dataIndex: "taskName", align: "center" },
   { title: "开始时间", dataIndex: "startDate", align: "center" },
   { title: "结束时间", dataIndex: "endDate", align: "center" },

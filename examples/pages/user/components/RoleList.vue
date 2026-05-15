@@ -2,7 +2,7 @@
 <div >
   <a-card :bordered="false">
     <a>用户名{{this.userName}}的角色</a><br/>
-    <at-table
+    <server-side-table
       ref="table"
       rowKey="id"
       :columns="roleListTableColumns"
@@ -24,7 +24,7 @@
           <a href="javascript:;">删除角色</a>
         </a-popconfirm>
       </span>
-    </at-table>
+    </server-side-table>
     <a-modal
       title="关联角色"
       :visible="connectVisible"

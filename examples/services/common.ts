@@ -8,11 +8,10 @@ const AMS_URL = process.env.APP_AMS_URL
 
 // 获取用户信息（其中包含该用户所属销售部门）
 // 接口位置 UMS-用户管理接口-查询：获取用户信息
-export async function getUserInfo (params) {
+export async function getUserInfo () {
   return request({
     url: `${umsBaseUrl}/user/getUserInfo`,
-    method: METHOD.GET,
-    params: params
+    method: METHOD.GET
   })
 }
 // 获取集团所有组织（公司）

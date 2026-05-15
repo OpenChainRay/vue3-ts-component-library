@@ -60,6 +60,14 @@ const reqCommon = {
   onFulfilled (config, options) {
     const { message } = options
     const { url, xsrfCookieName } = config
+    const token = Cookie.get(xsrfCookieName || 'Authorization')
+    if (token) {
+      const authValue = token.startsWith('Bearer ') ? token : `Bearer ${token}`
+      config.headers = config.headers || {}
+      if (!config.headers.Authorization) {
+        config.headers.Authorization = authValue
+      }
+    }
     if (url.indexOf('login') === -1 && xsrfCookieName && !Cookie.get(xsrfCookieName)) {
       message.warning('认证 token 已过期，请重新登录')
     }

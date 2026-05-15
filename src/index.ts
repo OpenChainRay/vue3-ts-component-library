@@ -1,7 +1,6 @@
 import type { App, Plugin } from "vue"
 import AtViewer from "./AtViewer"
 import AtSelect from "./AtSelect"
-import AtTable from "./AtTable"
 import AtStatistic from "./at-statistic/index.vue"
 import AtEllipsis from "./AtEllipsis"
 import AtBpmn from "./AtBpmn/index.vue"
@@ -21,6 +20,7 @@ import { message, notification, Modal } from "ant-design-vue"
 import { setBaseUrl } from "./AntView/sevrices/configurationView"
 import { setPmsBaseUrl } from "./AntView/components/Tree/utils/productClassify"
 import packageInfo from "../package.json"
+import { eventBus } from "./eventBus"
 
 type InstallOptions = {
   pageSize?: number
@@ -35,7 +35,6 @@ const components = [
   AtViewer,
   AtEllipsis,
   AtSelect,
-  AtTable,
   AtStatistic,
   AtBpmn,
   AntTableView,
@@ -67,6 +66,14 @@ const install: Plugin["install"] = (app: App, options?: InstallOptions) => {
   globals.$anterror = Modal.error
   globals.$antwarning = Modal.warning
   globals.$antconfirm = Modal.confirm
+  // 兼容 Vue2 this.$set / this.$delete 旧写法
+  globals.$set = (target: Record<string, any>, key: string, value: any) => {
+    target[key] = value
+    return value
+  }
+  globals.$delete = (target: Record<string, any>, key: string) => {
+    delete target[key]
+  }
   globals.$AtMaterial = { pageSize, textFill }
   globals.$textFill = textFill
 
@@ -79,10 +86,10 @@ const install: Plugin["install"] = (app: App, options?: InstallOptions) => {
 }
 
 export {
+  eventBus,
   AtViewer,
   AtEllipsis,
   AtSelect,
-  AtTable,
   AtStatistic,
   AtBpmn,
   AntTableView,
@@ -101,10 +108,10 @@ export {
 export default {
   version: (packageInfo as { version: string }).version,
   install,
+  eventBus,
   AtViewer,
   AtEllipsis,
   AtSelect,
-  AtTable,
   AtStatistic,
   AtBpmn,
   AntTableView,

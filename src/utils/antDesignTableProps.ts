@@ -1,24 +1,22 @@
+/** Ant Design Table 兼容 props 表（历史 AtTable 遗留，供 ProTable utils 使用） */
 const antDesignTableProps = {
   prefixCls: {},
   dropdownPrefixCls: {},
   rowSelection: {},
   pagination: {},
   size: {
-    default: 'default'
+    default: "default"
   },
   dataSource: [],
   components: {},
   columns: {},
   rowKey: {
-    type: [
-      String,
-      Function
-    ],
-    default: 'key'
+    type: [String, Function],
+    default: "key"
   },
   rowClassName: {},
   expandedRowRender: {
-    type: null
+    type: Function
   },
   defaultExpandAllRows: {},
   defaultExpandedRowKeys: {},
@@ -48,10 +46,10 @@ const antDesignTableProps = {
   title: {},
   scroll: {},
   childrenColumnName: {
-    default: 'children'
+    default: "children"
   },
   bodyStyle: {
-    type: null
+    type: Object
   },
   sortDirections: {},
   tableLayout: {},

@@ -16,7 +16,7 @@
     </UniversalContainer>
 
     <a-card :bordered="false" :style="{ 'min-height': cardheight + 'px', }">
-        <at-table ref="table" rowKey="tableCode" :columns="tableColumns" :showPagination="true" :data="initTableData" bordered :search="true">
+        <server-side-table ref="table" rowKey="tableCode" :columns="tableColumns" :showPagination="true" :data="initTableData" bordered :search="true">
             <span slot="serial" slot-scope="text, record, index">
                 {{ index + 1 }}
             </span>
@@ -34,7 +34,7 @@
                 <ant-group :ref="'antGroup'+index" :data="record.filter" :tableCode="tableCode" :selectColumnList="selectColumnList" :hideIcon="true" :disabled="true" />
             </span>
 
-        </at-table>
+        </server-side-table>
     </a-card>
 
     <conditions ref="conditions" :tableCode="tableCode" @refresh="refresh" @setselectColumnList="setselectColumnList" />

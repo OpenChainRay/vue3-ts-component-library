@@ -187,9 +187,6 @@ export default {
   methods: {
     // 兼容 Vue2/Vue3 插槽调用方式。
     callScopedSlot (name, payload) {
-      if (this.$scopedSlots && this.$scopedSlots[name]) {
-        return this.$scopedSlots[name](payload)
-      }
       const slotFn = this.$slots && this.$slots[name]
       if (typeof slotFn === 'function') {
         return slotFn(payload)
@@ -197,7 +194,6 @@ export default {
       return null
     },
     hasScopedSlot (name) {
-      if (this.$scopedSlots && this.$scopedSlots[name]) return true
       return typeof (this.$slots && this.$slots[name]) === 'function'
     },
     // 显示弹框

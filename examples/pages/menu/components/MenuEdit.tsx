@@ -34,6 +34,17 @@ export default {
     }
   },
   methods: {
+    getCompatListeners () {
+      const attrs = this.$attrs || {}
+      return Object.keys(attrs).reduce((eventMap, key) => {
+        const val = attrs[key]
+        if (/^on[A-Z]/.test(key) && (typeof val === 'function' || Array.isArray(val))) {
+          const eventName = key.slice(2, 3).toLowerCase() + key.slice(3)
+          eventMap[eventName] = val
+        }
+        return eventMap
+      }, {})
+    },
     okBtnEvent () {
 
     },
@@ -88,9 +99,10 @@ export default {
     }
   },
   render () {
+    const compatListeners = this.getCompatListeners()
     return (
       <a-modal
-        {...{ props: this.$attrs, on: this.$listeners }}
+        {...{ props: this.$attrs, on: compatListeners }}
         destroyOnClose={true}
         visible={this.localInsertVisible}
         onOk={this.okBtnEvent}

@@ -1,7 +1,7 @@
 <template>
 <div >
   <a-card :bordered="false">
-    <at-table
+    <server-side-table
       ref="table"
       :rowKey="generateHash"
       :columns="userRelationListTableColumns"
@@ -27,7 +27,7 @@
           <a href="javascript:;">删除</a>
         </a-popconfirm>
       </span>
-    </at-table>
+    </server-side-table>
     <a-modal
       title="新增员工关系"
       :visible="insertVisible"

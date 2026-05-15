@@ -553,7 +553,7 @@ export default {
         column: null,
         value: null,
         relationType: 1,
-        type: [0],
+        type: '0',
         deleteFlag: false
       }
       // 单个条件必须是items结构
@@ -592,7 +592,7 @@ export default {
             uuid: generateUUID(),
             groupType: 2, // 条件组
             operator: '',
-            type: [0],
+            type: '0',
             column: null,
             value: null,
             relationType: 1,
@@ -602,7 +602,7 @@ export default {
             uuid: generateUUID(),
             groupType: 2, // 条件组
             operator: '',
-            type: [0],
+            type: '0',
             column: '',
             value: '',
             relationType: 1,

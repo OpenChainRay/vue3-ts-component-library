@@ -261,7 +261,7 @@ export default {
         // state
       }
     ) {
-      const { data } = await getUserInfo({ moduleName: 'ums' }).catch((error) => { throw new Error(error) })
+      const { data } = await getUserInfo().catch((error) => { throw new Error(error) })
       if (data.code == 200) {
         const userObj = data.data
         commit('resetAllState')

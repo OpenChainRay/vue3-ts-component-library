@@ -1,7 +1,7 @@
 <template>
 <div >
   <a-card :bordered="false">
-    <at-table
+    <server-side-table
       ref="table"
       rowKey="id"
       :columns="relationListTableColumns"
@@ -39,7 +39,7 @@
           默认
         </a-tag>
       </span>
-    </at-table>
+    </server-side-table>
     <a-modal
       title="新增信息"
       :visible="insertVisible"

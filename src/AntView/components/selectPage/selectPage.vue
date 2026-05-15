@@ -121,9 +121,9 @@ export default {
     that = this
     this.initFun()
   },
-   beforeDestroy () {
-    that=null
-   },
+  beforeUnmount () {
+    that = null
+  },
   methods: {
     initFun () {
       this.list = JSON.parse(JSON.stringify(this.selectList))

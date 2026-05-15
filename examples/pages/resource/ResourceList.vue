@@ -1,7 +1,7 @@
 <template>
 <div >
   <a-card :bordered="false">
-    <at-table
+    <server-side-table
       ref="table"
       rowKey="id"
       :columns="resourceListTableColumns"
@@ -25,7 +25,7 @@
       <span slot="operation" slot-scope="text, record">
         <a @click="showModify(record)">修改</a>
       </span>
-    </at-table>
+    </server-side-table>
     <!-- 新增增窗-->
     <a-modal
       title="新增资源"

@@ -383,8 +383,7 @@ export default {
     // 添加事件监听
     // document.addEventListener('click', this.globalClickHandler)
   },
-  // 当组件销毁时移除事件监听，防止内存泄露
-  beforeDestroy () {
+  beforeUnmount () {
     // document.removeEventListener('click', this.globalClickHandler)
   },
   methods: {

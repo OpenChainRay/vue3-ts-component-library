@@ -1,12 +1,11 @@
+/** 全局事件总线（原挂载在 AtTable，现独立导出） */
 type Listener = ((...args: unknown[]) => void) & { _countdown?: number }
 type ListenerMap = Record<string, Listener[]>
 
 class EventBusClass {
   private listeners: ListenerMap = {}
 
-  /**
-   * 注册监听。
-   */
+  /** 注册监听 */
   addListener(key: string, callback: Listener, countdown: number) {
     if (countdown === 0) return false
     const listeners = this.listeners[key] || (this.listeners[key] = [])
@@ -17,23 +16,17 @@ class EventBusClass {
     return true
   }
 
-  /**
-   * 注册持续监听。
-   */
+  /** 持续监听 */
   on(key: string, callback: Listener) {
     return this.addListener(key, callback, -1)
   }
 
-  /**
-   * 注册一次监听。
-   */
+  /** 单次监听 */
   once(key: string, callback: Listener) {
     return this.addListener(key, callback, 1)
   }
 
-  /**
-   * 触发事件。
-   */
+  /** 触发 */
   emit(key: string, ...args: unknown[]) {
     const listeners = this.listeners[key]
     if (listeners && listeners.length) {
@@ -50,9 +43,7 @@ class EventBusClass {
     }
   }
 
-  /**
-   * 移除监听。
-   */
+  /** 移除 */
   removeListener(key?: string, callback?: Listener) {
     if (key == null) {
       const listeners = this.listeners
@@ -72,17 +63,11 @@ class EventBusClass {
     return { [key]: listeners }
   }
 
-  /**
-   * 按 key 移除。
-   */
   off(key: string, callback?: Listener) {
     if (!key) return null
     return this.removeListener(key, callback)
   }
 
-  /**
-   * 清空全部监听。
-   */
   offAll() {
     return this.removeListener()
   }
@@ -90,6 +75,8 @@ class EventBusClass {
 
 export const eventBus = (() => {
   const bus = new EventBusClass()
-  ;(window as Window & { eventBus?: EventBusClass }).eventBus = bus
+  if (typeof window !== "undefined") {
+    ;(window as Window & { eventBus?: EventBusClass }).eventBus = bus
+  }
   return bus
 })()

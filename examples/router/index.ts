@@ -1,4 +1,4 @@
-import { createWebHashHistory, createRouter, type RouteRecordRaw, isNavigationFailure } from "vue-router"
+import { createWebHashHistory, createRouter, type RouteRecordRaw } from "vue-router"
 import { formatRoutes } from "@/utils/routerUtil"
 import asyncRouterConfig from "./async/config.async"
 import routerConfig from "./config"
@@ -24,13 +24,6 @@ function initRouter(isAsync: boolean) {
     history: createWebHashHistory(),
     routes: options.routes
   })
-
-  const originalPush = router.push.bind(router)
-  const originalReplace = router.replace.bind(router)
-  ;(router as any).push = (to: any) =>
-    originalPush(to).catch((err: any) => (isNavigationFailure(err) ? err : Promise.reject(err)))
-  ;(router as any).replace = (to: any) =>
-    originalReplace(to).catch((err: any) => (isNavigationFailure(err) ? err : Promise.reject(err)))
 
   ;(router as any).options = options
   return router

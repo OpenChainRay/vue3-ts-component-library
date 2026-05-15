@@ -1,6 +1,6 @@
 <template>
   <base-layout>
-    <contextmenu :itemList="menuItemList" @select="onMenuSelect" :visible.sync="menuVisible"></contextmenu>
+    <contextmenu :itemList="menuItemList" @select="onMenuSelect" v-model:visible="menuVisible" />
     <tabs-header
       v-if="multiPage"
       :active="activePage"
@@ -13,9 +13,9 @@
     <div :class="['tabs-view-content', layout, pageWidth]" :style="`margin-top: ${multiPage ? -24 : 0}px`">
       <page-toggle-transition :disabled="animate.disabled" :animate="animate.name" :direction="animate.direction">
         <keep-alive v-if="multiPage && cachePage">
-          <router-view v-if="!refreshing" ref="tabContent" :key="$route.path" />
+          <router-view v-if="!refreshing" ref="tabContent" :key="routeViewKey" />
         </keep-alive>
-        <router-view ref="tabContent" v-else-if="!refreshing" />
+        <router-view ref="tabContent" v-else-if="!refreshing" :key="routeViewKey" />
       </page-toggle-transition>
   </div>
   </base-layout>
@@ -52,6 +52,9 @@ export default {
         { key: '4', icon: 'sync', text: this.$t('refresh') }
       ]
     },
+    routeViewKey () {
+      return this.$route.fullPath || this.$route.path
+    },
     tabsOffset () {
       return this.multiPage ? 24 : 0
     }
@@ -74,7 +77,7 @@ export default {
   mounted () {
     this.correctPageMinHeight(-this.tabsOffset)
   },
-  beforeDestroy () {
+  beforeUnmount () {
     this.removeListener()
     this.correctPageMinHeight(this.tabsOffset)
   },
@@ -152,13 +155,13 @@ export default {
       }
     },
     onContextmenu (pageKey, e) {
-      if (pageKey) {
-        e.preventDefault()
-        e.meta = pageKey
-        this.menuVisible = true
-      }
+      if (!pageKey) return
+      e?.preventDefault?.()
+      if (e) e.meta = pageKey
+      this.menuVisible = true
     },
     onMenuSelect (key, target, pageKey) {
+      this.menuVisible = false
       switch (key) {
         case '1': this.closeLeft(pageKey); break
         case '2': this.closeRight(pageKey); break
@@ -264,13 +267,16 @@ export default {
       sessionStorage.setItem(process.env.APP_TABS_KEY, JSON.stringify(tabs))
     },
     createPage (route) {
+      const lastMatch = route.matched && route.matched.length > 0 ? route.matched[route.matched.length - 1] : null
+      const routeMeta = route.meta || {}
+      const pageMeta = routeMeta.page || {}
       return {
-        keyPath: route.matched[route.matched.length - 1].path,
+        keyPath: (lastMatch && lastMatch.path) || route.path,
         fullPath: route.fullPath,
         loading: false,
         path: route.path,
-        title: route.meta && route.meta.page && route.meta.page.title,
-        unclose: route.meta && route.meta.page && (route.meta.page.closable === false)
+        title: pageMeta.title || routeMeta.title || route.name || '',
+        unclose: pageMeta.closable === false
       }
     },
     /**

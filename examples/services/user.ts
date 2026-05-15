@@ -10,12 +10,11 @@ const APP_AMS_URL = process.env.APP_AMS_URL
  */
 export function useLogin(name, password) {
   return request({
-    url: `${umsBaseUrl}/user/login`,
-    // url: `${APP_AMS_URL}/security/login`,
+    url: `${APP_AMS_URL}/security/login`,
     method: METHOD.POST,
     params: {
-      // clientId: "admin-app",
-      // loginType: 1,
+      clientId: 'admin-app',
+      loginType: 1,
       username: name,
       password: password
     }

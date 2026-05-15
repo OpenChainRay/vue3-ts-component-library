@@ -20,7 +20,7 @@
           </div>
         </a-col>
         <a-col :span="20">
-          <at-table ref="departmentTable" rowKey="id" :columns="departmentListTableColumns"
+          <server-side-table ref="departmentTable" rowKey="id" :columns="departmentListTableColumns"
             tableKey="departmentTableKey" :showPagination="true" :data="initTableData" bordered
             :search="true" :drag="true">
             <div slot="toolBarRender">
@@ -37,7 +37,7 @@
             <span slot="operation" slot-scope="text, record">
               <a @click="showEditForm(record)">修改</a>
             </span>
-          </at-table>
+          </server-side-table>
         </a-col>
       </a-row>
       <!-- 新增窗-->
@@ -47,13 +47,12 @@
 </template>
 
 <script>
-// import { AtTable } from 'at-materia'
 import { getDepartmentTree, getDepartmentInfo, enableDepartment, disableDepartment } from '@/services/departmentList'
 import { departmentListTableColumns } from './utils/tableContent'
 import debounce from 'lodash/debounce'
 import { oftenMessage } from '@/utils/contextApi'
 import DepartmentEdit from './components/DepartmentEdit'
-// const { eventBus } = AtTable
+
 export default {
   name: 'DepartmentList',
   components: {

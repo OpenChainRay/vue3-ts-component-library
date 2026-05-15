@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { request, METHOD } from '@/utils/request'
 
-const BASE_URL = process.env.APP_API_BASE_URL
+const BASE_URL = process.env.APP_UMS_URL
 
 // 接口位置 UMS-用户管理接口-查询：获取菜单信息
 export async function getMenuByPage (params) {

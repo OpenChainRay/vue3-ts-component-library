@@ -35,9 +35,8 @@
 </template>
 <script>
 import pageSizeList from './PageSizeList.vue'
-import { AtTable } from 'at-materia'
+import { eventBus } from 'at-materia'
 import { saveTable } from '@/services/view/viewTable'
-const { eventBus } = AtTable
 export default {
   name: 'addViewTable',
   components: { pageSizeList },

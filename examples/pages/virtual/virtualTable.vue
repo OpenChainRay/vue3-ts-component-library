@@ -2,7 +2,7 @@
   <div >
     <a-card :bordered="false">
       <!-- {{ userListTableColumns }}{{ userListTableColumns.length }} -->
-      <at-table
+      <server-side-table
         ref="table"
         rowKey="id"
         :columns="userListTableColumns"
@@ -25,7 +25,7 @@
         <span slot="status" slot-scope="text, record">
           <a-switch checked-children="是" un-checked-children="否" @change="onStatusChange($event,record)" :default-checked="record.status==1"/>
         </span>
-      </at-table>
+      </server-side-table>
     </a-card>
   </div>
   </template>
