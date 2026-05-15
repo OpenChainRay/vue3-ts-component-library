@@ -132,7 +132,6 @@ export default {
                     if (this.$refs['antGroup' + i])
                         this.$refs['antGroup' + i].updateColumn(filter.column, filter.operator, this.tableCode, filter.value)
                 }, 50)
-       }
      })
         },
         initTableData: async function (params) {
@@ -150,7 +149,6 @@ export default {
             }
             const result = await mappingpage(param).catch((error) => {
                 throw new Error(error)
-       }
      })
             if (result.data.code && result.data.code === 200) {
                 const {
@@ -165,7 +163,6 @@ export default {
                     e.filter.deleteFlag = false
                     e.filter.uuid = generateUUID()
                     return e
-         }
        })
                 return {
                     data: this.tableData,

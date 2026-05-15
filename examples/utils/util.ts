@@ -51,7 +51,6 @@ export const UUID = () => {
     d = Math.floor(d / 16)
     // eslint-disable-next-line no-bitwise
     return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16)
-  }
   })
 }
 

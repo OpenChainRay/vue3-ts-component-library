@@ -228,7 +228,6 @@ export default {
       if (index !== -1) {
         pageInfo.pageSizeList.forEach((item) => {
           item.isCurrent = false
-     }
    })
         pageInfo.pageSizeList[index].isCurrent = true
       }
@@ -294,19 +293,16 @@ export default {
     async updata (params) {
       const updateResult = await upDateVwView(params).catch((error) => { throw new Error(error) }).finally(() => {
         this.isDraging = false
-    }
   })
       if (updateResult.data.code && updateResult.data.code == 200) {
         this.tableLoading = false
         this.$nextTick(() => {
           this.changeColumn = true
-     }
    })
       } else {
         this.tableLoading = false
         this.$nextTick(() => {
           this.changeColumn = true
-     }
    })
         this.$antmessage.error(updateResult.data.msg)
       }
@@ -373,7 +369,6 @@ export default {
       console.log(param)
       const { data } = await saveTable(param).catch((error) => {
         throw new Error(error)
-    }
   })
       if (data.code && data.code === 200) {
         this.$antmessage.success(data.msg)
@@ -393,7 +388,6 @@ export default {
       console.log(param)
       const { data } = await tableUpdate(param).catch((error) => {
         throw new Error(error)
-    }
   })
       if (data.code && data.code === 200) {
         this.$antmessage.success(data.msg)
@@ -422,7 +416,6 @@ export default {
         console.log(param)
         const { data } = await tableUpdate(param).catch((error) => {
           throw new Error(error)
-     }
    })
         if (data.code && data.code === 200) {
           this.$antmessage.success(data.msg)

@@ -22,4 +22,4 @@ Object.defineProperty(Object.prototype, 'assignProps', {
     }
     return this
   }
-  })
+})

@@ -14,6 +14,5 @@ export async function getLogPage (params) {
     url: `${BASE_URL}/loginTrace`,
     method: METHOD.POST,
     params: params
-  }
   })
 }

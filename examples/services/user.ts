@@ -40,7 +40,6 @@ export function updatePasswordInfo(data) {
     url: `${umsBaseUrl}/user/updateUser`,
     method: METHOD.PUT,
     data: data
-  }
   })
 }
 export default {

@@ -135,18 +135,16 @@ export default {
     insertOk () {
       this.$refs.insertForm.validate().then(async (values) => {
         const result = await addUser(values).catch((error) => { throw new Error(error) })
-          if (result.data.code && result.data.code == 200) {
-            eventBus.emit('user')
-            this.$message.success(result.data.msg)
-            this.$closePage(this.$route, {
-              path: 'user',
-              name: '用户列表',
-              fullPath: '/user'
-       }
-     })
-          } else {
-            this.$message.error(result.data.msg)
-          }
+        if (result.data.code && result.data.code == 200) {
+          eventBus.emit('user')
+          this.$message.success(result.data.msg)
+          this.$closePage(this.$route, {
+            path: 'user',
+            name: '用户列表',
+            fullPath: '/user'
+          })
+        } else {
+          this.$message.error(result.data.msg)
         }
       })
     },

@@ -113,7 +113,6 @@ export default {
             this.getEmployeeOption()
             this.$nextTick(() => {
               this.$refs.insertForm?.resetFields()
-       }
      })
             this.insertVisible = false
             this.$refs.table.refresh()
@@ -213,7 +212,6 @@ export default {
             duration: 5
           },
           type: 'error'
-     }
    })
       }
     },
@@ -243,7 +241,6 @@ export default {
             duration: 5
           },
           type: 'error'
-     }
    })
       }
     }

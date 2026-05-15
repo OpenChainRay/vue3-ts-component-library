@@ -297,7 +297,7 @@ export default {
   height: 420px;
 }
 
-// ::v-deep .djs-connection {
+// :deep(.djs-connection ){
 //   path {
 //     // stroke: blue !important;
 //     // marker-end: url(#sequenceflow-arrow-normal) !important;
@@ -306,47 +306,47 @@ export default {
 
 
 // 已处理任务列表
-::v-deep .finishTaskIdList .djs-visual rect {
+:deep(.finishTaskIdList .djs-visual rect ){
 
   fill: #D5E9FB !important;
   stroke: #2E81EA !important
 }
 
-::v-deep .finishTaskIdList .djs-visual circle {
+:deep(.finishTaskIdList .djs-visual circle ){
 
   fill: #D5E9FB !important;
   stroke: #2E81EA !important
 }
 
-::v-deep .finishTaskIdList .djs-visual polygon {
+:deep(.finishTaskIdList .djs-visual polygon ){
 
   fill: #D5E9FB !important;
   stroke: #2E81EA !important
 }
 
 // 待处理任务ID列表
-::v-deep .activeTaskIdList .djs-visual rect {
+:deep(.activeTaskIdList .djs-visual rect ){
   fill: #F9CD74 !important;
   stroke: #df9f21 !important
 }
 
-::v-deep .activeTaskIdList .djs-visual circle {
+:deep(.activeTaskIdList .djs-visual circle ){
   fill: #F9CD74 !important;
   stroke: #df9f21 !important
 }
 
-::v-deep .activeTaskIdList .djs-visual polygon {
+:deep(.activeTaskIdList .djs-visual polygon ){
   fill: #F9CD74 !important;
   stroke: #df9f21 !important
 }
 
-::v-deep .ant-table-thead>tr>th,
-::v-deep .ant-table-tbody>tr>td {
+:deep(.ant-table-thead>tr>th),
+:deep(.ant-table-tbody>tr>td ){
   padding: 6px 16px;
 }
 
 
-// ::v-deep .finishTaskIdList .djs-visual path {
+// :deep(.finishTaskIdList .djs-visual path ){
 //   stroke: blue !important;
 //   // marker-end: url(#sequenceflow-arrow-normal) !important;
 //   // fill: #D5E9FB !important;
@@ -355,11 +355,11 @@ export default {
 //   //   marker-end: url(#sequenceflow-arrow-normal) !important;
 //   // }
 // }
-// ::v-deep .activeTaskIdList .djs-visual path {
+// :deep(.activeTaskIdList .djs-visual path ){
 //   stroke: blue !important;
 // }
 
-// ::v-deep .activeTaskIdList .djs-connection {
+// :deep(.activeTaskIdList .djs-connection ){
 //   path {
 //     stroke: blue !important;
 //     marker-end: url(#sequenceflow-arrow-normal) !important;
@@ -367,31 +367,31 @@ export default {
 // }
 
 
-/* ::v-deep .nodeSuccess .djs-visual rect {
+/* :deep(.nodeSuccess .djs-visual rect ){
   fill: #F9CD74 !important
 } */
 
-::v-deep .bjs-container img {
+:deep(.bjs-container img ){
   display: none !important;
 }
 
-::v-deep .bjs-container a {
+:deep(.bjs-container a ){
   display: none !important;
 }
 
-::v-deep .bjs-powered-by {
+:deep(.bjs-powered-by ){
   display: none !important;
 }
 
-::v-deep .djs-search-container {
+:deep(.djs-search-container ){
   display: none;
 }
 
-::v-deep .bjs-breadcrumbs {
+:deep(.bjs-breadcrumbs ){
   display: none;
 }
 
-::v-deep .djs-palette {
+:deep(.djs-palette ){
   display: none;
 }
 

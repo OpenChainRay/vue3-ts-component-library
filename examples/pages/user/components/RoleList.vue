@@ -118,7 +118,6 @@ export default {
           } else {
             this.$message.error(result.data.msg)
           }
-        }
       })
     },
     handleConnectCancel () {
@@ -136,7 +135,6 @@ export default {
         } = result.data.data
         result.data.data?.forEach((item) => {
           that.roleIdList.push(item.roleId)
-     }
    })
         return {
           data: result.data.data,
@@ -155,7 +153,6 @@ export default {
             duration: 5
           },
           type: 'error'
-     }
    })
       }
     }

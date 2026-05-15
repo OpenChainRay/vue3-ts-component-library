@@ -164,14 +164,12 @@ export default {
             this.$nextTick(() => {
               this.$refs.editForm?.resetFields()
               this.$refreshPage('/personnel')
-       }
      })
             this.$refs.table.refresh()
             this.editVisible = false
           } else {
             this.$message.error(result.data.msg)
           }
-        }
       })
     },
     showInsert () {
@@ -188,14 +186,12 @@ export default {
             this.$nextTick(() => {
               this.$refs.insertForm?.resetFields()
               this.$refreshPage('/personnel')
-       }
      })
             this.$refs.table.refresh()
             this.insertVisible = false
           } else {
             this.$message.error(result.data.msg)
           }
-        }
       })
     },
     async deleteById (row) {

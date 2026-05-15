@@ -298,7 +298,6 @@ export default {
           } else {
             this.$message.error(result.data.msg)
           }
-        }
       })
     },
     insertFormCancel () {
@@ -316,7 +315,6 @@ export default {
         id: record.id
       }).catch((error) => {
         throw new Error(error)
-    }
   })
       // this.$refs.table.refresh()
       // oftenMessage(result.data.code, result.data.msg)
@@ -378,7 +376,6 @@ export default {
           } else {
             this.$message.error(result.data.msg)
           }
-        }
       })
     },
     modifyFormCancel () {

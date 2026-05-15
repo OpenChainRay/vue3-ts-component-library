@@ -1139,7 +1139,7 @@ export default {
     }
 
     .contentTime {
-      ::v-deep .tiny-input__inner {
+      :deep(.tiny-input__inner ){
         border: none;
       }
     }
@@ -1149,7 +1149,7 @@ export default {
     width: 134px;
   }
 
-  ::v-deep .ant-calendar-picker-input.ant-input {
+  :deep(.ant-calendar-picker-input.ant-input ){
     width: 126px !important;
   }
 
@@ -1159,14 +1159,14 @@ export default {
     right: 0;
   }
 
-  ::v-deep .content-delete {
+  :deep(.content-delete ){
     top: -11px;
     right: -8px;
   }
 
-  ::v-deep .ant-input,
-  ::v-deep .ant-input-number-input,
-  ::v-deep .ant-input-number {
+  :deep(.ant-input),
+  :deep(.ant-input-number-input),
+  :deep(.ant-input-number ){
     width: 150px;
     width: fit-content;
     border: none;
@@ -1177,15 +1177,15 @@ export default {
     }
   }
 
-  ::v-deep .ant-select {
+  :deep(.ant-select ){
     width: 100% !important;
   }
 
-  ::v-deep .ant-select-selection {
+  :deep(.ant-select-selection ){
     border: none;
   }
 
-  ::v-deep .tiny-date-editor--daterange.tiny-input,
+  :deep(.tiny-date-editor--daterange.tiny-input),
   .tiny-date-editor--daterange.tiny-input__inner {
     width: 250px;
   }
@@ -1198,15 +1198,15 @@ export default {
   }
 }
 
-::v-deep .tiny-toggle-menu__toggle {
+:deep(.tiny-toggle-menu__toggle ){
   display: none;
 }
 
-::v-deep .tree-node-icon {
+:deep(.tree-node-icon ){
   display: none;
 }
 
-::v-deep #tinyPopover .tiny-tree-node__content-box {
+:deep(#tinyPopover .tiny-tree-node__content-box ){
   background-color: #fff;
 }
 

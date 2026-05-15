@@ -83,7 +83,6 @@ function parseRoutes (routesConfig, routerMap) {
       route.children = parseRoutes(routeCfg.children, routerMap)
     }
     routes.push(route)
-  }
   })
   return routes
 }
@@ -134,7 +133,6 @@ function deepMergeRoutes (target, source) {
         delete item.children
       }
       return item
-    }
     })
   }
   return parseRoutesMap(merge)
@@ -150,7 +148,6 @@ function formatAtTree (menuList) {
       currentRouter.children = formatAtTree(route.children)
     }
     return currentRouter
-  }
   })
 }
 /**
@@ -187,8 +184,7 @@ function loadRoutes (routesConfig) {
       })
       finalRoutes.forEach((route) => {
         router.addRoute(route)
-    }
-  })
+      })
     } else if (router.addRoutes) {
       router.addRoutes(finalRoutes)
     }
@@ -261,7 +257,6 @@ function formatRoutes (routes) {
       route.path = '/' + path
     }
     return route
-  }
   })
   formatAuthority(routes)
 }

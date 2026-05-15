@@ -127,7 +127,6 @@ export default {
           } else {
             oftenMessage(false, result.data.msg)
           }
-        }
       })
     },
     insertCancel () {

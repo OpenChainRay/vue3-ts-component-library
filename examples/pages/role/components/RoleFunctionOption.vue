@@ -120,7 +120,6 @@ export default {
           duration: 5
         },
         type: 'error'
-    }
   })
     }
   },
@@ -192,7 +191,6 @@ export default {
       if (isFresh) {
         this.$refs.table.refresh(false, {
           parentId: -1
-     }
    })
       }
     },
@@ -207,7 +205,6 @@ export default {
           item.isLeaf = true
         }
         return item
-    }
   })
     },
     // 刷新分类树
@@ -219,7 +216,6 @@ export default {
         this.isFresh = true
         await this.getMenuTreeData(true).catch((error) => { throw new Error(error) })
         this.$message.success('刷新成功')
-    }
   })
     }, 1000),
     // 菜单树节点被选事件
@@ -306,7 +302,6 @@ export default {
             duration: 5
           },
           type: 'error'
-     }
    })
       }
     }

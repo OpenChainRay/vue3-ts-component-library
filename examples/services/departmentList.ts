@@ -13,7 +13,6 @@ export async function getDepartmentTree (params) {
     url: `${BASE_URL}/department/getDepartmentTree`,
     method: METHOD.GET,
     params: params
-  }
   })
 }
 // 根据部门树结构父级ID查询部门信息
@@ -22,7 +21,6 @@ export async function getDepartmentInfo (params) {
     url: `${BASE_URL}/department/page`,
     method: 'POST',
     params: params
-  }
   })
 }
 // 根据Id启用部门
@@ -30,7 +28,6 @@ export async function enableDepartment (id) {
   return request({
     url: `${BASE_URL}/department/enable/${id}`,
     method: 'PUT'
-  }
   })
 }
 // 根据Id停用部门
@@ -38,7 +35,6 @@ export async function disableDepartment (id) {
   return request({
     url: `${BASE_URL}/department/disable/${id}`,
     method: 'PUT'
-  }
   })
 }
 
@@ -47,7 +43,6 @@ export async function listEmployeeOption () {
   return request({
     url: `${BASE_URL}/employee/listEmployeeOption`,
     method: 'GET'
-  }
   })
 }
 
@@ -57,7 +52,6 @@ export async function addDepartment (params) {
     url: `${BASE_URL}/department`,
     method: 'POST',
     params
-  }
   })
 }
 // 更新部门
@@ -66,7 +60,6 @@ export async function updateDepartment (params) {
     url: `${BASE_URL}/department`,
     method: 'PUT',
     params
-  }
   })
 }
 // 根据部门id查询部门信息
@@ -74,6 +67,5 @@ export async function getDepartmentInfoByDeptId (id) {
   return request({
     url: `${BASE_URL}/department/${id}`,
     method: 'GET'
-  }
   })
 }

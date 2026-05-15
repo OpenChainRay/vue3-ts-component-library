@@ -12,7 +12,6 @@ export async function getDataPage (params) {
     url: `${BASE_URL}/employee/page`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -23,7 +22,6 @@ export async function changeDisable (parameter) {
     url: `${BASE_URL}/employee/disable/${id}`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 
@@ -34,7 +32,6 @@ export async function changeEnable (parameter) {
     url: `${BASE_URL}/employee/enable/${id}`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 
@@ -44,7 +41,6 @@ export async function personnelAdd (params) {
     url: `${BASE_URL}/employee/add`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -54,7 +50,6 @@ export async function personnelModify (params) {
     url: `${BASE_URL}/employee/edit`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 
@@ -64,7 +59,6 @@ export async function getDepartmentList (params) {
     url: `${BASE_URL}/department/selector`,
     method: METHOD.GET,
     params: params
-  }
   })
 }
 
@@ -74,7 +68,6 @@ export async function getStaffList (params) {
     url: `${BASE_URL}/position/list`,
     method: METHOD.GET,
     params: params
-  }
   })
 }
 
@@ -84,7 +77,6 @@ export async function getUserRelationPage (params) {
     url: `${BASE_URL}/employee/pageInfo`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -95,7 +87,6 @@ export async function deleteUserRelation (params) {
     url: `${BASE_URL}/employee/deleteInfo/${userId}`,
     method: METHOD.DELETE,
     params: params
-  }
   })
 }
 
@@ -106,7 +97,6 @@ export async function empDeptEnable (parameter) {
     url: `${BASE_URL}/empDept/enable/${id}`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 
@@ -117,7 +107,6 @@ export async function empDeptDisable (parameter) {
     url: `${BASE_URL}/empDept/disable/${id}`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 // 员工组织关系列表管理-根据id查询
@@ -126,7 +115,6 @@ export async function getEmployeeInfoByUserId (params) {
     url: `${BASE_URL}/employee/getEmployeeInfoByUserId`,
     method: METHOD.GET,
     params: params
-  }
   })
 }
 
@@ -136,7 +124,6 @@ export async function listEmployeeOption (params) {
     url: `${BASE_URL}/user/getUnbindEmpUserList`,
     method: METHOD.GET,
     params: params
-  }
   })
 }
 
@@ -147,7 +134,6 @@ export async function addInfo (parameter) {
     url: `${BASE_URL}/employee/addInfo/${userId}/${employeeId}`,
     method: METHOD.POST
 
-  }
   })
 }
 
@@ -157,7 +143,6 @@ export async function getEmpDeptPage (params) {
     url: `${BASE_URL}/empDept/page`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 // 设为默认
@@ -167,7 +152,6 @@ export async function setDefault (parameter) {
     url: `${BASE_URL}/empDept/set/${id}`,
     method: METHOD.GET
 
-  }
   })
 }
 // 新增任岗
@@ -176,7 +160,6 @@ export async function empDeptAdd (params) {
     url: `${BASE_URL}/empDept/add`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -186,7 +169,6 @@ export async function empDeptEdit (params) {
     url: `${BASE_URL}/empDept/edit`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 // 删除任岗
@@ -196,6 +178,5 @@ export async function deleteDept (parameter) {
     url: `${BASE_URL}/empDept/${id}`,
     method: METHOD.DELETE
 
-  }
   })
 }

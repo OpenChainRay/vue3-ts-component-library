@@ -74,7 +74,7 @@ export default {
 </script>
 
 <style scoped>
-::v-deep .ant-form-item-label > label.ant-form-item-required.ant-form-item-no-colon::after {
+:deep(.ant-form-item-label > label.ant-form-item-required.ant-form-item-no-colon::after ){
   display: inline-block;
   margin-right: 4px;
   color: #f5222d;

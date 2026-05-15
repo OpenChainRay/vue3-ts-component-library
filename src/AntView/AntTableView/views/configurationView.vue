@@ -400,7 +400,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.editModel ::v-deep .ant-modal {
+.editModel :deep(.ant-modal ){
   margin-top: -70px !important;
 }
 
@@ -436,7 +436,7 @@ export default {
 }
 
 /* 拖拽占位样式 */
-::v-deep .sortable-ghost {
+:deep(.sortable-ghost ){
   background-color: #f5f5f5 !important;
   opacity: 0.6;
   border: 1px dashed #ccc;

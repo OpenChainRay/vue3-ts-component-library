@@ -381,9 +381,7 @@ export default {
             }
           } else
             setMaxLength(e, item, columnMaxLengthMap)
-     }
    })
-    }
   })
       console.log(columnMaxLengthMap)
 
@@ -471,7 +469,6 @@ export default {
       if (index !== -1) {
         pageInfo.pageSizeList.forEach((item) => {
           item.isCurrent = false
-     }
    })
         pageInfo.pageSizeList[index].isCurrent = true
       }
@@ -504,7 +501,6 @@ export default {
       if (!item.list) { return text }
       const result = item.list.find(item => {
         return item.dictId === text
-    }
   })
       if (result) {
         return result.dictText || result.dictKey
@@ -548,7 +544,6 @@ export default {
         that.total = total
         list.forEach(item => {
           item.saleOrgId = Number(item.saleOrgId)
-     }
    })
         // console.log(list)
         this.tableList = list
@@ -560,8 +555,6 @@ export default {
         return new Promise((resolve) => {
 
           resolve({ result: list, page: { total } })
-
-     }
    })
       } else {
         this.tableLoading = false
@@ -634,7 +627,7 @@ export default {
 
     .custonSelect {
       display: flex;
-      justify-content: end;
+      justify-content: flex-end;
       align-items: center;
     }
 
@@ -667,10 +660,10 @@ export default {
   }
 }
 
-.maxHeight ::v-deep .ant-table-body {
+.maxHeight :deep(.ant-table-body ){
   max-height: 450px !important;
 }
 
-// .minHeight ::v-deep .ant-table-body {
+// .minHeight :deep(.ant-table-body ){
 //   max-height: 520px !important;
 // }</style>

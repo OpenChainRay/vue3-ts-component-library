@@ -12,7 +12,6 @@ export function previewPage (params) {
     url: `${AMS_URL}/preview/page`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -21,7 +20,6 @@ export function getPreviewView (viewId) {
   return request({
     url: `${AMS_URL}/preview/getPreviewView/${viewId}`,
     method: METHOD.GET
-  }
   })
 }
 
@@ -31,7 +29,6 @@ export function viewQueryPage (params) {
     url: `${AMS_URL}/viewQuery/page`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -41,7 +38,6 @@ export function enableTable (id) {
     url: `${AMS_URL}/preview/enable/${id}`,
     method: METHOD.PUT
 
-  }
   })
 }
 // 停用视图
@@ -49,7 +45,6 @@ export function disableTable (id) {
   return request({
     url: `${AMS_URL}/preview/disable/${id}`,
     method: METHOD.PUT
-  }
   })
 }
 // 视图保存
@@ -58,7 +53,6 @@ export function saveTable (params) {
     url: `${AMS_URL}/preview/save`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -68,6 +62,5 @@ export function tableUpdate (params) {
     url: `${AMS_URL}/preview/update`,
     method: METHOD.POST,
     params: params
-  }
   })
 }

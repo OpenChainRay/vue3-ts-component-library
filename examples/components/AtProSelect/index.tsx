@@ -155,7 +155,6 @@ export default {
       this.selectSearchName = val
       const resultList = this.allOptionsList.filter((item) => {
         return item.label.indexOf(val) != -1
-    }
   })
       this.getLocalSelectOptions(resultList)
     }, 500)

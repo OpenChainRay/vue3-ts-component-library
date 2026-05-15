@@ -87,8 +87,7 @@ export default {
             duration: 5
           },
           type: 'error'
-     }
-   })
+        })
       }
     },
 
@@ -102,7 +101,6 @@ export default {
       this.$refs.form.validate().then((values) => {
         console.log('岗位名称: ', values.postName)
           this.postNameVisible = false
-        }
       })
     }
 

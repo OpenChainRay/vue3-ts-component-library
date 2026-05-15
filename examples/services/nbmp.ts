@@ -9,7 +9,6 @@ export function processInstanceInfo (params) {
     url: `${WORKFLOW_URL}/task/processInstanceInfo`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -19,6 +18,5 @@ export function history (params) {
     url: `${WORKFLOW_URL}/task/history`,
     method: METHOD.POST,
     params: params
-  }
   })
 }

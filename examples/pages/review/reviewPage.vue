@@ -290,7 +290,6 @@ export default {
       if (index !== -1) {
         pageInfo.pageSizeList.forEach((item) => {
           item.isCurrent = false
-     }
    })
         pageInfo.pageSizeList[index].isCurrent = true
       }
@@ -369,7 +368,6 @@ export default {
       console.log(param)
       const { data } = await saveTable(param).catch((error) => {
         throw new Error(error)
-    }
   })
       if (data.code && data.code === 200) {
         this.$antmessage.success(data.msg)
@@ -389,7 +387,6 @@ export default {
       console.log(param)
       const { data } = await tableUpdate(param).catch((error) => {
         throw new Error(error)
-    }
   })
       if (data.code && data.code === 200) {
         this.$antmessage.success(data.msg)
@@ -418,7 +415,6 @@ export default {
         console.log(param)
         const { data } = await tableUpdate(param).catch((error) => {
           throw new Error(error)
-     }
    })
         if (data.code && data.code === 200) {
           this.$antmessage.success(data.msg)
@@ -485,7 +481,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.sqlModal ::v-deep .ant-modal-body {
+.sqlModal :deep(.ant-modal-body ){
   background-color: #2f3130 !important;
 }
 #codeView {

@@ -109,7 +109,7 @@ export default {
   width: 89%;
   margin-left: 1%;
 }
-::v-deep .selectClass .ant-select-selection {
+:deep(.selectClass .ant-select-selection ){
   border: none;
   background-color: #f3f4f6;
 }

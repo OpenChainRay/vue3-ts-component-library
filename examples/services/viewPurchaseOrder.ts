@@ -12,7 +12,6 @@ export function getDeptCodeByPage(params) {
     method: METHOD.GET,
     params: params,
     headers: { 'content-type': 'application/x-www-form-urlencoded' }
-  }
   })
 }
 export function getTypeTree(params) {
@@ -20,7 +19,6 @@ export function getTypeTree(params) {
     url: `${APP_OMS_URL}/oms/product/type/queryTree`,
     method: METHOD.GET,
     params: params
-  }
   })
 }
 // 详情：采购单详情
@@ -28,7 +26,6 @@ export function procureOrderDetails(id) {
   return request({
     url: `${APP_SRM_URL}/procureOrder/details/${id}`,
     method: METHOD.POST
-  }
   })
 }
 // 查询仓库数据集合
@@ -36,7 +33,6 @@ export function planSelectStockList() {
   return request({
     url: `${APP_SRM_URL}/supplierPlanOrder/selectStockList`,
     method: METHOD.POST
-  }
   })
 }
 // 获取集团所有组织（公司）
@@ -53,7 +49,6 @@ export function updateOrderDetail(params) {
     url: `${APP_SRM_URL}/procureOrder/updateOrderDetail`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 // 获取所有供应商下拉
@@ -61,7 +56,6 @@ export function getSupplierName() {
   return request({
     url: `${APP_SRM_URL}/productSkuPms/supplierName`,
     method: METHOD.POST
-  }
   })
 }
 
@@ -82,7 +76,6 @@ export function editProcureOrder(params) {
     url: `${APP_SRM_URL}/procureOrder/editProcureOrder`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -92,7 +85,6 @@ export function saveContractApprove(params) {
     url: `${APP_SRM_URL}/procureOrder/saveContractApprove`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -102,7 +94,6 @@ export function procureOrderAffirm(params) {
     url: `${APP_SRM_URL}/procureOrder/procureOrderAffirm`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -112,7 +103,6 @@ export function contractApprove(params) {
     url: `${APP_SRM_URL}/procureOrder/contractApprove`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -122,7 +112,6 @@ export function saveOrderDetail(params) {
     url: `${APP_SRM_URL}/procureOrder/saveOrderDetail`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -132,7 +121,6 @@ export function saveOrderDetailList(params) {
     url: `${APP_SRM_URL}/procureOrder/saveOrderDetailList`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -141,7 +129,6 @@ export function cancellationOrderDetail(id) {
   return request({
     url: `${APP_SRM_URL}/procureOrder/cancellationOrderDetail/${id}`,
     method: METHOD.POST
-  }
   })
 }
 
@@ -150,7 +137,6 @@ export function openOrderDetail(id) {
   return request({
     url: `${APP_SRM_URL}/procureOrder/openOrderDetail/${id}`,
     method: METHOD.POST
-  }
   })
 }
 
@@ -159,14 +145,12 @@ export function openOrder(id) {
   return request({
     url: `${APP_SRM_URL}/procureOrder/openOrder/${id}`,
     method: METHOD.POST
-  }
   })
 }
 export function cancelgl(id) {
   return request({
     url: `${APP_SRM_URL}/procureOrder/cancelgl/${id}`,
     method: METHOD.POST
-  }
   })
 }
 
@@ -174,7 +158,6 @@ export function appendKin(id) {
   return request({
     url: `${APP_SRM_URL}/procureOrder/appendKind/${id}`,
     method: METHOD.POST
-  }
   })
 }
 
@@ -183,7 +166,6 @@ export function cancellationOrder(id) {
   return request({
     url: `${APP_SRM_URL}/procureOrder/cancellationOrder/${id}`,
     method: METHOD.POST
-  }
   })
 }
 
@@ -193,7 +175,6 @@ export function procureOrderDetailApprove(params) {
     url: `${APP_SRM_URL}/procureOrder/orderDetailApprove`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -203,7 +184,6 @@ export function saveAffirmUrl(params) {
     url: `${APP_SRM_URL}/procureOrder/saveAffirmUrl`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -212,7 +192,6 @@ export function selectContact(supplierId) {
   return request({
     url: `${APP_SRM_URL}/supplier/selectContact/${supplierId}`,
     method: METHOD.POST
-  }
   })
 }
 
@@ -222,7 +201,6 @@ export function sendContractEmail(params) {
     url: `${APP_SRM_URL}/procureOrder/sendContractEmail`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -231,7 +209,6 @@ export function selectContractHistory(procureId) {
   return request({
     url: `${APP_SRM_URL}/procureOrder/selectContractHistory/${procureId}`,
     method: METHOD.POST
-  }
   })
 }
 
@@ -241,7 +218,6 @@ export function purInstocklist(params) {
     url: `${APP_SRM_URL}/procureOrder/purInstocklist`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -251,7 +227,6 @@ export function mergeOrder(params) {
     url: `${APP_SRM_URL}/procureOrder/mergeOrder`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -261,7 +236,6 @@ export function openAll(params) {
     url: `${APP_SRM_URL}/procureOrder/openAll`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -271,7 +245,6 @@ export function closeAll(params) {
     url: `${APP_SRM_URL}/procureOrder/closeAll`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -281,7 +254,6 @@ export function zfAll(params) {
     url: `${APP_SRM_URL}/procureOrder/zfAll`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -291,7 +263,6 @@ export function selectCurrencyList(params) {
     url: `${APP_SRM_URL}/dropDown/selectCurrencyList`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -301,7 +272,6 @@ export function selectGatheringList(params) {
     url: `${APP_SRM_URL}/dropDown/selectPaymentConditionList`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -311,7 +281,6 @@ export function selectSettleTypeList(params) {
     url: `${APP_SRM_URL}/dropDown/selectSettleTypeList`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -321,7 +290,6 @@ export function procureCancellationOrder(params) {
     url: `${APP_SRM_URL}/procureOrder/cancellationOrder`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -331,7 +299,6 @@ export function procureCancellationDetail(params) {
     url: `${APP_SRM_URL}/procureOrder/cancellationOrderDetail`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -340,7 +307,6 @@ export function addResouse(params) {
     url: `${APP_SRM_URL}/supplierPlanOrder/addEdit`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -348,7 +314,6 @@ export function removeProcureResource(id) {
   return request({
     url: `${APP_SRM_URL}/supplierPlanOrder/removeProcureResource/${id}`,
     method: METHOD.POST
-  }
   })
 }
 
@@ -358,7 +323,6 @@ export function editProcureOrderBatch(params) {
     url: `${APP_SRM_URL}/procureOrder/editProcureOrderBatch`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -368,7 +332,6 @@ export function synchronousOrderData(params) {
     url: `${APP_SRM_URL}/procureOrder/synchronousOrderData`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -378,7 +341,6 @@ export function detailsList(params) {
     url: `${APP_SRM_URL}/procureOrder/detailsList`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -388,7 +350,6 @@ export function updateView(params) {
     url: `${umsBaseUrl}/component/view/update`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -398,7 +359,6 @@ export function calendar(params) { // 日历计算
     method: METHOD.POST,
     params: params
 
-  }
   })
 }
 // 根据视图id获取查询条件
@@ -406,7 +366,6 @@ export function getQueryColumns(viewId) {
   return request({
     url: `${APP_SRM_URL}/vwView/get/filters/${viewId}`,
     method: METHOD.GET
-  }
   })
 }
 // 根据视图id获取查询所有
@@ -428,7 +387,6 @@ export function getViewInfoById(viewId) {
     url: `${APP_SRM_URL}/view/getView/${viewId}`,
     method: METHOD.GET
 
-  }
   })
 }
 

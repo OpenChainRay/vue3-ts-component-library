@@ -146,12 +146,10 @@ export default {
               fullPath: '/dataObject/DataObjectList.vue',
               path: 'dataObject',
               name: '数据对象列表'
-       }
      })
           } else {
             this.$message.error(result.data.msg)
           }
-        }
       })
     },
     resetForm () {

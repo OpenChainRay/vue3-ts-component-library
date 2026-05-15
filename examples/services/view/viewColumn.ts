@@ -12,7 +12,6 @@ export async function getColumnPage (params) {
     params: params
   }).catch((error) => {
     throw new Error(error)
-  }
   })
   return ajaxFun
 }
@@ -23,7 +22,6 @@ export function enableColumn (params) {
   return request({
     url: `${AMS_URL}${PREFIX}/enable/${id}`,
     method: METHOD.PUT
-  }
   })
 }
 // 停用列
@@ -32,7 +30,6 @@ export function disableColumn (params) {
   return request({
     url: `${AMS_URL}${PREFIX}/disable/${id}`,
     method: METHOD.PUT
-  }
   })
 }
 
@@ -42,7 +39,6 @@ export function saveColumn (params) {
     url: `${AMS_URL}${PREFIX}/save`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 // 修改列
@@ -51,7 +47,6 @@ export function updateColumn (params) {
     url: `${AMS_URL}${PREFIX}/update`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 // 导出
@@ -63,9 +58,9 @@ export function exportTableColumn (param) {
     responseType: 'blob',
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
-      }).catch((error) => {
+    }
+  }).catch((error) => {
     throw new Error(error)
-  }
   })
 }
 // 导入
@@ -77,9 +72,9 @@ export function importColumn (data) {
     responseType: 'blob',
     headers: {
       'Content-Type': 'multipart/form-data;application/json;charset=UTF-8'
-      }).catch((error) => {
+    }
+  }).catch((error) => {
     throw new Error(error)
-  }
   })
 }
 
@@ -89,7 +84,6 @@ export async function getColumnListWithEnable (tableId) {
     method: METHOD.POST
   }).catch((error) => {
     throw new Error(error)
-  }
   })
   return ajaxFun
 }
@@ -100,7 +94,6 @@ export async function getColumnById (id) {
     method: METHOD.POST
   }).catch((error) => {
     throw new Error(error)
-  }
   })
   return ajaxFun
 }
@@ -110,6 +103,5 @@ export function getRowMerge (tableCode) {
   return request({
     url: `${AMS_URL}/rowMerge/getRowMerge/${tableCode}`,
     method: METHOD.GET
-  }
   })
 }

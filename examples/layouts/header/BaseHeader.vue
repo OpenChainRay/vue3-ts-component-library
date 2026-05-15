@@ -132,14 +132,12 @@ export default {
         value: val,
         label: this.resolveOptionLabel(option),
         orgCode: option?.data?.props?.orgCode
-    }
   })
     },
     setSelectedDepartment (val, option) {
       this.setCurrentDepartment({
         value: val,
         label: this.resolveOptionLabel(option)
-    }
   })
     }
   },

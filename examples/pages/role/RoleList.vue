@@ -139,7 +139,6 @@ export default {
           } else {
             this.$message.error(result.data.msg)
           }
-        }
       })
     },
     roleCancel () {

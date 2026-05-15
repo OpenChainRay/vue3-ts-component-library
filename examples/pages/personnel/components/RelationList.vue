@@ -193,7 +193,6 @@ export default {
           this.$refreshPage('/personnel')
           this.$refs.table.refresh()
           this.$message.success(result.data.msg)
-     }
    })
       } else {
         this.$message.error(result.data.msg)
@@ -238,7 +237,6 @@ export default {
           item.isLeaf = true
         }
         return item
-    }
   })
     },
     // 刷新分类树
@@ -249,7 +247,6 @@ export default {
         this.isFresh = true
         await this.getDepartmentTreeData(true).catch((error) => { throw new Error(error) })
         this.$message.success('刷新成功')
-    }
   })
     }, 1000),
     // 部门树节点被选事件
@@ -293,7 +290,6 @@ export default {
               this.$message.success(result.data.msg)
               this.insertVisible = false
               this.$refs.insertForm?.resetFields()
-       }
      })
           } else {
             this.$message.error(result.data.msg)
@@ -367,7 +363,6 @@ export default {
               this.$message.success(result.data.msg)
               this.$refs.modifyForm?.resetFields()
               this.isModify = false
-       }
      })
           } else {
             this.$message.error(result.data.msg)

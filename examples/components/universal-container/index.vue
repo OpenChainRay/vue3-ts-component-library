@@ -75,7 +75,7 @@ export default {
     .custonSelect {
       display: flex;
       flex: 1;
-      justify-content: end;
+      justify-content: flex-end;
       align-items: center;
 
       .viewsLeft {
@@ -90,7 +90,7 @@ export default {
       }
     }
 
-    ::v-deep .main{
+    :deep(.main){
       margin-bottom: 5px;
     }
 

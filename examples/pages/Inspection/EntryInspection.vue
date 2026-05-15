@@ -206,7 +206,6 @@ function getBase64 (file) {
     reader.readAsDataURL(file)
     reader.onload = () => resolve(reader.result)
     reader.onerror = error => reject(error)
-  }
   })
 }
 export default {
@@ -391,14 +390,14 @@ export default {
 .card-text-right{
   text-align: right;
 }
-.ant-carousel >>> .slick-slide {
+.ant-carousel :deep(.slick-slide ){
   text-align: center;
   height: 700px;
   line-height: 700px;
   background: #364d79;
   overflow: hidden;
 }
-.ant-carousel >>> .custom-slick-arrow {
+.ant-carousel :deep(.custom-slick-arrow ){
   width: 25px;
   height: 25px;
   font-size: 25px;
@@ -406,13 +405,13 @@ export default {
   background-color: rgba(31, 45, 61, 0.11);
   opacity: 0.3;
 }
-.ant-carousel >>> .custom-slick-arrow:before {
+.ant-carousel :deep(.custom-slick-arrow:before ){
   display: none;
 }
-.ant-carousel >>> .custom-slick-arrow:hover {
+.ant-carousel :deep(.custom-slick-arrow:hover ){
   opacity: 0.5;
 }
-.ant-carousel >>> .slick-slide h3 {
+.ant-carousel :deep(.slick-slide h3 ){
   color: #fff;
 }
 .ant-upload-select-picture-card i {

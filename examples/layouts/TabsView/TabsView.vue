@@ -67,7 +67,6 @@ export default {
     if (this.multiPage) {
       this.$nextTick(() => {
         this.setCachedKey(route)
-    }
   })
       this.addListener()
     }
@@ -102,7 +101,6 @@ export default {
       if (this.multiPage) {
         this.$nextTick(() => {
           this.setCachedKey(newRoute)
-     }
    })
       }
     },

@@ -166,7 +166,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-/deep/.tree-reload {
+:deep(.tree-reload ){
   position: absolute;
   left: 95px;
   top: 16px;

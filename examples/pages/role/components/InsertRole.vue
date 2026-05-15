@@ -89,7 +89,6 @@ export default {
     insertOk () {
       this.$refs.insertForm.validate().then((values) => {
         console.log('新增用户: ', values)
-        }
       })
     },
     resetForm () {

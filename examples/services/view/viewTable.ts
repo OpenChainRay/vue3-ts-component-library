@@ -19,7 +19,6 @@ export function enableTable (tableCode) {
     url: `${AMS_URL}/table/enable/${tableCode}`,
     method: METHOD.PUT
 
-  }
   })
 }
 // 停用视图
@@ -27,7 +26,6 @@ export function disableTable (tableCode) {
   return request({
     url: `${AMS_URL}/table/disable/${tableCode}`,
     method: METHOD.PUT
-  }
   })
 }
 // 视图保存
@@ -36,7 +34,6 @@ export function saveTable (params) {
     url: `${AMS_URL}/table/save`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -46,7 +43,6 @@ export function tableUpdate (params) {
     url: `${AMS_URL}/table/update`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -55,7 +51,6 @@ export function columnTypePage (params) {
     url: `${BASE_URL}/component/columnType/page`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -64,7 +59,6 @@ export function columnTypeConfiguate (params) {
     url: `${BASE_URL}/columnType/getOperator`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -73,7 +67,6 @@ export function operatorPage (params) {
     url: `${BASE_URL}/component/operator/page`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -82,7 +75,6 @@ export function columnTypeEdit (params) {
     url: `${BASE_URL}/component/columnType/edit`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -91,7 +83,6 @@ export function columnTypeAdd (params) {
     url: `${BASE_URL}/component/columnType/add`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -100,6 +91,5 @@ export function reviewView (tableCode) {
   return request({
     url: `${AMS_URL}/view/reviewView/${tableCode}`,
     method: METHOD.GET
-  }
   })
 }

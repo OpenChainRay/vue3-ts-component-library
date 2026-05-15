@@ -130,7 +130,6 @@ export default {
     showInsert () {
       this.$router.push({
         name: '新增数据对象'
-    }
   })
     }
   }

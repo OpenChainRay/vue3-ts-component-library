@@ -144,10 +144,10 @@ export default {
   .tabs_container{
     margin: -16px auto 8px;
     transition: top,left 0.2s;
-    ::v-deep .ant-tabs-card-bar div.ant-tabs-nav-container{
+    :deep(.ant-tabs-card-bar div.ant-tabs-nav-container){
       height: 45px;
     }
-    ::v-deep .ant-tabs-card-bar div.ant-tabs-tab{
+    :deep(.ant-tabs-card-bar div.ant-tabs-tab){
     height: 40px;
     padding: 0 30px 0 30px;
     margin-top: 5.95px;
@@ -168,7 +168,7 @@ export default {
         z-index: 2;
       }
     }
-    ::v-deep .ant-tabs-card-bar div.ant-tabs-tab-active{
+    :deep(.ant-tabs-card-bar div.ant-tabs-tab-active){
       color: @primary-color!important;
       background: @primary-1 !important;
       -webkit-mask: url('./assets/img/mask_bg.png');

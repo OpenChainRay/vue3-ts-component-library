@@ -200,15 +200,13 @@ export default {
             this.$message.success(result.data.msg)
             this.$nextTick(() => {
               this.$refs.insertForm?.resetFields()
-       }
-     })
+            })
             console.log('岗位名称: ', values.positionName)
             this.insertVisible = false
             this.$refs.table.refresh()
           } else {
             this.$message.error(result.data.msg)
           }
-        }
       })
     },
     // 新增弹窗取消
@@ -229,14 +227,12 @@ export default {
             this.$message.success(result.data.msg)
             this.$nextTick(() => {
               this.$refs.modifyForm?.resetFields()
-       }
-     })
+            })
             this.$refs.table.refresh()
           } else {
             this.$message.error(result.data.msg)
           }
           this.modifyVisible = false
-        }
       })
     },
     // 修改弹窗取消
@@ -278,8 +274,7 @@ export default {
             duration: 5
           },
           type: 'error'
-     }
-   })
+        })
       }
     }
   }

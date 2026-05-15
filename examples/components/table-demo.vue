@@ -64,7 +64,6 @@ const data = [
 const draggingMap = {}
 columns.forEach(col => {
   draggingMap[col.key] = col.width
-}
 })
 const draggingState = Vue.observable(draggingMap)
 const ResizeableTitle = (h, props, children) => {
@@ -73,7 +72,6 @@ const ResizeableTitle = (h, props, children) => {
   const col = columns.find(col => {
     const k = col.dataIndex || col.key
     return k === key
-  }
   })
   if (!col.width) {
     return <th {...restProps}>{children}</th>

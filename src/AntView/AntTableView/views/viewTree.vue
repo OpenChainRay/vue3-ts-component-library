@@ -268,7 +268,7 @@ export default {
 .searchLi {
   margin-bottom: 2px;
 }
-::v-deep .selectClass .ant-select-selection {
+:deep(.selectClass .ant-select-selection ){
   border: none;
   background-color: #f3f4f6;
 }

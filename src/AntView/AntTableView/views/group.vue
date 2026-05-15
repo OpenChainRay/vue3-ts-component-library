@@ -429,7 +429,7 @@ export default {
   align-items: center;
 }
 
-::v-deep .selectClass .ant-select-selection {
+:deep(.selectClass .ant-select-selection ){
   border: none;
   background-color: #f3f4f6;
 }

@@ -11,7 +11,6 @@ export async function getSubList (params) {
     url: `${BASE_URL}/module/page`,
     method: METHOD.POST,
     params: params
-  }
   })
   return requestFunc
 }
@@ -21,7 +20,6 @@ export async function disableSubById (id) {
   const requestFunc = await request({
     url: `${BASE_URL}/module/disable/${id}`,
     method: METHOD.PUT
-  }
   })
   return requestFunc
 }
@@ -31,7 +29,6 @@ export async function enableSubById (id) {
   const requestFunc = await request({
     url: `${BASE_URL}/module/enable/${id}`,
     method: METHOD.PUT
-  }
   })
   return requestFunc
 }
@@ -42,7 +39,6 @@ export async function editSubListData (data) {
     url: `${BASE_URL}/module`,
     data: data,
     method: METHOD.PUT
-  }
   })
   return requestFunc
 }
@@ -52,7 +48,6 @@ export async function deleteSubListData (id) {
   const requestFunc = await request({
     url: `${BASE_URL}/module/${id}`,
     method: METHOD.DELETE
-  }
   })
   return requestFunc
 }
@@ -63,7 +58,6 @@ export async function insertSubListData (data) {
     url: `${BASE_URL}/module`,
     data: data,
     method: METHOD.POST
-  }
   })
   return requestFunc
 }

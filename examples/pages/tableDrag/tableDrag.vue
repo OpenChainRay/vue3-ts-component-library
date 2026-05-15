@@ -22,7 +22,6 @@ export default {
   mounted () {
     this.$nextTick(() => {
       this.rowDrop()
-    }
     })
   },
   methods: {

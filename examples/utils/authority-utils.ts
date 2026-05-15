@@ -79,7 +79,6 @@ function filterMenu (menuData, permissions, roles) {
       menu.children = filterMenu(menu.children, permissions, roles)
     }
     return true
-  }
   })
 }
 
@@ -97,7 +96,6 @@ function hasToRoute (toRoute, routeList) {
         findRouter(item.children)
       }
       allRouters.push(item)
-    }
     })
   }
   findRouter(routeList)

@@ -410,12 +410,10 @@ export default {
               this.$refs.menuTable.refresh()
               this.insertVisible = false
               this.isMenuInsert = ''
-       }
      })
           } else {
             this.$message.error(result.data.msg)
           }
-        }
       })
     },
     insertFormCancel () {
@@ -438,12 +436,10 @@ export default {
               this.$refs.menuTable.refresh()
               this.refreshTree()
               this.modifyVisible = false
-       }
      })
           } else {
             this.$message.error(result.data.msg)
           }
-        }
       })
     },
     modifyFormCancel () {
@@ -500,7 +496,6 @@ export default {
           item.isLeaf = true
         }
         return item
-    }
   })
     },
     // 刷新分类树
@@ -512,7 +507,6 @@ export default {
         this.isFresh = true
         await this.getMenuTreeData(true).catch((error) => { throw new Error(error) })
         this.$message.success('菜单树刷新成功')
-    }
   })
     }, 1000),
     // 菜单树节点被选事件
@@ -544,7 +538,6 @@ export default {
         this.$refs.menuTable.refresh(false, {
           ...tableParams
           // moduleId: this.getModuleKey(e.node)
-     }
    })
       }
     },
@@ -604,7 +597,8 @@ export default {
           parentId: params.parentId,
           menuName: params.menuName,
           moduleId: params.moduleId
-              }).catch((error) => { throw new Error(error) })
+        }
+      }).catch((error) => { throw new Error(error) })
       const {
         list = [], pageNum, pageSize, pages, total
       } = result.data.data

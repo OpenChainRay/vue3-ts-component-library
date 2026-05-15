@@ -98,7 +98,6 @@ export default {
         const { cache, keys } = this
         val.forEach(key => {
           pruneCacheEntry2(cache, key, keys)
-     }
    })
         this.$emit('clear', [])
       }
@@ -119,15 +118,12 @@ export default {
   mounted () {
     this.$watch('include', val => {
       pruneCache(this, (name) => matches(val, name))
-    }
     })
     this.$watch('exclude', val => {
       pruneCache(this, (name) => !matches(val, name))
-    }
     })
     this.$watch('excludeKeys', val => {
       pruneCache(this, (name, key) => !matches(val, key))
-    }
     })
   },
 

@@ -770,7 +770,7 @@ export default {
   border-radius: 4px;
 }
 
-.shitu ::v-deep .ant-select-selection {
+.shitu :deep(.ant-select-selection ){
   border: none;
 }
 
@@ -811,16 +811,16 @@ export default {
   background-color: rgba(15, 15, 15, 0.09);
 }
 
-.addModel ::v-deep .ant-modal {
+.addModel :deep(.ant-modal ){
   margin-top: -70px !important;
 }
 
-::v-deep .ant-modal-content {
+:deep(.ant-modal-content ){
   min-width: 900px;
 }
 
 /* 针对下拉框的滚动条样式 - 提高优先级和准确性 */
-// ::v-deep .ant-select-dropdown {
+// :deep(.ant-select-dropdown ){
 //   /* 限制下拉框最大高度 */
 //   .ant-select-dropdown-menu {
 //     max-height: 200px !important;
@@ -851,22 +851,22 @@ export default {
 // }
 
 /* 备用方案 - 更具体的选择器 */
-::v-deep .ant-select-dropdown-menu::-webkit-scrollbar {
+:deep(.ant-select-dropdown-menu::-webkit-scrollbar ){
   width: 8px !important;
   height: 8px !important;
 }
 
-::v-deep .ant-select-dropdown-menu::-webkit-scrollbar-track {
+:deep(.ant-select-dropdown-menu::-webkit-scrollbar-track ){
   background: #f1f1f1 !important;
   border-radius: 4px !important;
 }
 
-::v-deep .ant-select-dropdown-menu::-webkit-scrollbar-thumb {
+:deep(.ant-select-dropdown-menu::-webkit-scrollbar-thumb ){
   background: #E3E3E6 !important;
   border-radius: 4px !important;
 }
 
-::v-deep .ant-select-dropdown-menu::-webkit-scrollbar-thumb:hover {
+:deep(.ant-select-dropdown-menu::-webkit-scrollbar-thumb:hover ){
   background: #BFC5CD !important;
 }
 </style>

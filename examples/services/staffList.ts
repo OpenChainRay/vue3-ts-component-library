@@ -14,7 +14,6 @@ export async function getStaffPage (params) {
     url: `${BASE_URL}/position/pageByType`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -25,7 +24,6 @@ export async function changeDisable (parameter) {
     url: `${BASE_URL}/position/disable/${id}`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 
@@ -36,7 +34,6 @@ export async function changeEnable (parameter) {
     url: `${BASE_URL}/position/enable/${id}`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 
@@ -46,7 +43,6 @@ export async function staffAdd (params) {
     url: `${BASE_URL}/position/add`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -56,7 +52,6 @@ export async function staffModify (params) {
     url: `${BASE_URL}/position/edit`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 

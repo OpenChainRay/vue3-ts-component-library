@@ -9,7 +9,6 @@ export async function getMenuByPage (params) {
     url: `${BASE_URL}/menu/page`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -19,7 +18,6 @@ export async function addMenu (params) {
     url: `${BASE_URL}/menu`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -29,7 +27,6 @@ export async function modifyMenu (params) {
     url: `${BASE_URL}/menu`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 
@@ -38,7 +35,6 @@ export async function getMenuTree () {
   return request({
     url: `${BASE_URL}/menu/treeModule`,
     method: METHOD.GET
-  }
   })
 }
 
@@ -48,8 +44,6 @@ export async function disableMenu (params) {
   return request({
     url: `${BASE_URL}/menu/disable/${id}`,
     method: METHOD.PUT
-
-  }
   })
 }
 
@@ -59,7 +53,6 @@ export async function enableMenu (params) {
   return request({
     url: `${BASE_URL}/menu/enable/${id}`,
     method: METHOD.PUT
-  }
   })
 }
 
@@ -69,7 +62,6 @@ export async function getRoleMenuList (params) {
   return request({
     url: `${BASE_URL}/roleMenu/getRoleMenuList/${roleId}`,
     method: METHOD.GET
-  }
   })
 }
 
@@ -79,7 +71,6 @@ export async function getRoleDataScopeList (params) {
   return request({
     url: `${BASE_URL}/role/getRoleDataScopeList/${roleId}`,
     method: METHOD.GET
-  }
   })
 }
 
@@ -89,7 +80,6 @@ export async function editRelaDataScope (params) {
     url: `${BASE_URL}/role/editRelaDataScope`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -99,7 +89,6 @@ export async function addRole (params) {
     url: `${BASE_URL}/role/add`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 // 修改角色
@@ -108,7 +97,6 @@ export async function editRole (params) {
     url: `${BASE_URL}/role`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 // 获取数据对象列表
@@ -116,7 +104,6 @@ export async function getEnableDataObjectList () {
   return request({
     url: `${BASE_URL}/dataObject/getEnableDataObjectList`,
     method: METHOD.GET
-  }
   })
 }
 // 新增角色数据权限
@@ -125,7 +112,6 @@ export async function addRelaDataScope (params) {
     url: `${BASE_URL}/role/addRelaDataScope`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -134,7 +120,6 @@ export async function getMenuList () {
   return request({
     url: `${BASE_URL}/menu/getMenuList`,
     method: METHOD.GET
-  }
   })
 }
 
@@ -144,7 +129,6 @@ export async function addRelaRoleMenu (params) {
     url: `${BASE_URL}/role/addRelaRoleMenu`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 // 删除数据权限
@@ -153,7 +137,6 @@ export async function deleteRelaDataScope (params) {
   return request({
     url: `${BASE_URL}/role/deleteRelaDataScope/${relaId}`,
     method: METHOD.DELETE
-  }
   })
 }
 
@@ -163,7 +146,6 @@ export async function deleteMenu (params) {
   return request({
     url: `${BASE_URL}/menu/${id}`,
     method: METHOD.DELETE
-  }
   })
 }
 // 根据id获取菜单详情
@@ -172,6 +154,5 @@ export async function getMenuInfoById (params) {
   return request({
     url: `${BASE_URL}/menu/${id}`,
     method: METHOD.GET
-  }
   })
 }

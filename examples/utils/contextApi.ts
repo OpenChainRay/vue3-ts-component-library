@@ -50,7 +50,6 @@ export const oftenMessage = (flag, msg) => {
         content: msg
       },
       type: 'success'
-    }
     })
   } else {
     message({
@@ -58,7 +57,6 @@ export const oftenMessage = (flag, msg) => {
         content: msg
       },
       type: 'error'
-    }
     })
   }
 }

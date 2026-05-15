@@ -12,7 +12,6 @@ function initI18n(locale: string, fallback: string) {
     locale,
     fallbackLocale: fallback,
     messages: {}
-  }
   })
 }
 
@@ -62,7 +61,6 @@ function mergeI18nFromRoutes(i18n: ReturnType<typeof createI18n>, routes: Array<
   const messages = (routesI18n as any).messages
   Object.keys(messages).forEach((lang) => {
     ;(i18n.global as any).mergeLocaleMessage(lang, messages[lang])
-  }
   })
 }
 

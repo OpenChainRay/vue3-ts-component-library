@@ -64,9 +64,8 @@ export default {
       let result
       this.$refs.form.validate().then(() => {
         result = true
-        } else {
-          result = false
-        }
+      }).catch(() => {
+        result = false
       })
       return result
     },

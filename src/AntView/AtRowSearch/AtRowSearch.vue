@@ -381,19 +381,19 @@ export default {
 </script>
 
 <style scoped>
-::v-deep .ant-input {
+:deep(.ant-input ){
   border: none;
   background: none;
 }
 
-::v-deep .ant-select-selection {
+:deep(.ant-select-selection ){
   border: none !important;
   background-color: #fafafa !important;
 }
-::v-deep .ant-select-selection__placeholder {
+:deep(.ant-select-selection__placeholder ){
   text-align: center;
 }
-::v-deep .tiny-range-input {
+:deep(.tiny-range-input ){
   text-align: left;
   padding-left: 15px;
 }

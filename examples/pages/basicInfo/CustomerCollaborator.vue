@@ -131,7 +131,6 @@ export default {
           this.formModel = { ...this.formModel, userCode: '', customerId: ''  }
           this.addVisible = false
           // 刷新页面
-        }
       })
     },
     handleCancel () {

@@ -13,7 +13,6 @@ export async function getUserInfo (params) {
     url: `${umsBaseUrl}/user/getUserInfo`,
     method: METHOD.GET,
     params: params
-  }
   })
 }
 // 获取集团所有组织（公司）
@@ -21,7 +20,6 @@ export async function getAllOrganizations () {
   return request({
     url: `${umsBaseUrl}/organization/listOption`,
     method: METHOD.GET
-  }
   })
 }
 
@@ -40,6 +38,5 @@ export function upDateVwView (params) {
     url: `${AMS_URL}/view/update`,
     method: METHOD.POST,
     params: params
-  }
   })
 }

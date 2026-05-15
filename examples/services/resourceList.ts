@@ -14,7 +14,6 @@ export async function getResourcePage (params) {
     url: `${BASE_URL}/resource/page`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -25,7 +24,6 @@ export async function changeDisable (parameter) {
     url: `${BASE_URL}/resource/disable/${id}`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 
@@ -36,7 +34,6 @@ export async function changeEnable (parameter) {
     url: `${BASE_URL}/resource/enable/${id}`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 
@@ -46,7 +43,6 @@ export async function resourceAdd (params) {
     url: `${BASE_URL}/resource`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -56,6 +52,5 @@ export async function resourceModify (params) {
     url: `${BASE_URL}/resource`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }

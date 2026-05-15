@@ -23,7 +23,6 @@ function initRouter(isAsync: boolean) {
   const router = createRouter({
     history: createWebHashHistory(),
     routes: options.routes
-  }
   })
 
   const originalPush = router.push.bind(router)

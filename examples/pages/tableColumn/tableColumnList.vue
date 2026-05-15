@@ -649,11 +649,11 @@ export default {
           mergeColumns = []
         }
         if (data) {
-          this.formModel = { ...this.formModel, {
+          this.formModel = { ...this.formModel,
             mergeColumns: mergeColumns, // 需要合并的列编码
             // mergeColumns: ['b34444ab-6644-4e18-baac-f18e3093ec76'], // 需要合并的列编码
             mergeKeyColumn: data.mergeKeyColumn // 合并基准列编码
-          } }
+          }
         }
       } else {
         this.$message.error(result.data.msg)

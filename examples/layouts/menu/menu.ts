@@ -70,7 +70,6 @@ const resolvePath = (path, params = {}) => {
   let _path = path
   Object.entries(params).forEach(([key, value]) => {
     _path = _path.replace(new RegExp(`:${key}`, 'g'), value)
-  }
   })
   return _path
 }
@@ -147,7 +146,6 @@ export default {
       const messages = this.i18n.messages
       Object.keys(messages).forEach(key => {
         this.$i18n.mergeLocaleMessage(key, messages[key])
-    }
   })
     }
   },
@@ -162,7 +160,6 @@ export default {
         const messages = this.i18n.messages
         Object.keys(messages).forEach(key => {
           this.$i18n.mergeLocaleMessage(key, messages[key])
-     }
    })
       }
     },
@@ -230,7 +227,6 @@ export default {
           }
           vnode.data.class = vnode.data.class ? vnode.data.class : []
           vnode.data.class.push('anticon')
-     }
    })
         return vnodes
       }

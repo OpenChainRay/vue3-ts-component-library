@@ -101,7 +101,7 @@ export default {
 </script>
 
 <style  lang="less" scoped>
-::v-deep .ant-statistic-content-value-decimal {
+:deep(.ant-statistic-content-value-decimal ){
   font-size: 14px;
 }
 
@@ -112,7 +112,7 @@ export default {
   color: rgba(0, 0, 0, 0.25);
   pointer-events: none;
 
-  ::v-deep .ant-statistic-content {
+  :deep(.ant-statistic-content ){
     color: rgba(0, 0, 0, 0.25);
   }
 }

@@ -127,7 +127,6 @@ export default {
       if (isFresh) {
         this.$refs.departmentTable.refresh(false, {
           parentId: departmentTreeList[0].key
-     }
    })
       }
     },
@@ -142,7 +141,6 @@ export default {
           item.isLeaf = true
         }
         return item
-    }
   })
     },
     // 刷新分类树
@@ -153,7 +151,6 @@ export default {
         this.isFresh = true
         await this.getDepartmentTreeData(true).catch((error) => { throw new Error(error) })
         this.$message.success('部门树已刷新')
-    }
   })
     }, 1000),
     // 部门树节点被选事件
@@ -179,7 +176,6 @@ export default {
         })
         this.$refs.departmentTable.refresh(false, {
           parentId: selectKeys[0]
-     }
    })
       }
     },
@@ -214,7 +210,8 @@ export default {
         param: {
           parentId: params.id || this.departmentTreeCheckedKeys[0],
           departmentName: params.departmentName
-              }).catch((error) => { throw new Error(error) })
+        }
+      }).catch((error) => { throw new Error(error) })
       const {
         list = [], pageNum, pageSize, pages, total
       } = result.data.data

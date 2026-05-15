@@ -188,7 +188,6 @@ export default {
             duration: 5
           },
           type: 'error'
-     }
    })
       }
     },
@@ -212,7 +211,6 @@ export default {
                 duration: 5
               },
               type: 'success'
-       }
      })
             this.$refs.table.refresh()
           } else {
@@ -225,7 +223,6 @@ export default {
                 duration: 5
               },
               type: 'error'
-       }
      })
           }
         }
@@ -269,7 +266,6 @@ export default {
             duration: 5
           },
           type: 'error'
-     }
    })
       }
     }

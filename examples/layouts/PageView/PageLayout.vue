@@ -80,7 +80,6 @@ export default {
         const i18nBreadcrumb = []
         breadcrumb.forEach(item => {
           i18nBreadcrumb.push(this.$t(item))
-     }
    })
         return i18nBreadcrumb
       } else {
@@ -101,7 +100,6 @@ export default {
         .forEach(route => {
           const path = route.path.length === 0 ? '/home' : route.path
           breadcrumb.push(this.$t(getI18nKey(path)))
-     }
    })
       const pageTitle = this.page && this.page.title
       if (this.customTitle || pageTitle) {

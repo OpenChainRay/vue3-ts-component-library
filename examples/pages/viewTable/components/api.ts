@@ -8,7 +8,6 @@ export function mappingAdd (params) {
     url: `${umsBaseUrl}/component/filter/mapping/add`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -17,7 +16,6 @@ export function mappingEdit (params) {
     url: `${umsBaseUrl}/component/filter/mapping/edit`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -26,7 +24,6 @@ export function getDefaultViewInfo (tableCode) {
   return request({
     url: `${umsBaseUrl}/component/view/reviewView/${tableCode}`,
     method: METHOD.GET
-  }
   })
 }
 
@@ -35,6 +32,5 @@ export function mappingpage (params) {
     url: `${umsBaseUrl}/component/filter/mapping/page`,
     method: METHOD.POST,
     params: params
-  }
   })
 }

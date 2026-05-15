@@ -81,12 +81,10 @@ export default {
               this.$refs.addForm?.resetFields()
               this.addCancel()
               eventBus.emit('viewTableList')
-       }
      })
           } else {
             this.$message.error(data.msg)
           }
-        }
       })
     },
     // 关闭弹窗

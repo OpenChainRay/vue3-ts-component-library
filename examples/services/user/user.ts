@@ -10,7 +10,6 @@ export async function getUserByPage (params) {
     url: `${BASE_URL}/user/page`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 // 启用用户
@@ -19,8 +18,6 @@ export async function enableUser (params) {
   return request({
     url: `${BASE_URL}/user/enable/${id}`,
     method: METHOD.PUT
-
-  }
   })
 }
 // 停用用户
@@ -29,8 +26,6 @@ export async function disableUser (params) {
   return request({
     url: `${BASE_URL}/user/disable/${id}`,
     method: METHOD.PUT
-
-  }
   })
 }
 // 重置密码
@@ -39,7 +34,6 @@ export async function initPassword (params) {
   return request({
     url: `${BASE_URL}/user/initPassword/${id}`,
     method: METHOD.GET
-  }
   })
 }
 // 修改用户
@@ -48,7 +42,6 @@ export async function editUser (params) {
     url: `${BASE_URL}/user`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 
@@ -58,7 +51,6 @@ export async function addUser (params) {
     url: `${BASE_URL}/user`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 // 获取下拉员工信息
@@ -66,7 +58,6 @@ export async function getEmployeeList () {
   return request({
     url: `${BASE_URL}/employee/listEmployeeOption`,
     method: METHOD.GET
-  }
   })
 }
 
@@ -76,7 +67,6 @@ export async function getRelaUser (params) {
   return request({
     url: `${BASE_URL}/user/getRelaUserRoleListByUserId/${userId}`,
     method: METHOD.GET
-  }
   })
 }
 
@@ -86,7 +76,6 @@ export async function addRelaUserRole (params) {
     url: `${BASE_URL}/user/addRelaUserRole`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -96,7 +85,6 @@ export async function getRoleList (params) {
     url: `${BASE_URL}/role/getRoleList`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -106,6 +94,5 @@ export async function deleteRelaUserRole (params) {
   return request({
     url: `${BASE_URL}/user/deleteRelaUserRole/${relaId}`,
     method: METHOD.DELETE
-  }
   })
 }

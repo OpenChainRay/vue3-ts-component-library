@@ -14,7 +14,6 @@ export async function getDataPage (params) {
     url: `${BASE_URL}/dataObject/page`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -25,7 +24,6 @@ export async function changeDisable (parameter) {
     url: `${BASE_URL}/dataObject/disable/${id}`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 
@@ -36,7 +34,6 @@ export async function changeEnable (parameter) {
     url: `${BASE_URL}/dataObject/enable/${id}`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 
@@ -46,7 +43,6 @@ export async function dataObjectAdd (params) {
     url: `${BASE_URL}/dataObject`,
     method: METHOD.POST,
     params: params
-  }
   })
 }
 
@@ -56,7 +52,6 @@ export async function dataObjectModify (params) {
     url: `${BASE_URL}/dataObject`,
     method: METHOD.PUT,
     params: params
-  }
   })
 }
 // 初始化数据对象
@@ -65,6 +60,5 @@ export async function initDataObj (params) {
     url: `${BASE_URL}/dataObject/init`,
     method: METHOD.GET,
     params: params
-  }
   })
 }

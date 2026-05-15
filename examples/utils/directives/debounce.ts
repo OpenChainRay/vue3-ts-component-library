@@ -40,7 +40,6 @@ const permission = {
     } = binding.value
     debounced = debounce(func, wait, {
       maxWait: 1000
-    }
     })
     el.addEventListener(eventName, debounced)
   },

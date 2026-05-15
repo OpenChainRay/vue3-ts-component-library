@@ -71,7 +71,6 @@ const myMixin = {
         }
       }
       // if (this.resizeObserver) { this.resizeObserver.disconnect() }
-    }
     })
     this.resizeObserver = resizeObserver
     if (this.$refs.tContainer) {
@@ -104,7 +103,6 @@ const myMixin = {
           fields = []
           this.mergeColumns.forEach(e => {
             fields.push(e)
-      }
     })
           return this.megerFunction(data, fields, column, $rowIndex, cellValue)
         }
@@ -155,13 +153,11 @@ const myMixin = {
         tempColums.push(v.rowMerge.mergeKeyColumn)
         v.rowMerge.mergeColumnList.forEach(e => {
           tempColums.push(e)
-     }
    })
 
         tempColums.forEach(e => {
           const item = this.tableColumns.find(colums => {
             return colums.code == e
-      }
     })
           if (item) {
             mergeColumns.push(item.dataIndex)
@@ -192,7 +188,8 @@ const myMixin = {
               this.resourceButtonList = result.data.data
             } else {
               this.$antmessage.error(result.data.msg)
-                      }).catch((error) => { throw new Error(error) })
+            }
+          }).catch((error) => { throw new Error(error) })
         }
       }
     },
@@ -213,7 +210,6 @@ const myMixin = {
       columns.forEach((element, index) => {
         // 重新排序
         element.sortNo = index
-    }
   })
       // 将列上的顺序赋给保存所有列的数据
       columns.forEach(item => {
@@ -231,9 +227,7 @@ const myMixin = {
               }
             })
           }
-     }
    })
-    }
   })
       // 准备接口需要的数据格式
       const groups = []
@@ -247,7 +241,6 @@ const myMixin = {
         }
         groups.push(obj)
         return obj
-    }
   })
 
       const params = {
@@ -271,18 +264,16 @@ const myMixin = {
       console.log(data)
       this.isDraging = true
       this.tableLoading = true
+
       this.tableColumns.forEach(item => {
         if (item.dataIndex == data.column.property) {
           console.log(item)
           item.width = data.column.resizeWidth
         }
       })
-      //
+
       const requestGroups = []
       this.allColumnQuote.forEach(group => {
-        // 分组下的所有列数据
-        /** list:Array[16]
-      name:"销售出库字段 */
         if (group) {
           group.list.forEach(item => {
             if (item.dataIndex == data.column.property) {
@@ -290,12 +281,10 @@ const myMixin = {
               item.width = data.column.resizeWidth
             }
           })
-          const obj = {
+          requestGroups.push({
             name: group.name,
             columnList: group.list
-          }
-
-          requestGroups.push(obj)
+          })
         }
       })
 
@@ -309,14 +298,11 @@ const myMixin = {
       }, 1000)
     },
     columnDropEnd({ oldIndex, newIndex }) {
-      // this.saveViewChange(this.tableColumns, this.allColumnQuote, this.viewConfig)
       if (newIndex == oldIndex) return
       const headerDom = this.$refs.table.$el.querySelector('.tiny-grid-header__row')
-      // console.log(headerDom)
 
       headerDom.childNodes.forEach((cell, index) => {
         const column = this.$refs.table.getColumnById(cell.attributes[0].value)
-
         if (column && column.property) {
           this.tableColumns.findIndex((remoteColumn) => {
             if (remoteColumn.dataIndex == column.property) {
@@ -324,28 +310,22 @@ const myMixin = {
               return true
             }
             return false
-      }
-    })
+          })
         }
       })
 
       const newColumns = JSON.parse(JSON.stringify(this.tableColumns))
       newColumns.sort((a, b) => {
         if (a.sortNo > b.sortNo) {
-          // a 在 b 后，如 [b, a]
           return 1
-        } else {
-          return -1
         }
+        return -1
       })
-      // 保存数据
-      // 调用mixin中的方法
       this.tinySwitchColumnAndSaveData(newColumns, this.allColumnQuote, this.viewConfig)
     },
     tinySwitchColumnAndSaveData(columns, allColumnQuote, viewConfig) {
       columns.forEach((element, index) => {
         if (element.sortNo > -1) { element.sortNo = index }// 重新排序
-    }
   })
       columns.forEach(item => {
         allColumnQuote.forEach(it => {
@@ -360,10 +340,8 @@ const myMixin = {
               }
             })
           }
-     }
-   })
-    }
-  })
+        })
+      })
       const groups = []
 
       allColumnQuote.map((item, index) => {
@@ -376,7 +354,6 @@ const myMixin = {
 
         groups.push(obj)
         return obj
-    }
   })
 
       const params = {
@@ -389,19 +366,16 @@ const myMixin = {
     async updata(params) {
       const updateResult = await upDateVwView(params).catch((error) => { throw new Error(error) }).finally(() => {
         this.isDraging = false
-    }
   })
       if (updateResult.data.code && updateResult.data.code == 200) {
         this.tableLoading = false
         this.$nextTick(() => {
           this.changeColumn = true
-     }
    })
       } else {
         this.tableLoading = false
         this.$nextTick(() => {
           this.changeColumn = true
-     }
    })
         this.$antmessage.error(updateResult.data.msg)
       }
@@ -504,7 +478,6 @@ const myMixin = {
           filters.push({
             ...obj,
             fieldName: obj.columnTitle
-      }
     })
         }
       } else if (obj.paramType == 2) {
@@ -527,7 +500,6 @@ const myMixin = {
         array.forEach(item => {
           // TODO 根据relationType 封装查询代码
           this.trans2Search(item)
-     }
    })
 
         this.$refs.table.refresh(true)
@@ -673,7 +645,8 @@ const myMixin = {
             valueTextList.push(list[index][label]);
           } else {
             valueTextList.push(item);
-                  });
+          }
+        });
         return valueTextList.join(",");
       } else {
         return value;

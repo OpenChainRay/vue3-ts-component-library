@@ -5,7 +5,6 @@ import userAvatar from '@/assets/icons/avatar.png'
 const formatterOptions = (list, rObj) => {
   return list?.map((item) => {
     return rObj(item)
-  }
   })
 }
 const getDefaultState = () => {
@@ -128,7 +127,6 @@ export default {
         const sortList = user.departmentDtoList
         sortList?.sort((a, b) => {
           return a.ancestor.length - b.ancestor.length
-     }
    })
         // state.currentDepartment = state.departmentsOptions[0]
         state.currentDepartment = {
@@ -158,7 +156,6 @@ export default {
             duration: 5
           },
           type: 'error'
-     }
    })
       }
       return state.departmentsOptions
@@ -205,7 +202,6 @@ export default {
       const initState = getDefaultState()
       Object.keys(initState).forEach(key => {
         state[key] = initState[key]
-    }
   })
     },
     setUserToken (state, token) {
@@ -294,7 +290,6 @@ export default {
           // 是否第一次登录
           passwordOnce: userObj.passwordOnce
 
-     }
    })
         commit('setDepartmentsOptions', userObj.departmentDtoList)
       } else {
@@ -306,7 +301,6 @@ export default {
             duration: 5
           },
           type: 'error'
-     }
    })
       }
     },
@@ -337,7 +331,6 @@ export default {
               duration: 5
             },
             type: 'error'
-      }
     })
         }
       }

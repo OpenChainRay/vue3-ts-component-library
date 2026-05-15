@@ -299,7 +299,6 @@ export default {
               this.$message.success(result.data.msg)
               this.$refs.modifyForm?.resetFields()
               // this.age = ''
-       }
      })
             this.$refs.table.refresh()
           } else {
@@ -335,7 +334,6 @@ export default {
             this.$message.success(result.data.msg)
             this.$nextTick(() => {
               this.$refs.insertForm?.resetFields()
-       }
      })
             this.insertVisible = false
             this.$refs.table.refresh()
@@ -343,7 +341,6 @@ export default {
             // this.$refs.insertForm?.resetFields()
             this.$message.error(result.data.msg)
           }
-        }
       })
     },
     // 新增取消

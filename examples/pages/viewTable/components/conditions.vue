@@ -118,7 +118,6 @@ export default {
             }
           })
           this.length += item.list.length
-     }
    })
         // this.isSelected.sort((a, b) => { // 排序
         //   return a.sortNo - b.sortNo
@@ -128,11 +127,9 @@ export default {
         let allColumns = []
         response.columns.forEach(group => {
           allColumns = allColumns.concat(group.columnList)
-     }
    })
         allColumns = allColumns.filter(column => {
           return this.checkColumn(column)
-     }
    })
         // 全部列数据
         this.selectColumnList = [...allColumns]
@@ -351,7 +348,6 @@ export default {
       console.log(this.conditions,this.columns,'this.conditions')
       this.$nextTick(()=>{
         this.addVisible = true
-    }
   })
     },
     // 保存
@@ -405,18 +401,14 @@ export default {
             operator: item.operator,
             type: item.type,
             value: item.value
-      }
-    })
-     }
-   })
+          })
+        })
         tableSearchList.push({
           filters: filters,
           groupType: element.groupType,
           relationType: element.relationType
-     }
-   })
-    }
-  })
+        })
+      })
       console.log(tableSearchList, 'tableSearchList')
       return tableSearchList
     },

@@ -50,7 +50,6 @@ async function request (paramConfig) {
     data: method != 'get' ? localData : {},
     ...otherConfig,
     headers: { Authorization: Authorization }
-  }
   })
   return axiosFun
 }
@@ -131,7 +130,6 @@ function loadInterceptors (interceptors, options) {
       config => onFulfilled(config, options),
       error => onRejected(error, options)
     )
-  }
   })
   // 加载响应拦截器
   response.forEach(item => {
@@ -146,7 +144,6 @@ function loadInterceptors (interceptors, options) {
       response => onFulfilled(response, options),
       error => onRejected(error, options)
     )
-  }
   })
 }
 

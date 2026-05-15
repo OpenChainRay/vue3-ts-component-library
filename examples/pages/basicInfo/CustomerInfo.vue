@@ -228,7 +228,6 @@ export default {
           this.$message.success(result.data.msg)
           this.formModel = { ...this.formModel, typeId: ''  }
           this.erpVisible = false
-        }
       })
     },
     handleERPCancel () {

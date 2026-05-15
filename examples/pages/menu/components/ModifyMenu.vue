@@ -122,14 +122,11 @@ export default {
                 fullPath: '/menu/MenuList.vue',
                 path: 'menuList',
                 name: '菜单列表'
-        }
-      })
-       }
-     })
+              })
+            })
           } else {
             this.$message.error(result.data.msg)
           }
-        }
       })
     },
     resetForm () {

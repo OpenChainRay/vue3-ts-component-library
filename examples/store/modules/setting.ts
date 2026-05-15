@@ -37,7 +37,6 @@ export default {
         const menuItem = { ...item }
         delete menuItem.children
         return menuItem
-    }
   })
     },
     subMenu (state) {

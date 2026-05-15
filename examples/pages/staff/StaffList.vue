@@ -168,21 +168,18 @@ export default {
             this.$nextTick(() => {
               this.$refs.modifyForm?.resetFields()
               this.$refreshPage('/personnel')
-       }
      })
             this.$refs.table.refresh()
             this.postNameVisible = false
           } else {
             this.$message.error(result.data.msg)
           }
-        }
       })
     },
     // 取消岗位名称修改
     handlePostNameCancel () {
       this.$nextTick(() => {
         this.$refs.modifyForm?.resetFields()
-    }
   })
       this.postNameVisible = false
     },
@@ -209,7 +206,6 @@ export default {
             this.$nextTick(() => {
               this.$refs.insertForm?.resetFields()
               this.$refreshPage('/personnel')
-       }
      })
             // console.log('岗位名称: ', values.positionName)
             this.insertVisible = false
@@ -217,7 +213,6 @@ export default {
           } else {
             this.$message.error(result.data.msg)
           }
-        }
       })
     },
     // 新增取消
