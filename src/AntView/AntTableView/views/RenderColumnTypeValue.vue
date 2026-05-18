@@ -6,11 +6,11 @@
     <span v-else-if="operator === logicOperate.IS_NOT_NULL.state" style="width: 100%"></span>
     <!-- 输入框  -->
     <div v-if="columnType === ColumnType.Input">
-      <a-input style="width: 100%" placeholder="请输入值" :disabled="disabled" v-model='itemValue' @change="changeValue" />
+      <a-input style="width: 100%" placeholder="请输入值" :disabled="disabled" v-model:value="itemValue" @change="changeValue" />
     </div>
     <!--字典  && 不为空   :mode="column.isMultiple == 1 ? 'multiple' : 'default'"  -->
     <div v-else-if="columnType === ColumnType.Dict && operator !== logicOperate.IS_NOT_NULL.state" class='flex between'>
-      <a-select mode="multiple" v-model="itemValue" style="width:100%;" placeholder="请选择值" :disabled="disabled" @change="changeValue"
+      <a-select mode="multiple" v-model:value="itemValue" style="width:100%;" placeholder="请选择值" :disabled="disabled" @change="changeValue"
         :filter-option="filterOption" :dropdownMatchSelectWidth="false">
         <a-select-option v-for="(item, index) in dictList" :key="index" :value="item.dictId">
           {{ item.dictText }}
@@ -19,7 +19,7 @@
     </div>
     <!--布尔-->
     <div v-else-if="columnType === ColumnType.BOOLEAN" class="content">
-      <a-select v-model="itemValue" :placeholder="'请选择值'" style="width:100%;" :disabled="disabled" @change="changeValue">
+      <a-select v-model:value="itemValue" :placeholder="'请选择值'" style="width:100%;" :disabled="disabled" @change="changeValue">
         <template v-for="(item, index) in YesOrNo">
           <a-select-option v-if="item.value==='0'||item.value==='1'" :key="index+'_'+item.value" :value="item.value">
             {{ item.label }}
@@ -31,7 +31,7 @@
     <div v-else-if="columnType === ColumnType.DataSource && operator !== logicOperate.IS_NOT_NULL.state" class='flex between'>
       <!--   interactiveType  TEXT_INPUT(1, "文本输入"),OPTION(2, "下拉选择"), -->
       <a-input v-if="column.interactiveType == null || column.interactiveType == 1" style="width: 100%" placeholder="请输入值" :disabled="disabled"
-        v-model='itemValue' @change="changeValue" />
+        v-model:value="itemValue" @change="changeValue" />
       <div v-else-if="column.querySource && column.querySource.queryCode" style="width: 100%;">
         <!-- 不能使用传值 pageNums 等值   因为他们增加条件  它们共用的是一个表头   修改一个其他的都会改变   需要组件自身的pageNum 闭包 -->
         <selectPage :placeholder="'请选择'+column.columnTitle" v-model="itemValue" :selectList.sync="dateSourceList" :selectOptionName="column.selectName"
@@ -43,7 +43,7 @@
         <selectLazy v-if="column.columnMap && column.columnMap.custom" :placeholder="'请选择'+column.columnTitle" v-model="itemValue" :selectList="dateSourceList"
           :selectOptionName="column.columnMap.selectName" :selectOptionValue="column.columnMap.selectValue" :mode="false" style="width:100%;">
         </selectLazy>
-        <a-select v-else v-model="itemValue" style="width:100%;" :disabled="disabled" @change="changeValue" :filter-option="filterOption"
+        <a-select v-else v-model:value="itemValue" style="width:100%;" :disabled="disabled" @change="changeValue" :filter-option="filterOption"
           :dropdownMatchSelectWidth="false" :mode="column.columnMap ? column.columnMap.allowMultiple : 'default'">
           <a-select-option v-for=" (item, index) in dateSourceList" :key="index" :value="item.dictId">
             {{ item.dictText }}
@@ -54,12 +54,12 @@
     <!--树结构-->
     <div v-else-if="columnType === ColumnType.TreeMode" class='flex between'>
       <div v-if="column.querySource && column.querySource.queryCode" style="width: 100%;">
-        <a-tree-select v-if="dateSourceList && dateSourceList.length" show-search v-model="itemValue" tree-data-simple-mode
+        <a-tree-select v-if="dateSourceList && dateSourceList.length" show-search v-model:value="itemValue" tree-data-simple-mode
           :replaceFields="{children:'children', title:column.selectName, key:column.selectValue,value:column.selectValue }" style="width: 100%"
           tree-node-filter-prop='title' :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }" :tree-data="dateSourceList" />
       </div>
       <div v-else style="width: 100%;">
-        <a-tree-select v-if="dateSourceList && dateSourceList.length" show-search v-model="itemValue" tree-data-simple-mode
+        <a-tree-select v-if="dateSourceList && dateSourceList.length" show-search v-model:value="itemValue" tree-data-simple-mode
           :replaceFields="column.columnMap.replaceFields" style="width: 100%" tree-node-filter-prop='title'
           :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }" :tree-data="dateSourceList" />
       </div>
@@ -70,44 +70,44 @@
       <!-- 等于 大于 小于 大于等于 小于等于 不等于 选择日期 -->
       <div v-if="singleDataLogicOperateType.indexOf(operator) !== -1">
         <div style="display: flex;align-items: center;">
-          <a-date-picker v-model="itemValue" format="YYYY-MM-DD" :disabled="disabled" style="width: 100%" placeholder="选择日期" @change="changeValue" />
+          <a-date-picker v-model:value="itemValue" format="YYYY-MM-DD" :disabled="disabled" style="width: 100%" placeholder="选择日期" @change="changeValue" />
         </div>
       </div>
       <!-- 指定日期 -->
       <div v-if="operator === logicOperate.APPOINT_DATE.state">
-        <a-date-picker v-model="itemValue" format="YYYY-MM-DD" :disabled="disabled" style="width: 100%" placeholder="选择日期" @change="changeValue" />
+        <a-date-picker v-model:value="itemValue" format="YYYY-MM-DD" :disabled="disabled" style="width: 100%" placeholder="选择日期" @change="changeValue" />
       </div>
       <!-- 今天之后N天之前 -->
       <div v-if="operator === logicOperate.AFTER_TODAY_BEFORE_ONE_DAY.state">
-        <a-input-number :disabled="disabled" v-model="itemValue" :min="0" @change="changeValue" />
+        <a-input-number :disabled="disabled" v-model:value="itemValue" :min="0" @change="changeValue" />
       </div>
       <!--两个日期 BETWEEN 之间  -->
       <div v-if="operator === logicOperate.BETWEEN.state" style="width: 100%">
-        <a-date-picker :disabled="disabled" style="width: calc( 49% - 14px)" v-model="itemValue.startTime" :disabledDate="disabledDateStart" format="YYYY-MM-DD"
+        <a-date-picker :disabled="disabled" style="width: calc( 49% - 14px)" v-model:value="itemValue.startTime" :disabledDate="disabledDateStart" format="YYYY-MM-DD"
           placeholder="日期开始时间" @change="onChangeStartTwo" @openChange="openChange" />
         <span style="padding:6px;">到</span>
-        <a-date-picker :disabled="disabled" style="width: calc( 49% - 14px)" v-model="itemValue.endTime" :disabledDate="disabledDateEnd" format="YYYY-MM-DD"
+        <a-date-picker :disabled="disabled" style="width: calc( 49% - 14px)" v-model:value="itemValue.endTime" :disabledDate="disabledDateEnd" format="YYYY-MM-DD"
           placeholder="日期结束时间" @change="onChangeEndTwo" @openChange="openChange" />
       </div>
       <!--为空 不为空，无日期-->
       <a-input :disabled="disabled" v-if="operator === logicOperate.IS_NULL.state || operator === logicOperate.IS_NOT_NULL.state" placeholder="请输入标题"
-        v-model='itemValue' style="width:100%;visibility: hidden" @change="changeValue" />
+        v-model:value="itemValue" style="width:100%;visibility: hidden" @change="changeValue" />
       <!--动态时间-->
       <template v-if="operator === logicOperate.D_DATE.state">
         <!--输入框第一个值-->
-        <a-input-number id="inputNumber" :disabled="disabled" v-model="itemValue.preValue" :min="0" @change="(val) => { onChangeNumber(itemValue) }"
+        <a-input-number id="inputNumber" :disabled="disabled" v-model:value="itemValue.preValue" :min="0" @change="(val) => { onChangeNumber(itemValue) }"
           style="width:20%;margin-right:1%" />
         <!--下来框框第二个值-->
-        <a-select v-model="itemValue.preType" :disabled="disabled" style="width: calc( 32% - 35px);margin-right:1%" @change='onChangeNumber(itemValue)'
+        <a-select v-model:value="itemValue.preType" :disabled="disabled" style="width: calc( 32% - 35px);margin-right:1%" @change='onChangeNumber(itemValue)'
           :dropdownMatchSelectWidth="false">
           <a-select-option v-for="(item, index) in timeList" :key="index" :value="item.value">
             {{ item.key }}
           </a-select-option>
         </a-select>
         <span style="padding:3px;color:#d9d9d9">—</span>
-        <a-input-number :disabled="disabled" id="inputNumber" v-model="itemValue.sufValue" :min="0" @change="(val) => { onChangeNumber(itemValue) }"
+        <a-input-number :disabled="disabled" id="inputNumber" v-model:value="itemValue.sufValue" :min="0" @change="(val) => { onChangeNumber(itemValue) }"
           style="width:20%;margin-right:1%" />
-        <a-select :disabled="disabled" v-model="itemValue.sufType" @change="onChangeNumber(itemValue)" style="width:calc( 30% - 35px)"
+        <a-select :disabled="disabled" v-model:value="itemValue.sufType" @change="onChangeNumber(itemValue)" style="width:calc( 30% - 35px)"
           :dropdownMatchSelectWidth="false">
           <a-select-option v-for="(item, index) in timeList" :key="index" :value="item.value">
             {{ item.key }}
@@ -117,13 +117,13 @@
       </template>
       <!--日历时间-->
       <div v-if="operator === logicOperate.C_DATE.state" style="width: 100%">
-        <a-select :disabled="disabled" style="width:32.3333%;" @change="onChangeNumberCalendar(itemValue)" v-model="itemValue.preType"
+        <a-select :disabled="disabled" style="width:32.3333%;" @change="onChangeNumberCalendar(itemValue)" v-model:value="itemValue.preType"
           :dropdownMatchSelectWidth="false">
           <a-select-option v-for="(item, index) in calendarTimeOption" :key="index" :value="item.value"> {{ item.key }} </a-select-option>
         </a-select>
-        <a-input-number id="inputNumber" :min="0" style="width:32.3333%;" :disabled='disabled?disabled:itemValue.preType === 2' v-model="itemValue.value"
+        <a-input-number id="inputNumber" :min="0" style="width:32.3333%;" :disabled='disabled?disabled:itemValue.preType === 2' v-model:value="itemValue.value"
           @change="onChangeNumberCalendar(itemValue)" />
-        <a-select v-model="itemValue.sufType" style="width:32.3333%;" @change="onChangeNumberCalendar(itemValue)" :dropdownMatchSelectWidth="false">
+        <a-select v-model:value="itemValue.sufType" style="width:32.3333%;" @change="onChangeNumberCalendar(itemValue)" :dropdownMatchSelectWidth="false">
           <a-select-option v-for="(item, index) in calendarDateType" :key="index" :value="item.value">
             {{ item.key }}
           </a-select-option>
@@ -136,12 +136,12 @@
     </div>
     <!--数字-->
     <div v-else-if="columnType === ColumnType.NUMBER" class="content">
-      <a-input-number id="inputNumber" style="width:100%" :disabled="disabled" @change="changeValue" v-model="itemValue" :min="0" />
+      <a-input-number id="inputNumber" style="width:100%" :disabled="disabled" @change="changeValue" v-model:value="itemValue" :min="0" />
     </div>
     <!-- 金额 -->
     <div v-else-if="columnType === ColumnType.JE">
-      <!-- <at-statistic :disabled="disabled" style="width:100%" align="right" :min="0" v-model="itemValue" @change="changeValue" /> -->
-      <a-input-number id="inputNumber" style="width:100%" :disabled="disabled" @change="changeValue" v-model="itemValue" :min="0" />
+      <!-- <at-statistic :disabled="disabled" style="width:100%" align="right" :min="0" v-model:value="itemValue" @change="changeValue" /> -->
+      <a-input-number id="inputNumber" style="width:100%" :disabled="disabled" @change="changeValue" v-model:value="itemValue" :min="0" />
     </div>
   </div>
 </template>
@@ -562,8 +562,7 @@ export default {
     filterOption (input, option) {
       return this.getOptionText(option).toLowerCase().indexOf(String(input).toLowerCase()) >= 0
     },
-    changeValue (val) {
-      console.log(this.getValue())
+    changeValue (_val) {
       this.$emit('change', this.getValue())
     },
     checkValue () {

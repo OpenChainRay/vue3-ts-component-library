@@ -3,7 +3,7 @@
     <div class="relativeClass">
       <div class='flex selectAndOr' v-if='searchListLength>1'>
         <div class="line-operate"></div>
-        <a-select class='selectClass' v-model="currentRelationType" @change="relationTypeChange" :disabled="disabled">
+        <a-select class='selectClass' v-model:value="currentRelationType" @change="relationTypeChange" :disabled="disabled">
           <a-select-option v-for="(item, index) in operaterList" :key="index" :value="item.value">
             {{ item.label }}
           </a-select-option>
@@ -30,7 +30,7 @@
               </div>
               <div class='flex selectAndOr' v-if='filtersLength(item.filters)>1' style="padding-left: 10px;">
                 <div class="line-operate"></div>
-                <a-select class='selectClass' v-model="item.relationType" :disabled="disabled">
+                <a-select class='selectClass' v-model:value="item.relationType" :disabled="disabled">
                   <a-select-option v-for="(item, index) in operaterList" :key="index" :value="item.value">
                     {{ item.label }}
                   </a-select-option>
@@ -196,32 +196,38 @@ export default {
           const index = this.getIndex(element)
           // console.log(index)
           if (index !== -1) {
-            this.$refs.group[index].updateColumn(element.column, element.operator, this.currentTableCode, element.value)
+            this.getGroupRefs()[index].updateColumn(element.column, element.operator, this.currentTableCode, element.value)
           }
         })
       }
+    },
+    /** v-for ref 在 Vue3 多为数组，单条件时也可能为单实例 */
+    getGroupRefs () {
+      const r = this.$refs.group
+      if (!r) return []
+      return Array.isArray(r) ? r : [r]
     },
     checkValue (filter) {
       const index = this.getIndex(filter)
       if (index !== -1) {
         // console.log(index, this.$refs.group)
-        return this.$refs.group[index].checkValue(filter)
+        return this.getGroupRefs()[index].checkValue(filter)
       }
     },
     getValue (filter) {
       const index = this.getIndex(filter)
       if (index !== -1) {
-        return this.$refs.group[index].getValue(filter)
+        return this.getGroupRefs()[index].getValue(filter)
       }
     },
     getIndex (item) {
-      const group = this.$refs.group
+      const group = this.getGroupRefs()
       const index = group.findIndex((items) => items.item.uuid === item.uuid)
       return index
     },
-    relationTypeChange (event) {
-      console.log(event)
-      this.$emit('update:relationType', event)
+    relationTypeChange (val) {
+      const v = typeof val === 'object' && val && 'target' in val ? val.target.value : val
+      this.$emit('update:relationType', v)
     }
   }
 

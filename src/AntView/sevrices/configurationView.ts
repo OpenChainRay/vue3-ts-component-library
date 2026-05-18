@@ -3,19 +3,22 @@ import axios from 'axios'
 
 type BaseUrlOptions = {
   APP_VIEW_URL?: string
+  /** base 服务地址，字典 /dict/getDict 等 */
   APP_CMS_URL?: string
+  APP_BASE_URL?: string
   xsrfHeaderName?: string
 }
 
 const UMS_URL = process.env.APP_UMS_URL
 let APP_VIEW_URL = ''
-let APP_CMS_URL = ''
+/** 字典接口基址，优先 APP_BASE_URL，兼容旧 APP_CMS_URL */
+let APP_BASE_URL = ''
 const headers = { 'content-type': 'application/x-www-form-urlencoded' }
 
 /** 设置视图服务基础地址 */
 export function setBaseUrl (options: BaseUrlOptions = {}) {
   APP_VIEW_URL = options.APP_VIEW_URL || ''
-  APP_CMS_URL = options.APP_CMS_URL || ''
+  APP_BASE_URL = options.APP_BASE_URL || options.APP_CMS_URL || ''
   if (options.xsrfHeaderName) {
     axios.defaults.xsrfHeaderName = options.xsrfHeaderName
   }
@@ -258,7 +261,7 @@ export async function getAllFilterColumns (tableCode: string) {
 /** 批量获取字典 */
 export async function getDictList (param: unknown) {
   return await request({
-    url: `${APP_CMS_URL}/dict/getDictList`,
+    url: `${APP_BASE_URL}/dict/getDictList`,
     method: METHOD.POST,
     params: param
   }).catch((error) => { throw new Error(error) })
@@ -267,7 +270,7 @@ export async function getDictList (param: unknown) {
 /** 根据类型批量获取字典 */
 export async function getDictByTypeId (param: unknown) {
   return await request({
-    url: `${APP_CMS_URL}/dict/getDict`,
+    url: `${APP_BASE_URL}/dict/getDict`,
     method: METHOD.POST,
     params: param
   }).catch((error) => { throw new Error(error) })

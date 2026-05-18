@@ -60,7 +60,10 @@ export default {
 
     .btns {
       flex: 1;
-      text-align: left;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
     }
   }
 
@@ -72,21 +75,29 @@ export default {
 
   .views {
     padding-bottom: 12px;
+    overflow: auto;
+
     .custonSelect {
       display: flex;
       flex: 1;
       justify-content: flex-end;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      min-height: 40px;
 
       .viewsLeft {
         justify-self: flex-start;
       }
 
-      .viewsRight{
+      .viewsRight {
         flex: 1;
-        text-align: right;
-        justify-self: flex-end;
-
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px 12px;
+        min-width: 0;
       }
     }
 

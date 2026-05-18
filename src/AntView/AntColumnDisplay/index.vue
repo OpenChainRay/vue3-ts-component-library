@@ -40,17 +40,27 @@
           <div class="rightContent">
             <p class="left_title">已选字段</p>
             <div class="checkGroup drag">
-              <draggable v-model="columns" @update="change" animation="300" style="width:100%">
-
-                <template v-for="(item, index) in columns">
-
-                  <div :key="index" v-if="item.sortNo >= -1" style="height:25px;margin-bottom:0px;width:100%">
+              <draggable
+                v-model="columns"
+                item-key="dragKey"
+                animation="300"
+                style="width:100%"
+                @update="change">
+                <template #item="{ element, index }">
+                  <div v-if="element.sortNo >= -1" class="drag-field-item">
                     <p class="phover">
-                      <span><a-icon type="more" style="width:10px;" /><a-icon type="more" style="width:10px;margin-right:10px;" />{{ item.columnTitle }}</span>
-                      <a-icon type="close-circle" @click="delselect(item, index)" style="margin-right:10px;line-height:30px;" v-if="item.isRequired == 0" />
+                      <span>
+                        <a-icon type="more" style="width:10px;" />
+                        <a-icon type="more" style="width:10px;margin-right:10px;" />
+                        {{ element.columnTitle }}
+                      </span>
+                      <a-icon
+                        v-if="element.isRequired == 0"
+                        type="close-circle"
+                        class="drag-field-remove"
+                        @click="delselect(element, index)" />
                     </p>
                   </div>
-
                 </template>
               </draggable>
             </div>
@@ -254,7 +264,14 @@ export default {
     handleViewCancel () {
       this.showColumnsVisable = false
     },
+    /** 拖拽列表唯一键（Vue3 vuedraggable） */
+    attachDragKey (list) {
+      list.forEach((item, index) => {
+        item.dragKey = item.code || item.dataIndex || `${item.columnTitle || 'col'}-${index}`
+      })
+    },
     openColumnsChoose () {
+      this.attachDragKey(this.columns)
       this.showColumnsVisable = true
     },
     /**

@@ -3,7 +3,7 @@
     <!-- 标题 -->
     <div class='flex'>
       <div class='block'>标题<span style='color:red'>*</span></div>
-      <div style="width: calc(100% - 130px)"><a-input placeholder="请输入标题" v-model='title' /></div>
+      <div style="width: calc(100% - 130px)"><a-input placeholder="请输入标题" v-model:value="title" /></div>
     </div>
     <div class='flex'>
       <div class='block'><span style='color:red'></span></div>
@@ -14,7 +14,7 @@
       <div class='flex'>
         <div class='block'>表格唯一编码<span style='color:red'>*</span></div>
         <div style="width: calc(100% - 205px);margin-left: 0px;"><a-input placeholder="表格唯一编码"
-            v-model='customTableCode' /></div>
+            v-model:value='customTableCode' /></div>
         <div style="width: 50px;margin-left: 10px;">
           <a-button @click="searchingTap">检索</a-button>
         </div>
@@ -32,14 +32,14 @@
         </div>
         <div style="display: flex;width: 100%;padding-right: 50px;">
           <!-- :disabled="viewTypeDisabled" -->
-          <a-radio-group v-if="configType === 'user'" v-model="viewType" @change="viewTypeChange">
+          <a-radio-group v-if="configType === 'user'" v-model:value="viewType" @change="viewTypeChange">
             <a-radio v-for="(item, index) in viewTypeList" :key="index" :style="radioStyle" :value="item.value"
               :disabled="item.disabled">
               {{ item.title }}
             </a-radio>
           </a-radio-group>
           <!-- 如果是弹窗视图 || 聚合视图显示 -->
-          <a-radio-group v-else-if="configType === 'config'" v-model="viewType" @change="viewTypeChange">
+          <a-radio-group v-else-if="configType === 'config'" v-model:value="viewType" @change="viewTypeChange">
             <a-radio v-for="(item, index) in systemViewType" :key="index" :style="radioStyle" :value="item.value">
               {{ item.title }}
             </a-radio>
@@ -59,8 +59,11 @@
           <div class='block'>条件关系<span style='color:red'>*</span></div>
           <div v-if="(typeof aggregateData.relationType === 'number')">
             默认视图与条件视图的关联条件为
-            <a-radio-group style="margin-left: 8px;" :disabled="true" :options="operaterList"
-              :default-value="aggregateData.relationType" />
+            <a-radio-group
+              style="margin-left: 8px;"
+              :disabled="true"
+              :options="operaterList"
+              :value="typeof aggregateData.relationType === 'number' ? aggregateData.relationType : 0" />
           </div>
         </div>
       </div>
@@ -69,10 +72,17 @@
           <div class='block'>默认条件<span style='color:red'>*</span></div>
         </div>
         <div class="flex column" style="width:100%">
-          <view-tree ref="tableViewTree" :tableCode="currentTableCode" :relationType.sync="tableRelationType"
-            :columnMap="columnMap" :searchList.sync="tableSearchList" :selectColumnList.sync="selectColumnList"
-            :cacheColumnList.sync="cacheColumnList" :columnOperatorList="columnOperatorList" :disabled="true"
-            :columns="columns"></view-tree>
+          <view-tree
+            ref="tableViewTree"
+            :tableCode="currentTableCode"
+            v-model:relationType="tableRelationType"
+            :columnMap="columnMap"
+            :searchList="tableSearchList"
+            :selectColumnList="selectColumnList"
+            :cacheColumnList="cacheColumnList"
+            :columnOperatorList="columnOperatorList"
+            :disabled="true"
+            :columns="columns" />
         </div>
       </div>
       <div class='flex'>
@@ -80,10 +90,19 @@
           <div class='block'>视图条件<span style='color:red'>*</span></div>
         </div>
         <div class="flex column condition">
-          <view-tree ref="viewTree" :tableCode="currentTableCode" :relationType.sync="viewRelationType"
-            :columnMap="columnMap" :searchList.sync="viewSearchList" :selectColumnList.sync="selectColumnList"
-            :cacheColumnList.sync="cacheColumnList" :columnOperatorList="columnOperatorList" :columns="columns"
-            @handleSearch="handleSearch" @addItem="addItem" @delItem="delItem"></view-tree>
+          <view-tree
+            ref="viewTree"
+            :tableCode="currentTableCode"
+            v-model:relationType="viewRelationType"
+            :columnMap="columnMap"
+            :searchList="viewSearchList"
+            :selectColumnList="selectColumnList"
+            :cacheColumnList="cacheColumnList"
+            :columnOperatorList="columnOperatorList"
+            :columns="columns"
+            @handleSearch="handleSearch"
+            @addItem="addItem"
+            @delItem="delItem" />
           <div class="addClass">
             <div class="" style="cursor: pointer;" @click="addItem">
               <a-icon type="plus-square" style="font-size:18px;color:#d9d9d9;margin-right:10px;" />
@@ -101,10 +120,16 @@
           <div class='block'>视图排序</div>
         </div>
         <div class="flex column condition">
-          <sort-view ref="sortView" :tableCode="currentTableCode" :viewSorter.sync="viewSorter"
-            :sortColumnList.sync="sortColumnList" :cacheColumnList.sync="cacheColumnList"
-            @handleSortSearch="handleSortSearch" @addSortItem="addSortItem" @delSortItem="delSortItem"
-            :columns="columns"></sort-view>
+          <sort-view
+            ref="sortView"
+            :tableCode="currentTableCode"
+            :viewSorter="viewSorter"
+            :sortColumnList="sortColumnList"
+            :cacheColumnList="cacheColumnList"
+            @handleSortSearch="handleSortSearch"
+            @addSortItem="addSortItem"
+            @delSortItem="delSortItem"
+            :columns="columns" />
           <div class="addClass">
             <div class="" style="cursor: pointer;display: flex;align-items: center;" @click="addSortItem">
               <a-icon type="plus-square" style="font-size:18px;color:#d9d9d9;margin-right:10px;" />
@@ -118,17 +143,17 @@
       </div>
       <div class="modalContent">
         <div class="leftContent">
-          <div style='margin-left:13px;margin-top:20px;'><a-checkbox v-model='checkAll'
-              @change="checkAllItem()"></a-checkbox><span style='margin-left:10px;'>{{ !checkAll ? '全选' : '取消全选'
+          <div style='margin-left:13px;margin-top:20px;'><a-checkbox v-model:checked="checkAll"
+              @change="checkAllItem"></a-checkbox><span style='margin-left:10px;'>{{ !checkAll ? '全选' : '取消全选'
               }}</span>
           </div>
           <p class="left_title">可选字段</p>
           <div class="checkGroup" v-for="(item, index) in allList" :key="index">
             <p style="width:100%;">{{ item.name }}</p>
             <p v-for="(it, int) in item.list" :key="int" style="width:16.6%;">
-              <a-checkbox :checked="it.checked" @change="onCheckAllChange(it)" :disabled="it.isRequired == 1">
+              <a-checkbox v-model:checked="it.checked" @change="() => onFieldToggle(it)" :disabled="it.isRequired == 1">
                 <a-tooltip placement="topLeft">
-                  <template slot="title">
+                  <template #title>
                     <span>{{ it.columnTitle }}</span>
                   </template>
                   <span v-if="it.columnTitle.length > 4">{{ it.columnTitle.slice(0, 4) + '...' }}</span>
@@ -149,14 +174,25 @@
           </div>
         </div> -->
           <div class="checkGroup drag">
-            <draggable v-model="isSelected" @update="change" animation="300" style="width:100%">
-              <template v-for="(item, index) in isSelected">
-                <div :key="index" v-if="item.sortNo > -1" style="height:25px;margin-bottom:0px;width:100%">
+            <draggable
+              v-model="isSelected"
+              item-key="dragKey"
+              animation="300"
+              style="width:100%"
+              @update="change">
+              <template #item="{ element, index }">
+                <div v-if="element.sortNo > -1" class="drag-field-item">
                   <p class="phover">
-                    <span><a-icon type="more" style="width:10px;" /><a-icon type="more"
-                        style="width:10px;margin-right:10px;" />{{ item.columnTitle }}</span>
-                    <a-icon type="close-circle" @click="delSelect(item, index)"
-                      style="margin-right:10px;line-height:30px;" v-if="item.isRequired == 0" />
+                    <span>
+                      <a-icon type="more" style="width:10px;" />
+                      <a-icon type="more" style="width:10px;margin-right:10px;" />
+                      {{ element.columnTitle }}
+                    </span>
+                    <a-icon
+                      v-if="element.isRequired == 0"
+                      type="close-circle"
+                      class="drag-field-remove"
+                      @click="delSelect(element, index)" />
                   </p>
                 </div>
               </template>
@@ -185,8 +221,9 @@ import {
   updatePreviewView
 } from '../../sevrices/configurationView'
 import debounce from 'lodash/debounce'
+import cloneDeep from 'lodash/cloneDeep'
 import draggable from 'vuedraggable'
-import { ColumnType, VIEW_CHANGE_TYPE, viewTypeList, systemViewType, viewType } from '../../Constant/constant'
+import { ColumnType, VIEW_CHANGE_TYPE, viewTypeList, systemViewType, viewType, defaultPageInfo } from '../../Constant/constant'
 import { generateUUID } from '../../../utils/uuid'
 import { getTableCode } from '../getTableCode'
 // import { Popover as TinyPopover } from '@opentiny/vue'
@@ -214,6 +251,11 @@ export default {
     configType: {
       type: String,
       default: 'user' // 默认用户端
+    },
+    /** 列表当前生效视图的分页（新建时与表格默认分页一致） */
+    currentViewPageInfo: {
+      type: Object,
+      default: null
     }
   },
   data () {
@@ -301,12 +343,35 @@ export default {
   /* eslint-disable */
   methods: {
 
-    change() {
-      // this.isSelected =
+    /** 兼容 code 为 number/string 及无 code 场景 */
+    isApiSuccess(payload) {
+      if (!payload || typeof payload !== 'object') return false
+      if (payload.success === true && payload.data != null) return true
+      const c = payload.code
+      if (c === undefined || c === null) return payload.data != null
+      return Number(c) === 200
     },
-    viewTypeChange(event) {
-      // console.log(event, 'event')
-      this.viewType = event.target.value
+    /** 补全 filter 结构，避免接口缺字段导致中断 */
+    ensureViewFilterShape(response) {
+      if (!response.filter) {
+        response.filter = {
+          relationType: 0,
+          tableFilter: { relationType: 0, filters: [] },
+          viewFilter: { relationType: 0, filters: [] }
+        }
+        return
+      }
+      const f = response.filter
+      if (!f.tableFilter) f.tableFilter = { relationType: 0, filters: [] }
+      if (!Array.isArray(f.tableFilter.filters)) f.tableFilter.filters = []
+      if (!f.viewFilter) f.viewFilter = { relationType: 0, filters: [] }
+      if (!Array.isArray(f.viewFilter.filters)) f.viewFilter.filters = []
+      if (typeof f.relationType !== 'number') f.relationType = 0
+    },
+    viewTypeChange(e) {
+      /** 兼容 ant-design-vue Radio 事件与原生事件 */
+      const v = e && e.target ? e.target.value : e
+      this.viewType = v
     },
     handleSortSearch: debounce(function (value, item) {
       item.fetching = true
@@ -341,7 +406,16 @@ export default {
       this.initData()
     },
     // 初始化数据
+    /** 拖拽列表唯一键 */
+    attachDragKey (list) {
+      list.forEach((item, index) => {
+        item.dragKey = item.code || item.dataIndex || `${item.columnTitle || 'col'}-${index}`
+      })
+    },
     async initData() {
+      this.isSelected = []
+      this.allList = []
+      this.length = 0
       // 如果是自定义表格编码  没有列且没有自定义编码  直接return  等待校验
       if (this.isCustomTableCode && this.customTableCode === '') {
         return
@@ -355,7 +429,7 @@ export default {
         currentTableCode = this.currentTableCode
       }
       // 获取默认过滤条件
-      if (this.judge === VIEW_CHANGE_TYPE.add.value) {
+      if (Number(this.judge) === VIEW_CHANGE_TYPE.add.value) {
         param = currentTableCode
         requestUrl = getDefaultViewInfo
       } else {
@@ -369,15 +443,37 @@ export default {
         }
       }
 
+      if (Number(this.judge) !== VIEW_CHANGE_TYPE.add.value && (this.viewId === undefined || this.viewId === null || this.viewId === '')) {
+        this.$antmessage.error('视图ID缺失，无法加载')
+        return
+      }
+
       const { data } = await requestUrl(param).catch((error) => { throw new Error(error) })
       // console.log(data, 'data')
-      if (data.code && data.code === 200) {
-        if (this.judge !== VIEW_CHANGE_TYPE.add.value) {
-          this.title = data.data.viewName
+      if (this.isApiSuccess(data)) {
+        const response = data.data
+        if (!response) {
+          this.$antmessage.error((data && data.msg) || '视图数据为空')
+          return
+        }
+        const isAdd = Number(this.judge) === VIEW_CHANGE_TYPE.add.value
+        if (!isAdd) {
+          this.title = response.viewName || response.viewTitle || response.name || ''
         } else {
           this.title = ''
         }
-        const response = data.data
+        const rv = response.viewType
+        if (rv !== undefined && rv !== null && rv !== '') {
+          const n = Number(rv)
+          if (!Number.isNaN(n)) {
+            this.viewType = n
+          }
+        }
+        this.ensureViewFilterShape(response)
+        if (!response.columns || !Array.isArray(response.columns)) {
+          this.$antmessage.error('视图列配置缺失')
+          return
+        }
         if (typeof response.filter.tableFilter.relationType !== 'number') {
           response.filter.tableFilter.relationType = 0
         }
@@ -431,8 +527,9 @@ export default {
         this.isSelected.sort((a, b) => { // 排序
           return a.sortNo - b.sortNo
         })
+        this.attachDragKey(this.isSelected)
         console.log(this.length, this.isSelected)
-        this.checkAll = this.isSelected.length === this.length
+        this.checkAll = this.length > 0 && this.isSelected.length === this.length
         let allColumns = [] //  平铺的所有列
         response.columns.forEach(group => {
           allColumns = allColumns.concat(group.columnList)
@@ -456,6 +553,18 @@ export default {
           // console.log(this.labelPageFilter, 'labelPageFilter')
         }
         this.pageInfo = response.pageInfo
+        if (!this.pageInfo || !Array.isArray(this.pageInfo.pageSizeList) || this.pageInfo.pageSizeList.length === 0) {
+          this.pageInfo = cloneDeep(defaultPageInfo)
+        }
+        // 新建：分页配置与当前列表正在用的视图一致（默认选中当前每页条数）
+        if (
+          isAdd &&
+          this.currentViewPageInfo &&
+          Array.isArray(this.currentViewPageInfo.pageSizeList) &&
+          this.currentViewPageInfo.pageSizeList.length
+        ) {
+          this.pageInfo = cloneDeep(this.currentViewPageInfo)
+        }
         this.$nextTick(() => {
           for (let i = 0; i < this.viewSearchList.length; i++) {
             const filter = this.viewSearchList[i]
@@ -473,7 +582,7 @@ export default {
           }
         })
       } else {
-        this.$antmessage.error(data.msg)
+        this.$antmessage.error((data && data.msg) || '加载视图失败')
       }
     },
     // 树结构数据过滤
@@ -826,6 +935,7 @@ export default {
           }
         }, [])
         this.isSelected = result
+        this.attachDragKey(this.isSelected)
       } else { // 取消全选留下必须的字段
         this.allList.forEach(item => {
           item.list.forEach(element => {
@@ -838,20 +948,24 @@ export default {
           })
         })
         this.isSelected = arrRepet
+        this.attachDragKey(this.isSelected)
       }
+      this.checkAll = this.length > 0 && this.isSelected.length === this.length
     },
-    // 显示字段 修改状态
-    onCheckAllChange(e) {
-      e.checked = !e.checked
-      if (e.checked) { // 已选择的
-        e.defaultIsShow = 1
-        this.isSelected.push(e)
+    /** 可选字段单项勾选：与已选列表同步，避免受控 Checkbox 双切换错误 */
+    onFieldToggle (it) {
+      if (it.isRequired == 1) return
+      if (it.checked) {
+        it.defaultIsShow = 1
+        if (!this.isSelected.some((s) => s.code === it.code)) {
+          this.isSelected.push(it)
+          this.attachDragKey(this.isSelected)
+        }
       } else {
-        e.defaultIsShow = 0
-        this.isSelected = this.isSelected.filter(item => { return item.columnTitle !== e.columnTitle })
+        it.defaultIsShow = 0
+        this.isSelected = this.isSelected.filter((item) => item.code !== it.code)
       }
-
-      this.checkAll = this.length === this.isSelected.length
+      this.checkAll = this.length > 0 && this.isSelected.length === this.length
     },
     // 显示字段 取消选择
     delSelect(it, index) {
@@ -866,7 +980,7 @@ export default {
           })
         }
       })
-      this.checkAll = this.length === this.isSelected.length
+      this.checkAll = this.length > 0 && this.isSelected.length === this.length
     },
     // endregion
     // 判断 列是否可以作为过滤条件

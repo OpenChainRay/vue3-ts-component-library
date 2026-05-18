@@ -6,60 +6,116 @@
         <a-button type="primary" @click="openNewView">新增</a-button>
       </div>
       <!-- 表格添加ref和自定义行属性用于拖拽 -->
-      <a-table :key="tableKey" :columns="tableColumns" :loading="loading" ref='table' :data-source="ViewPageList"
-        :pagination="false" :scroll="{ y: 320 }" :customRow="(record, index) => ({
-          'data-index': index,
-          class: 'draggable-row'  // 添加拖拽手柄类名
-        })">
-        <span slot="action" slot-scope="text, record">
-          <a @click="showInfo(record, VIEW_CHANGE_TYPE.edit.value)" :disabled='isEditFun(record)'
-            style='margin-right: 14px;'><a-icon type="form" /></a>
-          <a @click="deleteItem(record)" :disabled="isCurrentViewId(record) || isDeleteFun(record)"
-            style='margin-right: 14px;'><a-icon type="delete" /></a>
-          <a @click="showInfo(record, VIEW_CHANGE_TYPE.saveAs.value)" style='margin-right: 14px;'><a-icon
-              type="snippets" /></a>
-
-        </span>
-        <span slot="switch" slot-scope="text, record,index">
-          <a-switch v-if="switchStatus[index]" v-model="switchStatus[index].status"
-            :disabled="switchStatus[index].disable" :loading="switchStatus[index].load"
-            @click="(checked, e) => onStatusChange(checked, e, record, index)" />
-        </span>
-        <span slot="show" slot-scope="text, record">
-          <a-checkbox @change="handleChange($event, record)" :checked="record.show == 1">
-            <!-- Checkbox -->
-          </a-checkbox>
-        </span>
-        <span slot="radio" slot-scope="text, record">
-          <a-radio :checked="isCurrentViewId(record)" :disabled='record.disable' @change='onChange1(record)'></a-radio>
-        </span>
-        <span slot="viewTypeSolt" slot-scope="text, record">
+      <a-table
+        ref="table"
+        row-key="viewId"
+        :columns="resolvedTableColumns"
+        :loading="loading"
+        :data-source="ViewPageList"
+        :pagination="false"
+        :scroll="{ y: 320 }"
+        :custom-row="customTableRow">
+        <template #currentView="{ record }">
+          <a-checkbox
+            :checked="isCurrentViewId(record)"
+            :disabled="!!record.disable"
+            @change="(e) => onCurrentViewCheck(e, record)" />
+        </template>
+        <template #viewTypeSolt="{ record }">
           <span>{{ record.viewTypeName }}</span>
-        </span>
+        </template>
+        <template #action="{ record }">
+          <span class="view-action-icons">
+            <a-tooltip title="编辑">
+              <a-button
+                type="text"
+                size="small"
+                class="view-action-btn"
+                :disabled="isEditFun(record)"
+                @click="showInfo(record, VIEW_CHANGE_TYPE.edit.value)">
+                <FormOutlined />
+              </a-button>
+            </a-tooltip>
+            <a-tooltip title="删除">
+              <a-button
+                type="text"
+                size="small"
+                class="view-action-btn view-action-btn-danger"
+                :disabled="isCurrentViewId(record) || isDeleteFun(record)"
+                @click="deleteItem(record)">
+                <DeleteOutlined />
+              </a-button>
+            </a-tooltip>
+            <a-tooltip title="复制">
+              <a-button
+                type="text"
+                size="small"
+                class="view-action-btn"
+                @click="showInfo(record, VIEW_CHANGE_TYPE.saveAs.value)">
+                <CopyOutlined />
+              </a-button>
+            </a-tooltip>
+          </span>
+        </template>
+        <template #show="{ record }">
+          <a-checkbox :checked="record.show == 1" @change="(e) => handleChange(e, record)" />
+        </template>
+        <template #switch="{ record, index }">
+          <a-switch
+            v-if="switchStatus[index]"
+            v-model:checked="switchStatus[index].status"
+            :disabled="switchStatus[index].disable"
+            :loading="switchStatus[index].load"
+            @change="(checked) => onStatusChange(checked, null, record, index)" />
+        </template>
       </a-table>
     </div>
-    <a-modal class="editModel" :title="judge === VIEW_CHANGE_TYPE.edit.value ? '编辑视图' : '另存为视图'"
+    <a-modal class="editModel ant-view-modal-align-top" wrap-class-name="ant-view-modal-align-top"
+      :title="judge === VIEW_CHANGE_TYPE.edit.value ? '编辑视图' : '另存为视图'"
       :visible="openNewViewVisable" cancel-text="取消" ok-text="确认" :footer='null' :destroy-on-close="true"
+      :centered="false"
       :mask-closable="false" @ok="handleNewViewOk" @cancel="handleNewViewCancel" width="70%">
       <div class="vheight">
         <edit-view ref="editView" :judge='judge' :tableCode='currentTableCode' :columnMap="columnMap"
           :viewId='detailid.viewId' :columns="columns" :currentViewType="currentViewType"
-          :viewTypeDisabled="viewTypeDisabled" @handleNewViewCancel='handleNewViewCancel'
+          :viewTypeDisabled="viewTypeDisabled" :current-view-page-info="currentViewPageInfo"
+          @handleNewViewCancel='handleNewViewCancel'
           @handleNewViewOk='handleNewViewOk' />
       </div>
     </a-modal>
-    <a-modal class="addModel" title="新建视图" :visible="addVisable" :footer='null' :destroy-on-close="true"
+    <a-modal class="addModel ant-view-modal-align-top" wrap-class-name="ant-view-modal-align-top" title="新建视图"
+      :visible="addVisable" :footer='null' :destroy-on-close="true" :centered="false"
       :mask-closable="false" ok-text="确认" @ok="handleNewViewOk" cancel-text="取消" @cancel="handleNewViewCancel"
       width="70%">
       <div class="vheight">
         <edit-view ref="newView" :columnMap="columnMap" :viewId='detailid.viewId' :judge="VIEW_CHANGE_TYPE.add.value"
           :tableCode='currentTableCode' :columns="columns" :currentViewType="currentViewType"
-          :viewTypeDisabled="viewTypeDisabled" @handleNewViewCancel='handleNewViewCancel'
+          :viewTypeDisabled="viewTypeDisabled" :current-view-page-info="currentViewPageInfo"
+          @handleNewViewCancel='handleNewViewCancel'
           @handleNewViewOk='handleNewViewOk' />
       </div>
     </a-modal>
   </div>
 </template>
+
+<style>
+.ant-view-modal-align-top.ant-modal-wrap {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center;
+  padding: 27px 16px 32px;
+  box-sizing: border-box;
+}
+.ant-view-modal-align-top.ant-modal-wrap .ant-modal {
+  top: 0 !important;
+  margin: 0 auto 16px !important;
+  max-height: calc(100vh - 48px);
+}
+.ant-view-modal-align-top.ant-modal-wrap .ant-modal-content {
+  max-height: calc(100vh - 56px);
+  overflow: auto;
+}
+</style>
 
 <script>
 import editView from './edit-view.vue'
@@ -69,6 +125,7 @@ import debounce from 'lodash/debounce'
 import { VIEW_CHANGE_TYPE, viewType } from '../../Constant/constant'
 import { getTableCode } from '../getTableCode'
 import Sortable from 'sortablejs' // 引入拖拽库
+import { CopyOutlined, DeleteOutlined, FormOutlined } from '@ant-design/icons-vue'
 
 export default {
   name: 'AntConfigurationView',
@@ -84,6 +141,11 @@ export default {
     viewTypeDisabled: {
       type: Boolean,
       default: true
+    },
+    /** 当前列表生效视图分页，新建视图时带入 */
+    currentViewPageInfo: {
+      type: Object,
+      default: null
     }
   },
   data () {
@@ -101,42 +163,43 @@ export default {
       currentViewId: 0,
       addVisable: false,
       currentTableCode: '',
-      sortableInstance: null, // 拖拽实例
-      originalData: [], // 拖拽前的数据快照，用于还原
-      sourceViewType: null, // 拖拽源的viewType
-      tableKey: 1 // 用于强制刷新表格的key
+      sortableInstance: null,
+      dragSnapshot: []
     }
   },
   computed: {
-    tableColumns () {
-      //
-      const index = configurationViewPage.findIndex((item) => item.title == '是否平铺视图')
-      if (this.configData.scmShow == 1 && index == -1) {
-        // 新列配置
-        const newColumn = {
+    /** 解析表头，兼容 Vue3 ant-design-vue Table */
+    resolvedTableColumns () {
+      const cols = configurationViewPage.map((col) => {
+        const item = { ...col }
+        delete item.scopedSlots
+        delete item.search
+        return item
+      })
+      const showIndex = cols.findIndex((item) => item.key === 'show')
+      if (this.configData.scmShow == 1 && showIndex === -1) {
+        const insertIndex = cols.length - 1
+        cols.splice(insertIndex, 0, {
           title: '是否平铺视图',
-          scopedSlots: { customRender: 'show' },
+          key: 'show',
           align: 'center',
-          search: false
-        }
-        // 计算插入位置：倒数第二个 = 数组长度 - 1（因为最后一个元素索引是 length-1，插入到它前面）
-        const insertIndex = configurationViewPage.length - 1
-        // 使用 splice 插入到指定位置（不会删除原有元素）
-        configurationViewPage.splice(insertIndex, 0, newColumn)
-      } else if (this.configData.scmShow != 1 && index != -1) {
-        // 不符合条件且列存在时，移除该列
-        configurationViewPage.splice(index, 1) // 从index位置删除1个元素
+          width: 110,
+          slots: { customRender: 'show' }
+        })
+      } else if (this.configData.scmShow != 1 && showIndex !== -1) {
+        cols.splice(showIndex, 1)
       }
-      // 系统视图不需要设置默认视图，因此移除“当前视图”列
       if (this.currentViewType === viewType.system.value) {
-        return configurationViewPage.slice(1)
-      } else {
-        return configurationViewPage
+        return cols.filter((item) => item.key !== 'currentView')
       }
+      return cols
     }
   },
   components: {
-    editView
+    editView,
+    FormOutlined,
+    DeleteOutlined,
+    CopyOutlined
   },
   mounted () {
     this.currentTableCode = getTableCode(this)
@@ -146,12 +209,31 @@ export default {
     })
   },
   methods: {
+    /** 行属性：绑定拖拽索引 */
+    /** 行拖拽：整行可拖，不单独占排序列 */
+    customTableRow (_record, index) {
+      return {
+        'data-drag-index': String(index),
+        class: 'view-config-draggable-row'
+      }
+    },
     handleChange (event, record) {
-      // console.log(event, record)
-      record.show = event.target.checked ? 1 : 0 // 根据选中状态更新 show
+      record.show = event.target.checked ? 1 : 0
+    },
+    /** 当前视图复选（单选语义） */
+    onCurrentViewCheck (event, record) {
+      if (event.target.checked) {
+        this.onChange1(record)
+      }
+    },
+    /** 同步拖拽后的开关状态数组顺序 */
+    reorderSwitchStatus (oldIndex, newIndex) {
+      const next = [...this.switchStatus]
+      const [moved] = next.splice(oldIndex, 1)
+      next.splice(newIndex, 0, moved)
+      this.switchStatus = next
     },
     initDrag () {
-      // 先销毁旧实例
       if (this.sortableInstance) {
         this.sortableInstance.destroy()
         this.sortableInstance = null
@@ -161,45 +243,43 @@ export default {
         const tableEl = this.$refs.table?.$el
         if (!tableEl) return
 
-        const tableBody = tableEl.querySelector('.ant-table-body tbody') || tableEl.querySelector('tbody')
+        const tableBody = tableEl.querySelector('.ant-table-tbody') || tableEl.querySelector('tbody')
         if (!tableBody) return
 
-        this.sortableInstance = new Sortable(tableBody, {
+        this.sortableInstance = Sortable.create(tableBody, {
           animation: 150,
-          handle: '.draggable-row',
           ghostClass: 'sortable-ghost',
-          delay: 0,
-          forceFallback: true,
+          draggable: 'tr.ant-table-row',
 
-          onStart: (evt) => {
-            this.originalData = JSON.parse(JSON.stringify(this.ViewPageList)) // 深拷贝确保原始数据不被污染
-            const sourceRow = this.originalData[evt.oldIndex]
-            this.sourceViewType = sourceRow?.viewType
+          onStart: () => {
+            this.dragSnapshot = this.ViewPageList.map((item) => ({ ...item }))
+          },
+
+          onMove: (evt) => {
+            const from = Number(evt.dragged.dataset.dragIndex)
+            const to = Number(evt.related.dataset.dragIndex)
+            if (Number.isNaN(from) || Number.isNaN(to)) return true
+            return this.dragSnapshot[from]?.viewType === this.dragSnapshot[to]?.viewType
           },
 
           onEnd: (evt) => {
             const { oldIndex, newIndex } = evt
-            if (oldIndex === newIndex) return
+            if (oldIndex === newIndex || oldIndex == null || newIndex == null) return
 
-            const targetRow = this.originalData[newIndex]
-            if (targetRow?.viewType !== this.sourceViewType) {
+            const source = this.dragSnapshot[oldIndex]
+            const target = this.dragSnapshot[newIndex]
+            if (!source || !target || source.viewType !== target.viewType) {
               this.$antmessage.warning('非同类型视图不能拖拽！')
-              // 2. 还原数据 + 强制表格刷新
-              this.ViewPageList = JSON.parse(JSON.stringify(this.originalData))
-              this.dataFingerprint++ // 数据变化，更新指纹
-              this.tableKey = this.dataFingerprint // 同步更新表格key，触发重建
-              this.$nextTick(() => this.initDrag()) // 延迟初始化拖拽（等待新表格渲染）
+              this.ViewPageList = [...this.dragSnapshot]
+              this.$nextTick(() => this.initDrag())
               return
             }
 
-            // 3. 正常排序：新数组替换 + 刷新表格
-            const newData = JSON.parse(JSON.stringify(this.originalData))
-            const [movedItem] = newData.splice(oldIndex, 1)
-            newData.splice(newIndex, 0, movedItem)
-            this.ViewPageList = newData // 新数组替换，触发响应式
-            console.log(this.ViewPageList, 'ViewPageList')
-            this.dataFingerprint++
-            this.tableKey = this.dataFingerprint // 强制表格重建
+            const list = [...this.ViewPageList]
+            const [moved] = list.splice(oldIndex, 1)
+            list.splice(newIndex, 0, moved)
+            this.ViewPageList = list
+            this.reorderSwitchStatus(oldIndex, newIndex)
             this.$nextTick(() => this.initDrag())
           }
         })
@@ -220,7 +300,7 @@ export default {
     },
     // 检测当前项是否是当前视图  true 是 false 不是
     isCurrentViewId (record) {
-      return record.viewId === this.currentViewId
+      return record.viewId == this.currentViewId
     },
 
     showInfo (record, i) {
@@ -435,9 +515,28 @@ export default {
 }
 
 /* 拖拽占位样式 */
-:deep(.sortable-ghost ){
+:deep(.sortable-ghost) {
   background-color: #f5f5f5 !important;
   opacity: 0.6;
   border: 1px dashed #ccc;
+}
+
+:deep(.view-config-draggable-row) {
+  cursor: move;
+}
+
+.view-action-icons {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.view-action-btn {
+  color: #3874ff;
+}
+
+.view-action-btn-danger:not(:disabled) {
+  color: #ff4d4f;
 }
 </style>

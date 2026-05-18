@@ -1,5 +1,5 @@
 <template>
-  <div style="display:inline-block" v-if="isShow">
+  <div class="ant-table-view-toolbar" v-if="isShow">
     <!-- <AntViewRange :viewConfig="viewConfig" :tableCode='currentTableCode' :isCustomRequest="false" :columnMap="columnMap"
       :columns="columns" @customRviewRange="customRviewRange" @initViewData="initViewData">
       <span><a-icon type="profile" style='margin-right:5px;' />视图数据范围</span>
@@ -31,7 +31,11 @@
           </div>
         </div>
       </a-select> -->
-      <a-select style="width:150px;border:none !important;" @change="handleChange" v-model='viewId'>
+      <a-select
+        v-model:value="viewId"
+        style="width:150px;border:none !important;"
+        placeholder="请选择视图"
+        @change="handleChange">
         <a-select-option v-for="(item, index) in topLevelList" :key='index' :value="item.viewId">
           {{ item.viewName }}
         </a-select-option>
@@ -40,8 +44,8 @@
             {{ view.viewName }}
           </a-select-option>
         </a-select-opt-group>
-        <div slot="dropdownRender" slot-scope='menu'>
-          <v-nodes :vnodes="menu" />
+        <template #dropdownRender="dropdownSlot">
+          <vnode-renderer :node="resolveDropdownMenu(dropdownSlot)" />
           <a-divider style='margin:0px;' />
           <div style="padding: 4px 8px; cursor: pointer;" @click="openNewView">
             <a-icon type="plus" style='color: rgba(0, 0, 0, 0.65);' /><span
@@ -50,30 +54,33 @@
           <div style="padding: 4px 8px; cursor: pointer;" @click="openPersonView">
             <span style='color: rgba(0, 0, 0, 0.65);'>配置个人视图</span>
           </div>
-        </div>
+        </template>
       </a-select>
     </div>
     <AntColumnDisplay v-if="isShowSetting" :viewConfig="viewConfig" v-model="columns"
       :allColumnQuote="allColumnQuoteCopy" />
     <!--新建视图弹框-->
-    <a-modal class="addModel" title="新建视图" :visible="openNewViewVisable" :footer='null' :destroy-on-close="true"
+    <a-modal class="addModel ant-view-modal-align-top" wrap-class-name="ant-view-modal-align-top" title="新建视图"
+      :visible="openNewViewVisable" :footer='null' :destroy-on-close="true" :centered="false"
       :mask-closable="false" ok-text="确认" @ok="handleNewViewOk" cancel-text="取消" @cancel="handleNewViewCancel"
       width="70%">
       <div class="vheight">
         <edit-view ref="newView" :columnMap="columnMap" :viewId='viewConfig.viewId' :judge="VIEW_CHANGE_TYPE.add.value"
           :tableCode='currentTableCode' :columns="columns" :currentViewType="currentViewType"
-          :viewTypeDisabled="viewTypeDisabled" @handleNewViewCancel='handleNewViewCancel'
+          :viewTypeDisabled="viewTypeDisabled" :current-view-page-info="viewConfig.pageInfo"
+          @handleNewViewCancel='handleNewViewCancel'
           @handleNewViewOk='handleNewViewOk' />
       </div>
     </a-modal>
 
-    <!--配置个人视图弹窗   :footer='null'   -->
-    <a-modal title="配置个人视图" :visible="personalView" :destroy-on-close="true" :mask-closable="false" ok-text="确认"
+    <!-- 配置列表：垂直居中基础上微调垂直偏移（见 .ant-view-modal-config-personal margin-top） -->
+    <a-modal class="ant-view-modal-config-personal" wrap-class-name="ant-view-modal-config-personal" title="配置个人视图"
+      :visible="personalView" :destroy-on-close="true" :mask-closable="false" :centered="false" ok-text="确认"
       @ok="handlePersonOk" cancel-text="取消" @cancel="handleConfigCancel" :confirmLoading="configLoading" width="1000px">
       <div>
         <configurationView ref="configurationView" :columnMap="columnMap" :viewId='viewConfig.viewId'
           :tableCode='currentTableCode' :columns="columns" :viewTypeDisabled="viewTypeDisabled"
-          :currentViewType="currentViewType" @refresh="refreshData" />
+          :current-view-page-info="viewConfig.pageInfo" :currentViewType="currentViewType" @refresh="refreshData" />
       </div>
     </a-modal>
   </div>
@@ -103,10 +110,15 @@ export default {
       type: [String],
       required: true
     },
-    //  table的列数组
+    //  table的列数组（Vue2 :tableColumns / v-model:tableColumns）
     tableColumns: {
-      type: [Array],
-      required: true
+      type: Array,
+      default: () => []
+    },
+    // Vue3 v-model 默认绑定
+    modelValue: {
+      type: Array,
+      default: () => []
     },
     // 所有列 包括未显示的
     allColumnQuote: {
@@ -159,11 +171,17 @@ export default {
     AntViewRange,
     configurationView,
     editView,
-    VNodes: {
-      functional: true,
-      render: (h, ctx) => ctx.props.vnodes
+    /** 渲染 Select dropdownRender 传入的 menu VNode（Vue3） */
+    VnodeRenderer: {
+      props: {
+        node: {
+          default: null
+        }
+      },
+      setup (props) {
+        return () => props.node ?? null
+      }
     }
-
   },
   data () {
     return {
@@ -179,7 +197,7 @@ export default {
       searchShow: false,
       // 当前视图对象
       viewConfig: {},
-      viewId: 0,
+      viewId: undefined,
       // 视图列表
       ViewPageList: [],
       topLevelList: [],
@@ -202,10 +220,52 @@ export default {
     if (typeof this.viewTypeValue !== 'undefined') {
       this.currentViewType = this.viewTypeValue
     }
-    this.columns = this.tableColumns
+    this.columns = this.resolveExternalColumns()
     this.initViewData()
   },
   methods: {
+    /** 解析 Select 下拉菜单节点，兼容 ant-design-vue 3/4 */
+    resolveDropdownMenu (slotProps) {
+      if (!slotProps) {
+        return null
+      }
+      return slotProps.menuNode ?? slotProps.menu ?? null
+    },
+    /** 匹配下拉 option 的 value，避免 number/string 不一致导致不显示文案 */
+    matchViewOptionValue (currentId) {
+      if (currentId === null || currentId === undefined) {
+        return undefined
+      }
+      for (const item of this.topLevelList) {
+        if (item.viewId == currentId) {
+          return item.viewId
+        }
+      }
+      for (const group of this.ViewPageList) {
+        const options = group.viewOptionList || []
+        for (const view of options) {
+          if (view.viewId == currentId) {
+            return view.viewId
+          }
+        }
+      }
+      return currentId
+    },
+    /** 解析外部列配置，兼容 Vue2 tableColumns 与 Vue3 modelValue */
+    resolveExternalColumns () {
+      if (Array.isArray(this.tableColumns)) {
+        return this.tableColumns
+      }
+      if (Array.isArray(this.modelValue)) {
+        return this.modelValue
+      }
+      return []
+    },
+    /** 同步列变更到父组件 */
+    emitColumnsChange (columns) {
+      this.$emit('change', columns)
+      this.$emit('update:modelValue', columns)
+    },
     customRviewRange (params) {
       console.log(params)
     },
@@ -235,7 +295,7 @@ export default {
       if (typeof this.viewTypeValue !== 'undefined') {
         this.currentViewType = this.viewTypeValue
       }
-      this.columns = this.tableColumns
+      this.columns = this.resolveExternalColumns()
       this.initViewData()
     },
     handleConfigCancel () {
@@ -458,11 +518,10 @@ export default {
         const responseData = result.data.data
         // console.log(responseData)
         this.viewConfig = responseData.currentView
-        this.viewId = responseData.currentView.viewId
         const { viewList, topLevelList } = this.viewListFilter(responseData.viewList)
-        // console.log(viewList, topLevelList)
         this.ViewPageList = viewList
         this.topLevelList = topLevelList
+        this.viewId = this.matchViewOptionValue(responseData.currentView.viewId)
         this.formatView(responseData.currentView)
       } else {
         this.$antmessage.error(result.data.msg)
@@ -487,7 +546,7 @@ export default {
       };
     },
     formatView(currentView) {
-      const columns = currentView.columns
+      const columns = currentView.columns || []
       // const columns = JSON.parse(JSON.stringify(currentView.columns))
       const arr = []
       const Alldata = []
@@ -627,7 +686,7 @@ export default {
       }
       // console.log(this.columns, 'columns')
       this.$emit('update:AllColumns', AllColumns)
-      this.$emit('change', this.columns)
+      this.emitColumnsChange(this.columns)
 
       //
       this.formatPageInfo(currentView)
@@ -650,7 +709,8 @@ export default {
           tableColumns.push(item)
         }
       })
-      this.columns.forEach(column => {
+      const prevColumns = Array.isArray(this.columns) ? this.columns : []
+      prevColumns.forEach(column => {
         column.slots = {
           title: column.dataIndex + 'Title'
         }
@@ -763,11 +823,20 @@ export default {
   color: #00508f;
 }
 
+.ant-table-view-toolbar {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
 .shitu {
   border: 1px solid #dfdfdf;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   padding: 0 0 0 10px;
   border-radius: 4px;
+  flex-shrink: 0;
 }
 
 .shitu :deep(.ant-select-selection ){
@@ -868,5 +937,41 @@ export default {
 
 :deep(.ant-select-dropdown-menu::-webkit-scrollbar-thumb:hover ){
   background: #BFC5CD !important;
+}
+
+/** 视图弹窗靠上：wrap 顶对齐 + 取消 .ant-modal 默认 top */
+.ant-view-modal-align-top.ant-modal-wrap {
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center;
+  padding: 27px 16px 32px;
+  box-sizing: border-box;
+}
+.ant-view-modal-align-top.ant-modal-wrap .ant-modal {
+  top: 0 !important;
+  margin: 0 auto 16px !important;
+  max-height: calc(100vh - 48px);
+}
+.ant-view-modal-align-top.ant-modal-wrap .ant-modal-content {
+  max-height: calc(100vh - 56px);
+  overflow: auto;
+}
+
+/** 配置个人视图：wrap 垂直居中 + 相对纯居中小幅上移（原 -64px，再下移 50px → -14px） */
+.ant-view-modal-config-personal.ant-modal-wrap {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+.ant-view-modal-config-personal.ant-modal-wrap .ant-modal {
+  top: 0 !important;
+  margin: -14px auto 16px !important;
+  max-height: calc(100vh - 48px);
+}
+.ant-view-modal-config-personal.ant-modal-wrap .ant-modal-content {
+  max-height: calc(100vh - 56px);
+  overflow: auto;
 }
 </style>

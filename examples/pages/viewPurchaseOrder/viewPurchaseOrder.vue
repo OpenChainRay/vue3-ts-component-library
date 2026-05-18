@@ -8,16 +8,15 @@
         <!-- <condiations ref="condiations" :tableCode="tableCode" :columns="tableColumns"/> -->
 
       </div>
-      <div slot="views">
-        <div>
-          <div class="custonSelect" style="text-align:left;float:right">
+      <div slot="views" class="purchase-view-toolbar-wrap">
+        <div class="purchase-view-toolbar">
             <a-button @click="adjust">自动调整宽度</a-button>
             <ant-table-view ref="tableView" :tableCode="tableCode" v-model="tableColumns"
               @updateviewConfig="updateviewConfig" @updateLoading="updateLoading" @refresh="refreshTable"
               :allColumnQuote.sync="allColumnQuote" :isShowSetting="false" :columnMap.sync="columnMap"
               :AllColumns.sync="AllColumns" :customColumnSizeList="customColumnSizeList">
             </ant-table-view>
-            <span @click='changeSearch()' :class="searchShow ? '' : ''" class="filter" style='cursor:pointer;'>
+            <span class="filter" @click="changeSearch()">
               <a-tooltip class="header-item" title="过滤" placement="bottom">
                 <a-icon type="filter" />
               </a-tooltip>
@@ -27,13 +26,12 @@
               style="margin-left:0px" ref="columnDisplay" @switchColumn="switchColumn">
 
             </ant-column-display>
-          </div>
-          <div v-show='searchShow'>
+        </div>
+        <div v-show="searchShow" class="pageSearch">
             <!-- :defaultColumnsValue="defaultColumnsValue" -->
             <ant-view-search ref="viewSerch" @searchMethods="searchMethods" :tableCode='tableCode'
               :viewSearchDisabled="viewSearchDisabled" :columnMap="columnMap" :tableColumns="tableColumns"
               :AllColumns="AllColumns"></ant-view-search>
-          </div>
         </div>
       </div>
 
@@ -241,9 +239,9 @@ export default {
       // tableCode: '1384ad08-5156-42bc-b1ee-efe25ac09b28', // 供应商联系人
       // tableCode: 'a6d399aa-4545-11ee-84ee-0242ac110022', // 完成合同
       // tableCode: '60cc45a9-ba60-11ee-a172-0242ac111e27', // 完成合同详情
-      tableCode: '400034f9-1b91-4594-802d-767f2a88d903', // 出库单
+      // tableCode: '400034f9-1b91-4594-802d-767f2a88d903', // 出库单
       // tableCode: '8540c805-5c0f-48c8-9dd7-5442ca3cb690', // 退货单
-      // tableCode: '526ad8cc-fada-11ed-b6cc-0242ac110007', // 采购单
+      tableCode: '526ad8cc-fada-11ed-b6cc-0242ac110007', // 采购单
       // tableCode: '4DD3E0E8-206A-11ee-a1f6-0242ac11000a', // 采购单
       // tableCode: 'ad17d7d4-3cdb-11ee-a1f6-0242ac11000a', // 采购单详情
       // tableCode: '76119466-a9bd-4946-a5d8-85fb62d80380', // 生产计划
@@ -596,71 +594,44 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.topContainer {
-  background: white;
-  padding: 15px;
-  padding-bottom: 0px;
-  margin-bottom: 10px;
+/* 视图工具栏：避免 float 导致与下方表格重叠 */
+.purchase-view-toolbar-wrap {
+  width: 100%;
+}
 
-  .top {
-    display: flex;
-    align-items: center;
+.purchase-view-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px 12px;
+  width: 100%;
+  min-height: 40px;
+}
 
-    .title {
-      font-size: 20px;
-      font-weight: 600;
-      color: black;
-    }
+.pageSearch {
+  margin-top: 8px;
+  width: 100%;
+}
 
-    .btns {
-      flex: 1;
-      text-align: left;
-    }
+.filter {
+  cursor: pointer;
+  width: 40px;
+  height: 32px;
+  border-radius: 4px;
+  background: #f3f4f5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  &:hover {
+    background: #e6f2ff;
   }
+}
 
-  .line {
-    margin: 10px 0;
-    height: 1px;
-    background: rgba(30, 31, 32, 0.08);
-  }
-
-  .views {
-    padding-bottom: 12px;
-    min-height: 40px;
-
-    .custonSelect {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-    }
-
-    .pageSearch {
-      margin-top: 8px;
-    }
-
-    .filter {
-
-      cursor: pointer;
-      width: 40px;
-      height: 32px;
-      border-radius: 4px;
-      background: #F3F4F5;
-      display: inline-block;
-      line-height: 32px;
-      text-align: center;
-      margin-left: 16px;
-
-      &:hover {
-        background: #E6F2FF;
-
-      }
-
-
-      .anticon {
-        margin-right: 5px;
-      }
-    }
-  }
+.roundCard {
+  margin-top: 0;
 }
 
 .maxHeight :deep(.ant-table-body ){

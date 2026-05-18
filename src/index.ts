@@ -26,6 +26,8 @@ type InstallOptions = {
   pageSize?: number
   textFill?: string
   APP_VIEW_URL?: string
+  /** base 服务，字典接口；兼容旧名 APP_CMS_URL */
+  APP_BASE_URL?: string
   APP_CMS_URL?: string
   APP_API_BASE_URL?: string
   APP_PMS_URL?: string
